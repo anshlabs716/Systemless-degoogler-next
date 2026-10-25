@@ -8,12 +8,12 @@ uses a reviewed removal list and keeps core services and the Pixel features I
 asked to retain.
 
 <div align="center">
-  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.0">v1.0.0 release</a>
+  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1">v1.0.0 release</a>
 </div>
 
 If the release still shows the older ZIP, open **Actions → Release Workflow →
-Run workflow**, enter `v1.0.0`, and run it. The workflow rebuilds the module
-from `main`, replaces the old ZIP asset, and uploads the fixed v1.0.0 ZIP.
+Run workflow**, enter `v1.0.1`, and run it. The workflow rebuilds the module
+from `main`, replaces the old ZIP asset, and uploads the v1.0.1 ZIP.
 
 ### What it does
 
@@ -122,7 +122,7 @@ NOT installed by this module (manual install required):
 
 ## Not Replaced (Deleted)
 
-YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Pixel Customization, Google Sync Adapters
+YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
 
 ## Auto-Install
 
