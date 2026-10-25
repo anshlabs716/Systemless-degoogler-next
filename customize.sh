@@ -49,10 +49,10 @@ fi
 while IFS= read -r PACKAGE_NAME; do
   case "$PACKAGE_NAME" in ''|'#'*) continue ;; esac
 
-  # Defense-in-depth: protect core services, phone/setup components, and the
-  # requested Raven Pixel features even if someone adds them to the text list.
+  # Defense-in-depth: protect essential Google compatibility services and
+  # explicitly excluded camera/core components even if added to the text list.
   case "$PACKAGE_NAME" in
-    com.google.android.gms|com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.documentsui|com.google.android.ims|com.google.android.webview|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.dialer|com.google.android.contacts|com.google.android.syncadapters.contacts|com.google.android.apps.messaging|com.google.android.inputmethod.latin|com.google.android.as|com.google.android.as.oss|com.google.android.apps.pixel*|com.google.android.apps.wellbeing|com.google.android.apps.emojiwallpaper|com.google.android.apps.customization.pixel|com.google.android.apps.turbo|com.google.android.markup)
+    com.google.android.gms|com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.documentsui|com.google.android.ims|com.google.android.webview|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.pixel*|com.google.android.apps.customization.pixel|com.google.android.markup|com.android.providers.settings|com.android.settings.auto_generated_rro_product__)
       continue ;;
   esac
 
@@ -60,7 +60,8 @@ while IFS= read -r PACKAGE_NAME; do
   [ -n "$APP_PATH" ] || continue
   APP_PATH_FOLDER=${APP_PATH%/*}
 
-  # Never delete user app data or an updated APK. Mask only reviewed system apps.
+  # APEX modules and core Android settings/overlay infrastructure are outside
+  # this app-masker's scope. Never delete user app data or updated APKs.
   case "$APP_PATH_FOLDER" in
     /data/app/*)
       ui_print "- Skipped updated/user-installed app $PACKAGE_NAME; no data was changed."
