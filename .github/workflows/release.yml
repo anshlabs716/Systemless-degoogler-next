@@ -4,25 +4,24 @@ on:
   release:
     types: [created]
 
-env:
-  GH_TOKEN: ${{ github.token }}
+permissions:
+  contents: write
 
 jobs:
   build:
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Run build script
-      run: |
-        chmod +x build.sh
-        ./build.sh ${{ github.event.release.tag_name }}
+      - name: Build module ZIP
+        run: |
+          chmod +x build.sh
+          ./build.sh "$GITHUB_REF_NAME"
 
-    - name: Upload artifact
-      run: |
-        mod_id=$(grep "id=" module.prop | cut -d'=' -f2-)
-        gh release upload ${{github.event.release.tag_name}} $mod_id-${{ github.event.release.tag_name }}.zip
+      - name: Upload release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mod_id="$(sed -n 's/^id=//p' module.prop | head -n 1)"
+          gh release upload "$GITHUB_REF_NAME" "$mod_id-$GITHUB_REF_NAME.zip" --clobber
