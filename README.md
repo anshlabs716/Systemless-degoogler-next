@@ -11,6 +11,10 @@ asked to retain.
   Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.0">v1.0.0 release</a>
 </div>
 
+If the release still shows the older ZIP, open **Actions → Release Workflow →
+Run workflow**, enter `v1.0.0`, and run it. The workflow rebuilds the module
+from `main`, replaces the old ZIP asset, and uploads the fixed v1.0.0 ZIP.
+
 ### What it does
 
 - Masks only the system apps listed in `bloat_packagelist.txt`; no automatic
@@ -18,17 +22,17 @@ asked to retain.
 - Targets Google Play services, GSF, Setup Wizard, Google Text-to-Speech,
   Recorder, Safety Hub, Photos, DeskClock, Calculator, Google Meet, and Google
   Search, along with the other optional apps in the list.
-- Preserves the Google Camera app, Pixel Launcher, Pixel wallpapers, Now
-  Playing / Android System Intelligence, IMS, WebView, DocumentsUI, Settings
-  Intelligence, the phone/contacts/messages/keyboard apps, and other listed
-  core services.
+- Preserves Google Camera, Pixel Launcher, Pixel wallpapers, Now Playing /
+  Android System Intelligence, IMS, WebView, DocumentsUI, Settings
+  Intelligence, phone/contacts/messages/keyboard apps, and other listed core
+  services.
 - Does not clear app data, uninstall packages through Package Manager, or
   delete user-installed/updated APKs. Updated apps under `/data/app` are
   skipped.
 
 **Setup Wizard is included as a removal candidate.** Removing it can interfere
-with first-time setup or recovery/setup flows. This module is configured for a
-device that has already completed setup. Disable the module to restore the
+with first-time setup or setup/recovery flows. This module is configured for a
+device that has already completed setup. Disable the module to restore its
 system app files.
 
 The module prepares for a separate microG installation; it does not install
