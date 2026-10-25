@@ -3,7 +3,6 @@
 # Core services and phone/setup components are intentionally preserved.
 com.google.android.apps.nbu.files
 com.google.android.play.games
-com.google.android.apps.emojiwallpaper
 com.google.android.apps.googleassistant
 com.google.android.gm
 com.google.android.keep
