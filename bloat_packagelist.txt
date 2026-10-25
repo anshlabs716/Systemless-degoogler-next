@@ -1,6 +1,5 @@
-# Optional Google apps selected for removal. The installer only masks these listed
-# system apps; it does not sweep every Google package on the device.
-# Core services and phone/setup components are intentionally preserved.
+# Optional apps and services selected for systemless masking.
+# Only this reviewed static list is processed; no Google namespace sweep occurs.
 com.google.android.apps.nbu.files
 com.google.android.play.games
 com.google.android.apps.googleassistant
@@ -44,25 +43,54 @@ com.google.android.apps.tv.launcherx
 com.google.android.tv
 com.google.android.vr.home
 com.google.vr.vrcore
+com.google.android.contacts
+com.google.android.syncadapters.contacts
+com.google.android.calendar
+com.google.android.dialer
+com.google.android.apps.messaging
+com.google.android.inputmethod.latin
+com.google.android.apps.wellbeing
+com.google.android.apps.emojiwallpaper
+com.google.android.as
+com.google.android.as.oss
+com.google.android.federatedcompute
+com.google.android.ondevicepersonalization
+com.google.android.adservices.api
+com.google.android.partnersetup
+com.google.android.wfcactivation
+com.google.android.apps.turbo
+com.google.android.accessibility.switchaccess
+com.android.systemui.accessibility.accessibilitymenu
+com.android.bookmarkprovider
+com.android.providers.partnerbookmarks
+com.android.sdm.plugins.diagmon
+com.google.android.turboadapter
+com.google.android.gms.location.history
+com.google.android.hotwordenrollment.okgoogle
+com.google.android.hotwordenrollment.xgoogle
+com.android.hotwordenrollment.okgoogle
+com.android.hotwordenrollment.xgoogle
+com.verizon.mips.services
 
 # Explicitly protected (never removed by this module):
 # com.google.android.gms
 # com.google.android.gsf
-# com.google.android.setupwizard
 # com.google.android.onetimeinitializer
 # com.google.android.packageinstaller
 # com.google.android.ext.services
 # com.google.android.ext.shared
 # com.google.android.GoogleCamera
+# com.google.android.apps.wallpaper
 # com.google.android.documentsui
 # com.google.android.ims
 # com.google.android.webview
 # com.google.android.settings.intelligence
 # com.google.android.apps.nexuslauncher
-# com.google.android.apps.wallpaper
 # com.google.android.dialer
 # com.google.android.contacts
 # com.google.android.syncadapters.contacts
 # com.google.android.apps.messaging
 # com.google.android.inputmethod.latin
-# Pixel feature apps and Android System Intelligence (Now Playing)
+# com.android.providers.settings (core Android settings database; never remove)
+# Product RRO overlays (core UI/resources; never remove)
+# Pixel feature apps requested for removal, including System Intelligence
