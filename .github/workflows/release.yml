@@ -8,7 +8,7 @@ on:
       release_tag:
         description: Existing release tag to rebuild and replace
         required: true
-        default: v1.0.0
+        default: v1.0.1
 
 permissions:
   contents: write
@@ -35,9 +35,18 @@ jobs:
 
           mod_id="$(sed -n 's/^id=//p' module.prop | head -n 1)"
           asset="$mod_id-$version.zip"
-          old_asset="systemless-degoogler-microg-v1.0.zip"
-
-          if gh release view "$version" --json assets --jq '.assets[].name' | grep -Fxq "$old_asset"; then
-            gh release delete-asset "$version" "$old_asset" --yes
+          if ! gh release view "$version" >/dev/null 2>&1; then
+            gh release create "$version" --title "$version" --notes "Systemless DeGoogler $version"
           fi
+
           gh release upload "$version" "$asset" --clobber
+
+          # Remove superseded ZIP assets from prior releases while preserving
+          # their release notes and source archives.
+          while IFS= read -r old_tag; do
+            [ -n "$old_tag" ] || continue
+            [ "$old_tag" = "$version" ] && continue
+            while IFS= read -r old_asset; do
+              case "$old_asset" in *.zip) gh release delete-asset "$old_tag" "$old_asset" --yes || true ;; esac
+            done < <(gh release view "$old_tag" --json assets --jq '.assets[].name')
+          done < <(gh release list --json tagName --jq '.[].tagName')
