@@ -1,43 +1,54 @@
 ![Logo](https://github.com/Systemless-DeBloaters/Systemless_DeGoogler/assets/76901932/235a1606-e955-452a-8894-0e3a67f8f5b7)
 
-### DeGoogle your phone with a reversible Magisk module
+### DeGoogle your phone; keep the Pixel bits you actually like
 
-This fork adapts Systemless DeGoogler for a microG setup and the author's
-**DerpFest Android 17 build on raven (Google Pixel 6 Pro)**. It keeps the
-original project's visual style and installer screenshots while documenting
-this fork's actual package rules.
+Hey, I’m Ansh, and this is my first Magisk module. I made this fork for my
+**raven (Google Pixel 6 Pro) running DerpFest Android 17**. The goal: make room
+for microG without tossing the Pixel features I still use. It’s a personal
+project, so think “carefully configured” rather than “tested on every phone
+under the sun.”
 
 <div align="center">
-  Download the latest build from <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/latest">Releases</a>
+  Grab the latest build from <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/latest">Releases</a>
 </div>
 
-### Configured target
+### What it does
 
-- Device: `raven` (Google Pixel 6 Pro)
-- ROM: DerpFest Android 17
-- Scope: configuration target; runtime installation on this device has not been verified.
+- Removes the optional Google apps in `bloat_packagelist.txt`, plus installed
+  `com.google.android.apps.*` apps the static list might have missed.
+- Removes Google Play services and Google Services Framework to prepare for
+  microG. **microG itself is not included**; it needs to be installed and
+  configured separately.
+- Keeps the Pixel features I asked for, including Now Playing / Android System
+  Intelligence, Pixel wallpapers and customization, Recorder, Safety Hub,
+  Photos, and the Pixel launcher.
+- Keeps Google Camera, DocumentsUI, WebView, Settings Intelligence, IMS,
+  package installer, extension services, and the extension shared library.
+- Removes the fishfood camera package while keeping the exact Google Camera
+  package. Camera package names are a tiny maze; the keep rules are explicit.
 
-### What this fork does
+### A couple of honest notes
 
-- Removes the optional Google apps listed in `bloat_packagelist.txt`.
-- Adds installed `com.google.android.apps.*` packages at install time so DerpFest build differences are covered.
-- Removes Google Play services and Google Services Framework for a microG setup. **This module does not install microG**; install and configure microG separately.
-- Keeps the requested Pixel features, including Android System Intelligence / Now Playing, Pixel wallpapers and customization, Recorder, Safety Hub, Photos, and the Pixel launcher.
-- Keeps Google Camera, DocumentsUI, WebView, Settings Intelligence, IMS, package installer, extension services, and extension shared library.
-- Targets the fishfood camera package for removal while keeping the exact Google Camera package above.
+The default install clears app data for each package it removes. For apps
+updated or installed under `/data/app`, it also tries to uninstall them for
+the primary Android user. That data cleanup is permanent, even if you later
+disable the module.
 
-The installer supports the default removal set or a volume-key customization flow. It clears app-private data for each package selected for removal. For updated or data-installed copies, it also attempts to uninstall the package for the primary Android user. **Cleared app data cannot be restored by disabling the module.**
-
-System apps are hidden systemlessly through the Magisk module. Disabling the module restores hidden system app files, but does not restore cleared app data. Apps not found on the phone are skipped.
+System apps are hidden through Magisk, so disabling the module restores their
+system files. Apps that aren’t present are skipped. This fork is configured
+for raven / DerpFest Android 17; I haven’t verified it on the phone itself, and
+I can’t promise the same package mix on another ROM.
 
 ### Install
 
-1. Install the ZIP from the Magisk app or a compatible recovery.
-2. Choose the default configuration with Volume Up, or choose packages interactively with Volume Down.
-3. Reboot after installation.
-4. Install/configure microG separately if needed by your ROM and signature-spoofing setup.
+1. Install the ZIP from Magisk or a compatible recovery.
+2. Press Volume Up for the default package set, or Volume Down to choose
+   packages interactively.
+3. Reboot.
+4. Install and configure microG separately if your ROM’s setup requires it.
 
-Keep a recovery path available before changing system apps. This fork is configured for raven/DerpFest Android 17; other ROMs and devices are not claimed as tested.
+Keep a recovery route handy before changing system apps. This module is a
+weekend project, not a substitute for a backup.
 
 ### Installer screenshots
 
