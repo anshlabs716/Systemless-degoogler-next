@@ -2,6 +2,7 @@
 
 # Select the aapt binary for this device, with an alternate-ABI fallback.
 chmod 755 "$MODPATH"/tools/aapt "$MODPATH"/tools/aapt64
+chmod 755 "$MODPATH"/service.sh 2>/dev/null
 case "$(getprop ro.product.cpu.abi)" in
   *64*) AAPT=aapt64 ;;
   *) AAPT=aapt ;;
