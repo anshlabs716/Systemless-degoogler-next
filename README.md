@@ -8,7 +8,7 @@ uses a reviewed removal list, keeps essential Android and selected Pixel compone
 and can install bundled replacement APKs after boot.
 
 <div align="center">
-  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1" >v1.0.1 release</a>
+  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1">v1.0.1 release</a>
 </div>
 
 If the release still shows the older ZIP, open **Actions → Release Workflow →
@@ -17,18 +17,11 @@ from `main`, replaces the old ZIP asset, and uploads the v1.0.1 ZIP.
 
 ### What it does
 
-- Masks only the system apps listed in `bloat_packagelist.txt`; no automatic
-  sweep of every Google package.
-- Targets Google Play services, GSF, Setup Wizard, Google Text-to-Speech,
-  Recorder, Safety Hub, Photos, DeskClock, Calculator, Google Meet, and Google
-  Search, along with the other optional apps in the list.
-- Preserves Google Camera, Pixel Launcher, Pixel wallpapers, Now Playing /
-  Android System Intelligence, IMS, WebView, DocumentsUI, Settings
-  Intelligence, phone/contacts/messages/keyboard apps, and other listed core
-  services.
-- Does not clear app data, uninstall packages through Package Manager, or
-  delete user-installed/updated APKs. Updated apps under `/data/app` are
-  skipped.
+- Masks only the reviewed packages listed in `bloat_packagelist.txt`; it does not sweep the Google package namespace.
+- Removes selected Google apps and services, including Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, and the other listed packages.
+- Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
+- Does not clear app data, uninstall packages through Package Manager, or delete updated/user-installed APKs. Updated apps under `/data/app` and APEX components are skipped.
+- Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
 
 **Setup Wizard is included as a removal candidate.** Removing it can interfere
 with first-time setup or setup/recovery flows. This module is configured for a
@@ -124,9 +117,13 @@ NOT installed by this module (manual install required):
 
 YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
 
+Google Wallpapers and Pixel Customization are kept by the module.
+
 ## Auto-Install
 
-On first boot after module install, all APKs in `pkgs/` are installed automatically (skipped if already present). Install order: stores first (F-Droid → Neo Store → Aurora Store), then all others. Logs are written to `/data/adb/modules/<module-id>/log.txt`. The install pass is idempotent and runs again on reboot.\n\n**APK bundle status:** The installer is implemented, but the repository currently has no replacement APK binaries in `pkgs/`. The listed apps will not be installed until those files are added to the bundle.
+On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
+
+**APK bundle status:** The installer is implemented, but the repository currently has no replacement APK binaries in `pkgs/`. The listed apps will not be installed until those APK files are added.
 
 Bundle these APKs in `pkgs/` (numbered for install order):
 
