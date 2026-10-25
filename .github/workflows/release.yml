@@ -3,6 +3,10 @@ name: Release Workflow
 on:
   release:
     types: [created]
+  push:
+    branches: [main]
+    paths:
+      - .release-rebuild-v1.0.0
 
 permissions:
   contents: write
@@ -14,14 +18,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build module ZIP
-        run: |
-          chmod +x build.sh
-          ./build.sh "$GITHUB_REF_NAME"
-
-      - name: Upload release asset
+      - name: Build and publish module ZIP
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          version="$GITHUB_REF_NAME"
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            version="v1.0.0"
+          fi
+
+          chmod +x build.sh
+          ./build.sh "$version"
+
           mod_id="$(sed -n 's/^id=//p' module.prop | head -n 1)"
-          gh release upload "$GITHUB_REF_NAME" "$mod_id-$GITHUB_REF_NAME.zip" --clobber
+          asset="$mod_id-$version.zip"
+          old_asset="systemless-degoogler-microg-v1.0.zip"
+
+          if gh release view "$version" --json assets --jq '.assets[].name' | grep -Fxq "$old_asset"; then
+            gh release delete-asset "$version" "$old_asset" --yes
+          fi
+          gh release upload "$version" "$asset" --clobber
