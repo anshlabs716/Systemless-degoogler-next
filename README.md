@@ -3,10 +3,9 @@
 ### DeGoogle your phone; keep the Pixel bits you actually like
 
 Hey, I’m Ansh, and this is my first Magisk module. I made this fork for my
-**raven (Google Pixel 6 Pro) running DerpFest Android 17**. The goal: make room
-for microG without tossing the Pixel features I still use. It’s a personal
-project, so think “carefully configured” rather than “tested on every phone
-under the sun.”
+**raven (Google Pixel 6 Pro) running DerpFest Android 17**. The first build was
+too aggressive, so **v1.0.1 is a conservative hotfix**: keep the core services
+and Pixel features, and only mask the reviewed optional apps.
 
 <div align="center">
   Grab the latest build from <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/latest">Releases</a>
@@ -14,41 +13,35 @@ under the sun.”
 
 ### What it does
 
-- Removes the optional Google apps in `bloat_packagelist.txt`, plus installed
-  `com.google.android.apps.*` apps the static list might have missed.
-- Removes Google Play services and Google Services Framework to prepare for
-  microG. **microG itself is not included**; it needs to be installed and
-  configured separately.
+- Removes only the reviewed system apps in `bloat_packagelist.txt`. It does not
+  automatically sweep every installed Google Apps package.
+- Preserves Google Play services and Google Services Framework; a separate
+  microG installer can handle those core services for your setup.
 - Keeps the Pixel features I asked for, including Now Playing / Android System
   Intelligence, Pixel wallpapers and customization, Recorder, Safety Hub,
   Photos, and the Pixel launcher.
 - Keeps Google Camera, DocumentsUI, WebView, Settings Intelligence, IMS,
-  package installer, extension services, and the extension shared library.
-- Removes the fishfood camera package while keeping the exact Google Camera
-  package. Camera package names are a tiny maze; the keep rules are explicit.
+  package installer, extension services, the dialer, contacts, messaging, and
+  keyboard.
+- Targets the fishfood camera package for removal while protecting the exact
+  Google Camera package.
 
-### A couple of honest notes
-
-The default install clears app data for each package it removes. For apps
-updated or installed under `/data/app`, it also tries to uninstall them for
-the primary Android user. That data cleanup is permanent, even if you later
-disable the module.
-
-System apps are hidden through Magisk, so disabling the module restores their
-system files. Apps that aren’t present are skipped. This fork is configured
-for raven / DerpFest Android 17; I haven’t verified it on the phone itself, and
-I can’t promise the same package mix on another ROM.
+This hotfix does **not** clear app data, run package-manager uninstall commands,
+or delete updated/user-installed APKs. Updated apps under `/data/app` are
+skipped. Selected system app folders are hidden through Magisk and return when
+the module is disabled. Review the package list before installing because
+device builds can differ.
 
 ### Install
 
-1. Install the ZIP from Magisk or a compatible recovery.
-2. Press Volume Up for the default package set, or Volume Down to choose
-   packages interactively.
-3. Reboot.
-4. Install and configure microG separately if your ROM’s setup requires it.
+1. Disable the older Systemless DeGoogler module in Magisk and reboot.
+2. Install `systemless-degoogler-1.0.1.zip` from Magisk or a compatible recovery.
+3. Press Volume Up for the reviewed default list, or Volume Down to choose
+   packages one by one.
+4. Reboot. Install/configure microG separately if needed.
 
-Keep a recovery route handy before changing system apps. This module is a
-weekend project, not a substitute for a backup.
+This fork is configured for raven / DerpFest Android 17. It has not been
+verified on-device. Keep a recovery route handy and make a backup first.
 
 ### Installer screenshots
 
