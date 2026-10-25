@@ -1,6 +1,6 @@
 id=systemless-degoogler
 name=Systemless DeGoogler microG (Raven)
-version=1.0.0
-versionCode=100
+version=1.0.1
+versionCode=101
 author=anshlabs716
-description=DerpFest raven microG debloat; preserves requested Pixel features.
+description=Raven hotfix: conservative systemless debloat; core apps preserved.
