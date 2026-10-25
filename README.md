@@ -75,3 +75,88 @@ verified on-device. Keep a recovery route handy and make a backup first.
   <img src="Screenshots/MIUI12.5/1.jpg" width="25%">
   <img src="Screenshots/MIUI12.5/2.jpg" width="25%">
 </details>
+
+
+## FOSS Replacements
+
+These are my personal recommendations for replacing removed Google apps. The module auto-installs most of these on first boot.
+
+| Removed App | Replacement | Link |
+|---|---|---|
+| — | F-Droid | [f-droid.org](https://f-droid.org/) |
+| — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
+| Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
+| Google Passwords | Proton Pass | [F-Droid](https://f-droid.org/packages/proton.android.pass.fdroid/) |
+| Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos/) |
+| Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
+| Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
+| Google Weather | Breezy Weather | [F-Droid](https://f-droid.org/packages/org.breezyweather/) |
+| Chrome | Fennec | [F-Droid](https://f-droid.org/packages/org.mozilla.fennec_fdroid/) |
+| YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
+| Google Music | Auxio | [F-Droid](https://f-droid.org/packages/org.oxycblt.auxio/) |
+| Google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
+| Google Drive | Proton Drive | [F-Droid](https://f-droid.org/) |
+| Google Docs | Proton Drive | [F-Droid](https://f-droid.org/) |
+| Google Assistant | Dicio | [F-Droid](https://f-droid.org/packages/org.stypox.dicio/) |
+| Google TTS | RHVoice | [F-Droid](https://f-droid.org/packages/com.github.olga_yakovleva.rhvoice.android/) |
+| Gmail | Thunderbird | [F-Droid](https://f-droid.org/packages/net.thunderbird.android/) |
+| Google Dialer | Fossify Dialer | [F-Droid](https://f-droid.org/packages/org.fossify.phone/) |
+| Google Contacts | Fossify Contacts | [F-Droid](https://f-droid.org/packages/org.fossify.contacts/) |
+| Google Messages | Fossify Messages | [F-Droid](https://f-droid.org/packages/org.fossify.messages/) |
+| Gboard | PixelBoard | [GitHub](https://github.com/Akshayykadam/PixelBoard/releases) |
+| Google Clock | Fossify Clock | [F-Droid](https://f-droid.org/packages/org.fossify.clock/) |
+| Google Calendar | Fossify Calendar | [F-Droid](https://f-droid.org/packages/org.fossify.calendar/) |
+| Files by Google | Fossify Files | [F-Droid](https://f-droid.org/packages/org.fossify.filemanager/) |
+| Google Podcasts | AntennaPod | [F-Droid](https://f-droid.org/packages/de.danoeh.antennapod/) |
+| Google Books | Moon+ Reader | [F-Droid](https://f-droid.org/) |
+| Google Recorder | Fossify Voice Recorder | [F-Droid](https://f-droid.org/packages/org.fossify.voicerecorder/) |
+| Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
+| GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
+
+Auto-installed by this module: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, AntennaPod, Moon+ Reader, Fossify Voice Recorder
+
+NOT installed by this module (manual install required):
+
+- microG — [bitgapps.io/extra](https://bitgapps.io/extra.html)
+- AA4MG — [GitHub](https://github.com/sn-00-x/aa4mg)
+
+## Not Replaced (Deleted)
+
+YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Pixel Customization, Google Sync Adapters
+
+## Auto-Install
+
+On first boot after module install, all bundled APKs in `pkgs/` are installed automatically (skipped if already present). Install order: stores first (F-Droid → Neo Store → Aurora Store), then all others. Logs written to `/data/adb/modules/<module-id>/log.txt`. Module is idempotent — safe to re-enable.
+
+Bundle these APKs in `pkgs/` (numbered for install order):
+
+```text
+01_fdroid.apk
+02_neostore.apk
+03_aurora.apk
+04_protonpass.apk
+05_ente.apk
+06_simplenotes.apk
+07_calcyou.apk
+08_breezy.apk
+09_fennec.apk
+10_koda.apk
+11_auxio.apk
+12_vela.apk
+13_protondrive.apk
+14_dicio.apk
+15_rhvoice.apk
+16_thunderbird.apk
+17_fossifydialer.apk
+18_fossifycontacts.apk
+19_fossifymessages.apk
+20_pixelboard.apk
+21_fossifyclock.apk
+22_fossifycalendar.apk
+23_fossifyfiles.apk
+24_antennapod.apk
+25_moonreader.apk
+26_fossifyvoicerecorder.apk
+```
+
+Do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
