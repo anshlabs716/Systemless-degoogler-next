@@ -3,10 +3,12 @@ name: Release Workflow
 on:
   release:
     types: [created]
-  push:
-    branches: [main]
-    paths:
-      - .release-rebuild-v1.0.0
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing release tag to rebuild and replace
+        required: true
+        default: v1.0.0
 
 permissions:
   contents: write
@@ -21,10 +23,11 @@ jobs:
       - name: Build and publish module ZIP
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           version="$GITHUB_REF_NAME"
-          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
-            version="v1.0.0"
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            version="$RELEASE_TAG"
           fi
 
           chmod +x build.sh
