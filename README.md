@@ -3,12 +3,12 @@
 ### DeGoogle your phone; keep the Pixel bits you actually like
 
 Hey, I’m Ansh, and this is my first Magisk module. I made this fork for my
-**raven (Google Pixel 6 Pro) running DerpFest Android 17**. This v1.0.0 build
-uses a reviewed removal list and keeps core services and the Pixel features I
-asked to retain.
+**raven (Google Pixel 6 Pro) running DerpFest Android 17**. This v1.0.1 build
+uses a reviewed removal list, keeps essential Android and selected Pixel components,
+and can install bundled replacement APKs after boot.
 
 <div align="center">
-  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1">v1.0.0 release</a>
+  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1" >v1.0.1 release</a>
 </div>
 
 If the release still shows the older ZIP, open **Actions → Release Workflow →
@@ -126,7 +126,7 @@ YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital W
 
 ## Auto-Install
 
-On first boot after module install, all bundled APKs in `pkgs/` are installed automatically (skipped if already present). Install order: stores first (F-Droid → Neo Store → Aurora Store), then all others. Logs written to `/data/adb/modules/<module-id>/log.txt`. Module is idempotent — safe to re-enable.
+On first boot after module install, all APKs in `pkgs/` are installed automatically (skipped if already present). Install order: stores first (F-Droid → Neo Store → Aurora Store), then all others. Logs are written to `/data/adb/modules/<module-id>/log.txt`. The install pass is idempotent and runs again on reboot.\n\n**APK bundle status:** The installer is implemented, but the repository currently has no replacement APK binaries in `pkgs/`. The listed apps will not be installed until those files are added to the bundle.
 
 Bundle these APKs in `pkgs/` (numbered for install order):
 
