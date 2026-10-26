@@ -24,6 +24,7 @@ Pixel features and essential Android components.
 ### What it does
 
 - Masks only the reviewed packages listed in `bloat_packagelist.txt`; it does not sweep the Google package namespace.
+- Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
 - Removes selected Google apps and services, including Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, and the other listed packages.
 - Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
 - Does not clear app data, uninstall packages through Package Manager, or delete updated/user-installed APKs. Updated apps under `/data/app` and APEX components are skipped.
