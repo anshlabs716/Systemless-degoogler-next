@@ -167,4 +167,4 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 25_miles.apk
 ```
 
-Do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
+ We do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
