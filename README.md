@@ -92,6 +92,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | — | F-Droid | [f-droid.org](https://f-droid.org/) |
 | — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
 | Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
+| — | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
 | Google Passwords | Proton Pass | [F-Droid](https://f-droid.org/packages/proton.android.pass.fdroid/) |
 | Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos/) |
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
@@ -118,7 +119,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
-Auto-installed when APKs are bundled: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
+Auto-installed by this ZIP: F-Droid, Neo Store, Aurora Store, Proton VPN, Proton Pass, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
 NOT installed by this module (manual install required):
 
@@ -135,7 +136,7 @@ Google Wallpapers and Pixel Customization are kept by the module.
 
 On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
 
-**APK bundle status:** The installer is implemented, but the repository currently has no replacement APK binaries in `pkgs/`. The listed apps will not be installed until those APK files are added.
+**APK bundle status:** This v1.0.1 ZIP includes the APKs listed below. Ente Photos and Proton Drive are recommendations only and are not bundled in this ZIP.
 
 Bundle these APKs in `pkgs/` (numbered for install order):
 
@@ -143,8 +144,8 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 01_fdroid.apk
 02_neostore.apk
 03_aurora.apk
-04_protonpass.apk
-05_ente.apk
+04_protonvpn.apk
+05_protonpass.apk
 06_simplenotes.apk
 07_calcyou.apk
 08_breezy.apk
@@ -152,19 +153,18 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 10_koda.apk
 11_auxio.apk
 12_vela.apk
-13_protondrive.apk
-14_dicio.apk
-15_rhvoice.apk
-16_thunderbird.apk
-17_fossifydialer.apk
-18_fossifycontacts.apk
-19_fossifymessages.apk
-20_pixelboard.apk
-21_fossifyclock.apk
-22_fossifycalendar.apk
-23_fossifyfiles.apk
-24_fossifyvoicerecorder.apk
-25_miles.apk
+13_dicio.apk
+14_rhvoice.apk
+15_thunderbird.apk
+16_fossifydialer.apk
+17_fossifycontacts.apk
+18_fossifymessages.apk
+19_pixelboard.apk
+20_fossifyclock.apk
+21_fossifycalendar.apk
+22_fossifyfiles.apk
+23_fossifyvoicerecorder.apk
+24_miles.apk
 ```
 
  We do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
