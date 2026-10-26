@@ -2,18 +2,24 @@
 
 ### DeGoogle your phone; keep the Pixel bits you actually like
 
-Hey, I’m Ansh, and this is my first Magisk module. I made this fork for my
-**raven (Google Pixel 6 Pro) running DerpFest Android 17**. This v1.0.1 build
-uses a reviewed removal list, keeps essential Android and selected Pixel components,
-and can install bundled replacement APKs after boot.
+Hey, I’m Ansh, and this is my first Magisk module. This v1.0.1 build is a
+systemless degoogler ZIP intended to make way for a separate microG install
+and to install alternative apps when their APKs are bundled. It keeps selected
+Pixel features and essential Android components.
 
 <div align="center">
   Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1">v1.0.1 release</a>
 </div>
 
-If the release still shows the older ZIP, open **Actions → Release Workflow →
-Run workflow**, enter `v1.0.1`, and run it. The workflow rebuilds the module
-from `main`, replaces the old ZIP asset, and uploads the v1.0.1 ZIP.
+## Table of Contents
+
+- [What it does](#what-it-does)
+- [Install](#install)
+- [FOSS Replacements](#foss-replacements)
+- [Not Replaced (Deleted)](#not-replaced-deleted)
+- [Auto-Install](#auto-install)
+- [Recovery ZIP](#recovery-zip)
+- [Installer screenshots](#installer-screenshots)
 
 ### What it does
 
@@ -24,9 +30,13 @@ from `main`, replaces the old ZIP asset, and uploads the v1.0.1 ZIP.
 - Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
 
 **Setup Wizard is included as a removal candidate.** Removing it can interfere
-with first-time setup or setup/recovery flows. This module is configured for a
-device that has already completed setup. Disable the module to restore its
-system app files.
+with first-time setup or setup/recovery flows. This module is intended for a
+device that has already completed setup.
+
+**Undo warning:** this module masks system apps through Magisk. Disable or
+remove the module and reboot to restore the masked system apps. If you manually
+delete system files or modify the ROM outside this module, you may need to
+reflash the ROM to restore them. Keep a backup and a working recovery route.
 
 The module prepares for a separate microG installation; it does not install
 microG itself. Review the package list before installing, since DerpFest builds
@@ -42,7 +52,7 @@ can differ.
 This fork is configured for raven / DerpFest Android 17 and has not been
 verified on-device. Keep a recovery route handy and make a backup first.
 
-### Installer screenshots
+### Recovery ZIP\n\nA dedicated recovery-flashable ZIP is coming soon.\n\n## Installer screenshots
 
 <details>
   <summary>Original project installer screenshots</summary>
@@ -72,9 +82,9 @@ verified on-device. Keep a recovery route handy and make a backup first.
 
 ## FOSS Replacements
 
-These are my personal recommendations for replacing removed Google apps. The module auto-installs most of these on first boot.
+These are my recommended alternatives for replacing Google apps and services. Apps are installed on first boot only when their APKs are included in `pkgs/`; microG and AA4MG are manual installs.
 
-| Removed App | Replacement | Link |
+| Removed App | My Recommended Replacement | Link |
 |---|---|---|
 | — | F-Droid | [f-droid.org](https://f-droid.org/) |
 | — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
@@ -103,6 +113,7 @@ These are my personal recommendations for replacing removed Google apps. The mod
 | Google Podcasts | AntennaPod | [F-Droid](https://f-droid.org/packages/de.danoeh.antennapod/) |
 | Google Books | Moon+ Reader | [F-Droid](https://f-droid.org/) |
 | Google Recorder | Fossify Voice Recorder | [F-Droid](https://f-droid.org/packages/org.fossify.voicerecorder/) |
+| Google Fit / step tracking | MILES (my step tracker) | [GitHub](https://github.com/anshlabs716/miles/releases) |
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
