@@ -90,7 +90,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 
 | Removed App | My Recommended Replacement | Link |
 |---|---|---|
-| — | F-Droid | [f-droid.org](https://f-droid.org/) |
+| — | F-Droid Basic | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/) |
 | — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
 | Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
 | — | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
@@ -120,7 +120,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
-Auto-installed by this ZIP: F-Droid, Neo Store, Aurora Store, Proton VPN, Proton Pass, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
+Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
 NOT installed by this module (manual install required):
 
@@ -137,7 +137,7 @@ Google Wallpapers and Pixel Customization are kept by the module.
 
 On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
 
-**APK bundle status:** This v1.0.1 ZIP includes the APKs listed below. Ente Photos and Proton Drive are recommendations only and are not bundled in this ZIP.
+**APK bundle status:** The rebuilt local v1.0.1 ZIP includes the APKs listed below. The GitHub release asset has not been replaced yet. Ente Photos and Proton Drive are recommendations only and are not bundled because their APKs are unavailable.
 
 Bundle these APKs in `pkgs/` (numbered for install order):
 
