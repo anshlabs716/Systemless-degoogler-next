@@ -116,7 +116,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
-Auto-installed by this module: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, AntennaPod, Moon+ Reader, Fossify Voice Recorder
+Auto-installed when APKs are bundled: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, AntennaPod, Moon+ Reader, Fossify Voice Recorder, MILES
 
 NOT installed by this module (manual install required):
 
@@ -164,6 +164,7 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 24_antennapod.apk
 25_moonreader.apk
 26_fossifyvoicerecorder.apk
+27_miles.apk
 ```
 
 Do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
