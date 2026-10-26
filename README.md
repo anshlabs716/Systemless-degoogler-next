@@ -95,7 +95,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
 | — | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
 | Google Passwords | Proton Pass | [F-Droid](https://f-droid.org/packages/proton.android.pass.fdroid/) |
-| Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos/) |
+| Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos.fdroid/) |
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
 | Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
 | Google Weather | Breezy Weather | [F-Droid](https://f-droid.org/packages/org.breezyweather/) |
@@ -103,8 +103,8 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
 | Google Music | Auxio | [F-Droid](https://f-droid.org/packages/org.oxycblt.auxio/) |
 | Google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
-| Google Drive | Proton Drive | [F-Droid](https://f-droid.org/) |
-| Google Docs | Proton Drive | [F-Droid](https://f-droid.org/) |
+| Google Drive | Proton Drive | [Proton APK](https://proton.me/drive/download) |
+| Google Docs | Proton Drive | [Proton APK](https://proton.me/drive/download) |
 | Google Assistant | Dicio | [F-Droid](https://f-droid.org/packages/org.stypox.dicio/) |
 | Google TTS | RHVoice | [F-Droid](https://f-droid.org/packages/com.github.olga_yakovleva.rhvoice.android/) |
 | Gmail | Thunderbird | [F-Droid](https://f-droid.org/packages/net.thunderbird.android/) |
