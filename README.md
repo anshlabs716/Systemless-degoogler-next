@@ -50,11 +50,11 @@ can differ.
    packages one by one.
 3. Reboot. Install/configure microG separately if needed.
 
-This fork is intended for DerpFest Android 17 and has not been verified on-device. Keep a recovery route handy and make a backup first.
+This fork is intended for people who really want that custom rom but its google only (yeah i know Ive been there) and has not been verified on-device. Keep a recovery route handy and make a backup first or use magisk recovery)
 
 ## Recovery ZIP
 
-A dedicated recovery-flashable ZIP is coming soon.
+A dedicated recovery-flashable ZIP is coming soon (dont worry the recovery zip coming soon will NOT contain the setup services)
 
 ## Installer screenshots
 
