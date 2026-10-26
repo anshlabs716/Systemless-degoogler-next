@@ -34,10 +34,7 @@ Pixel features and essential Android components.
 with first-time setup or setup/recovery flows. This module is intended for a
 device that has already completed setup.
 
-**Undo warning:** this module masks system apps through Magisk. Disable or
-remove the module and reboot to restore the masked system apps. If you manually
-delete system files or modify the ROM outside this module, you may need to
-reflash the ROM to restore them. Keep a backup and a working recovery route.
+**Reversible systemless changes:** this module masks system app directories through Magisk; it does not uninstall packages or erase their app data. Remove or disable the module and reboot to restore the masked system apps. Magisk Safe Mode disables modules, so the Google apps can reappear and bundled APK installation will stop until the module is enabled again. If you manually delete system files or modify the ROM outside this module, you may need to reflash the ROM to restore them. Keep a backup and a working recovery route.
 
 The module prepares for a separate microG installation; it does not install
 microG itself. Review the package list before installing, since DerpFest builds
@@ -94,7 +91,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
 | Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
 | — | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
-| Google Passwords | Proton Pass | [F-Droid](https://f-droid.org/packages/proton.android.pass.fdroid/) |
+| Google Passwords | Proton Pass | [Proton](https://proton.me/pass/download/android) |
 | Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos.fdroid/) |
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
 | Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
@@ -120,7 +117,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
-Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
+Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
 NOT installed by this module (manual install required):
 
@@ -137,7 +134,7 @@ Google Wallpapers and Pixel Customization are kept by the module.
 
 On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
 
-**APK bundle status:** The rebuilt local v1.0.1 ZIP includes the APKs listed below. The GitHub release asset has not been replaced yet. Ente Photos and Proton Drive are recommendations only and are not bundled because their APKs are unavailable.
+**APK bundle status:** The rebuilt local v1.0.1 ZIP includes the APKs listed below. The GitHub release asset has not been replaced yet.
 
 Bundle these APKs in `pkgs/` (numbered for install order):
 
@@ -147,25 +144,27 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 03_aurora.apk
 04_protonvpn.apk
 05_protonpass.apk
-06_simplenotes.apk
-07_calcyou.apk
-08_breezy.apk
-09_fennec.apk
-10_koda.apk
-11_auxio.apk
-12_vela.apk
-13_dicio.apk
-14_rhvoice.apk
-15_thunderbird.apk
-16_fossifydialer.apk
-17_fossifycontacts.apk
-18_fossifymessages.apk
-19_pixelboard.apk
-20_fossifyclock.apk
-21_fossifycalendar.apk
-22_fossifyfiles.apk
-23_fossifyvoicerecorder.apk
-24_miles.apk
+06_ente.apk
+07_simplenotes.apk
+08_calcyou.apk
+09_breezy.apk
+10_fennec.apk
+11_koda.apk
+12_auxio.apk
+13_vela.apk
+14_protondrive.apk
+15_dicio.apk
+16_rhvoice.apk
+17_thunderbird.apk
+18_fossifydialer.apk
+19_fossifycontacts.apk
+20_fossifymessages.apk
+21_pixelboard.apk
+22_fossifyclock.apk
+23_fossifycalendar.apk
+24_fossifyfiles.apk
+25_fossifyvoicerecorder.apk
+26_miles.apk
 ```
 
  We do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
