@@ -51,7 +51,11 @@ can differ.
 
 This fork is intended for DerpFest Android 17 and has not been verified on-device. Keep a recovery route handy and make a backup first.
 
-### Recovery ZIP\n\nA dedicated recovery-flashable ZIP is coming soon.\n\n## Installer screenshots
+## Recovery ZIP
+
+A dedicated recovery-flashable ZIP is coming soon.
+
+## Installer screenshots
 
 <details>
   <summary>Original project installer screenshots</summary>
@@ -109,14 +113,12 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Clock | Fossify Clock | [F-Droid](https://f-droid.org/packages/org.fossify.clock/) |
 | Google Calendar | Fossify Calendar | [F-Droid](https://f-droid.org/packages/org.fossify.calendar/) |
 | Files by Google | Fossify Files | [F-Droid](https://f-droid.org/packages/org.fossify.filemanager/) |
-| Google Podcasts | AntennaPod | [F-Droid](https://f-droid.org/packages/de.danoeh.antennapod/) |
-| Google Books | Moon+ Reader | [F-Droid](https://f-droid.org/) |
 | Google Recorder | Fossify Voice Recorder | [F-Droid](https://f-droid.org/packages/org.fossify.voicerecorder/) |
 | Google Fit / step tracking | MILES (my step tracker) | [GitHub](https://github.com/anshlabs716/miles/releases) |
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
-Auto-installed when APKs are bundled: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, AntennaPod, Moon+ Reader, Fossify Voice Recorder, MILES
+Auto-installed when APKs are bundled: F-Droid, Neo Store, Aurora Store, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Fennec, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
 NOT installed by this module (manual install required):
 
@@ -161,10 +163,8 @@ Bundle these APKs in `pkgs/` (numbered for install order):
 21_fossifyclock.apk
 22_fossifycalendar.apk
 23_fossifyfiles.apk
-24_antennapod.apk
-25_moonreader.apk
-26_fossifyvoicerecorder.apk
-27_miles.apk
+24_fossifyvoicerecorder.apk
+25_miles.apk
 ```
 
 Do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
