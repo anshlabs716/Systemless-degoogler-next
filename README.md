@@ -49,8 +49,7 @@ can differ.
    packages one by one.
 3. Reboot. Install/configure microG separately if needed.
 
-This fork is configured for raven / DerpFest Android 17 and has not been
-verified on-device. Keep a recovery route handy and make a backup first.
+This fork is intended for DerpFest Android 17 and has not been verified on-device. Keep a recovery route handy and make a backup first.
 
 ### Recovery ZIP\n\nA dedicated recovery-flashable ZIP is coming soon.\n\n## Installer screenshots
 
