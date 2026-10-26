@@ -96,6 +96,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
 | Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
 | Google Weather | Breezy Weather | [F-Droid](https://f-droid.org/packages/org.breezyweather/) |
+| Chrome | Brave | [Official GitHub releases](https://github.com/brave/brave-browser/releases) |
 | YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
 | Google Music | Auxio | [F-Droid](https://f-droid.org/packages/org.oxycblt.auxio/) |
 | Google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
