@@ -1,6 +1,6 @@
 id=systemless-degoogler
-name=Systemless DeGoogler microG (Raven)
+name=Systemless DeGoogler microG
 version=1.0.1
 versionCode=101
 author=anshlabs716
-description=Raven microG debloat; masks selected Google apps while preserving essential Android infrastructure.
+description=Systemless degoogler ZIP that makes way for microG and installs selected alternative apps.
