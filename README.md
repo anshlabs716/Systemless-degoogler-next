@@ -18,6 +18,7 @@ Pixel features and essential Android components.
 - [FOSS Replacements](#foss-replacements)
 - [Not Replaced (Deleted)](#not-replaced-deleted)
 - [Auto-Install](#auto-install)
+- [KernelSU / APatch](#kernelsu--apatch)
 - [Recovery ZIP](#recovery-zip)
 - [Installer screenshots](#installer-screenshots)
 
@@ -27,7 +28,9 @@ Pixel features and essential Android components.
   
 - Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
 
-- Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
+- Keeps Google Wallpapers, Pixel Customization, Google Camera, and essential Android services, settings providers, and overlays.
+
+- Swaps the stock launcher for bundled Lawnchair, which is what actually gets rid of the Google search bar on the home screen and the mic and Lens icons in the app drawer.
 
 - Removes the listed preinstalled Google apps and services—including GMS, Play Store, Gmail, Search, Maps, Photos, Contacts, Calendar, Phone, Messages, and Gboard—to make way for microG. Apps you installed or updated yourself are left alone.
 
@@ -47,10 +50,29 @@ can differ.
 
 ### Install
 
-1. Install the ZIP from Magisk or a compatible recovery.
+1. Install the ZIP from Magisk (KernelSU and APatch support coming soon).
 2. Press Volume Up for the listed default removals, or Volume Down to choose
    packages one by one.
 3. Reboot. Install/configure microG separately if needed.
+
+## KernelSU / APatch
+
+**Coming soon.** The module already uses the portable bits — it builds a
+`REMOVE` list that both Magisk and KernelSU consume to create whiteouts, and it
+ships the usual sourced `customize.sh` plus a `service.sh` late-start script, so
+the format itself ports over cleanly.
+
+What still needs doing before it is honest to call it supported:
+
+- Detect KernelSU / APatch (`$KSU`, `$APATCH`) instead of assuming Magisk.
+- Refuse to install silently when KernelSU has no metamodule. KernelSU mounts
+  `system/` through a pluggable metamodule such as `meta-overlayfs`, and without
+  one the whiteouts are written but nothing ever mounts — the debloat would do
+  nothing with no error at all.
+- Fix the install instructions above: KernelSU modules cannot be flashed from
+  custom recovery, only from the KernelSU manager.
+
+Untested on KernelSU and APatch today. Keep a recovery route handy.
 
 This fork is intended for people who really want that custom rom but its google only (yeah i know Ive been there) and has not been verified on-device. Keep a recovery route handy and make a backup first or use magisk recovery)
 
