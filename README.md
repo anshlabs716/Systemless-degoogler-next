@@ -31,7 +31,7 @@ Pixel features and essential Android components.
 
 - Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
 
-- Does not clear app data, uninstall packages through Package Manager, or delete updated/user-installed APKs. Updated apps under `/data/app` and APEX components are skipped.
+- Removes the listed preinstalled Google apps and services—including Google Play services (GMS), the Play Store, Gmail, Search, Maps, and Photos—to make way for microG. Apps you installed or updated yourself are left alone.
 
 - Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
 
@@ -39,9 +39,9 @@ Pixel features and essential Android components.
 with first-time setup or setup/recovery flows. This module is intended for a
 device that has already completed setup (but in the recovery zip which is coming soon all the setup services will be there so dont worry)
 
-i bundled Bada as well if you want it as a replacement to quick share (if you don't want it just uninstall it)
+Bada is bundled as an alternative to Quick Share. If you do not want it, uninstall it normally.
 
-**Reversible systemless changes:** this module masks system app directories through Magisk; it does not uninstall packages or erase their app data. Remove or disable the module and reboot to restore the masked system apps. Magisk Safe Mode disables modules, so the Google apps can reappear and bundled APK installation will stop until the module is enabled again. If you manually delete system files or modify the ROM outside this module, you may need to reflash the ROM to restore them. Keep a backup and a working recovery route.
+**Undoing the changes:** Disable or remove the module in Magisk and reboot to restore the stock system apps it masked. Magisk Safe Mode turns modules off temporarily, so those Google apps can reappear until the module is enabled again.
 
 The module prepares for a separate microG installation; it does not install
 microG itself. Review the package list before installing, since DerpFest builds
