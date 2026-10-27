@@ -96,7 +96,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
 | Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
 | Google Weather | Breezy Weather | [F-Droid](https://f-droid.org/packages/org.breezyweather/) |
-| Chrome | Brave | [Official GitHub releases](https://github.com/brave/brave-browser/releases) |
+| Chrome | Brave | [GitHub](https://github.com/brave/brave-browser/releases) |
 | YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
 | Google Music | Auxio | [F-Droid](https://f-droid.org/packages/org.oxycblt.auxio/) |
 | Google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
@@ -128,7 +128,7 @@ NOT installed by this module (manual install required):
 
 YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
 
-Google Wallpapers and Pixel Customization are kept by the module.
+Google Wallpapers, Pixel Customization, and Quick Share are kept by the module. Quick Share is not in the removal list, and core Google Play services (`com.google.android.gms`) is protected.
 
 ## Auto-Install
 
