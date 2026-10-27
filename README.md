@@ -27,11 +27,9 @@ Pixel features and essential Android components.
   
 - Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
 
-- Removes selected Google apps and services, including Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, and the other listed packages.
-
 - Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
 
-- Removes the listed preinstalled Google apps and services—including Google Play services (GMS), the Play Store, Gmail, Search, Maps, and Photos—to make way for microG. Apps you installed or updated yourself are left alone.
+- Removes the listed preinstalled Google apps and services—including GMS, Play Store, Gmail, Search, Maps, Photos, Contacts, Calendar, Phone, Messages, and Gboard—to make way for microG. Apps you installed or updated yourself are left alone.
 
 - Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
 
