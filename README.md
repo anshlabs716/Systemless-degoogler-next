@@ -118,6 +118,9 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Fit / step tracking | MILES (my step tracker) | [GitHub](https://github.com/anshlabs716/miles/releases) |
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | Google Play services (GMS) | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
+| Quick Share | Bada | [GitHub](https://github.com/kyujin-cho/Bada) |
+| — | Compass | [GitHub](https://github.com/Kr0oked/Compass) |
+| — | NetGuard | [F-Droid](https://f-droid.org/packages/eu.faircode.netguard/) |
 
 Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Brave, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
