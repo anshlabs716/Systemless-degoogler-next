@@ -1,5 +1,6 @@
-# Optional apps and services selected for systemless masking.
-# Only this reviewed static list is processed; no Google namespace sweep occurs.
+# Optional Google apps selected for removal. The installer only masks these listed
+# system apps; it does not sweep every Google package on the device.
+# Core Android providers and overlays are intentionally preserved.
 com.google.android.apps.nbu.files
 com.google.android.play.games
 com.google.android.apps.googleassistant
@@ -18,7 +19,6 @@ com.google.android.apps.recorder
 com.google.android.apps.safetyhub
 com.google.android.apps.photos
 com.google.android.apps.tachyon
-com.google.android.gms
 com.google.android.apps.docs
 com.google.android.apps.work.oobconfig
 com.google.android.apps.work.clouddpc
@@ -74,6 +74,7 @@ com.android.hotwordenrollment.xgoogle
 com.verizon.mips.services
 
 # Explicitly protected (never removed by this module):
+# com.google.android.gms
 # com.google.android.gsf
 # com.google.android.onetimeinitializer
 # com.google.android.packageinstaller
