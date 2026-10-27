@@ -28,9 +28,9 @@ Pixel features and essential Android components.
   
 - Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
 
-- Keeps Google Wallpapers, Pixel Customization, Google Camera, and essential Android services, settings providers, and overlays.
+- Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
 
-- Swaps the stock launcher for bundled Lawnchair, which is what actually gets rid of the Google search bar on the home screen and the mic and Lens icons in the app drawer.
+- Keeps the stock launcher installed, enabled and default. This module never disables or replaces a home app — deleting a launcher will always leave you with a working home screen. The Google search bar, mic and Lens icons are drawn by the stock launcher itself, so they stay; that is the trade for a home screen that can't be bricked.
 
 - Removes the listed preinstalled Google apps and services—including GMS, Play Store, Gmail, Search, Maps, Photos, Contacts, Calendar, Phone, Messages, and Gboard—to make way for microG. Apps you installed or updated yourself are left alone.
 
