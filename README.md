@@ -89,10 +89,10 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 
 | Removed App | My Recommended Replacement | Link |
 |---|---|---|
-| — | F-Droid Basic | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/) |
-| — | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
+| Google Play Store | F-Droid Basic | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/) |
+| Google Play Store | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
 | Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
-| — | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
+| Google Fi VPN | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
 | Google Passwords | Proton Pass | [Proton](https://proton.me/pass/download/android) |
 | Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos.fdroid/) |
 | Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
