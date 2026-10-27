@@ -2,13 +2,13 @@
 
 ### DeGoogle your phone; keep the Pixel bits you actually like
 
-Hey, I’m Ansh, and this is my first Magisk module. This v1.0.1 build is a
+Hey, I’m Ansh, and this is my first Magisk module. The newest build, v1.0.2, is a
 systemless degoogler ZIP intended to make way for a separate microG install
 and to install alternative apps when their APKs are bundled. It keeps selected
 Pixel features and essential Android components.
 
 <div align="center">
-  Download the <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases/tag/v1.0.1">v1.0.1 release</a>
+  Newest build: <strong>v1.0.2</strong>. The <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases">published Releases page</a> is unchanged.
 </div>
 
 ## Table of Contents
@@ -139,13 +139,40 @@ Google Wallpapers and Pixel Customization are kept by the module.
 
 On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
 
-**APK bundle status:** The rebuilt local v1.0.1 ZIP includes the APKs listed below. The GitHub release asset has not been replaced yet.
+**Newest build:** v1.0.2. The local ZIP includes the APKs listed below; published release assets are unchanged.
 
-Bundle these APKs in `pkgs/` (numbered for install order):
+Included APKs in `pkgs/` (numbered for install order):
 
 ```text
-\n\n
+01_fdroid.apk
+02_neostore.apk
+03_aurora.apk
+04_protonvpn.apk
+05_protonpass.apk
+06_ente.apk
+07_simplenotes.apk
+08_calcyou.apk
+09_breezy.apk
 10_brave.apk
+11_koda.apk
+12_auxio.apk
+13_vela.apk
+14_protondrive.apk
+15_dicio.apk
+16_rhvoice.apk
+17_thunderbird.apk
+18_fossifydialer.apk
+19_fossifycontacts.apk
+20_fossifymessages.apk
+21_pixelboard.apk
+22_fossifyclock.apk
+23_fossifycalendar.apk
+24_fossifyfiles.apk
+25_fossifyvoicerecorder.apk
+26_miles.apk
+27_bada.apk
+28_netguard.apk
+29_compass.apk
 ```
 
  We do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
