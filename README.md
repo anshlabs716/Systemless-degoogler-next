@@ -34,6 +34,8 @@ Pixel features and essential Android components.
 with first-time setup or setup/recovery flows. This module is intended for a
 device that has already completed setup.
 
+**Google Play services (GMS) is included as a removal candidate.** This removes Quick Share on Pixel; bundle Bada separately if you want it as a replacement.
+
 **Reversible systemless changes:** this module masks system app directories through Magisk; it does not uninstall packages or erase their app data. Remove or disable the module and reboot to restore the masked system apps. Magisk Safe Mode disables modules, so the Google apps can reappear and bundled APK installation will stop until the module is enabled again. If you manually delete system files or modify the ROM outside this module, you may need to reflash the ROM to restore them. Keep a backup and a working recovery route.
 
 The module prepares for a separate microG installation; it does not install
@@ -115,7 +117,7 @@ These are my recommended alternatives for replacing Google apps and services. Ap
 | Google Recorder | Fossify Voice Recorder | [F-Droid](https://f-droid.org/packages/org.fossify.voicerecorder/) |
 | Google Fit / step tracking | MILES (my step tracker) | [GitHub](https://github.com/anshlabs716/miles/releases) |
 | Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
-| GMS / GSF | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
+| Google Play services (GMS) | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
 
 Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Brave, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES
 
@@ -128,7 +130,7 @@ NOT installed by this module (manual install required):
 
 YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
 
-Google Wallpapers, Pixel Customization, and Quick Share are kept by the module. Quick Share is not in the removal list, and core Google Play services (`com.google.android.gms`) is protected.
+Google Wallpapers and Pixel Customization are kept by the module. Google Play services (`com.google.android.gms`) is now a removal candidate; on Pixel, Quick Share depends on it and will be removed too. Bada can be bundled separately as its replacement.
 
 ## Auto-Install
 
