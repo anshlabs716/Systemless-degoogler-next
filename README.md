@@ -130,7 +130,7 @@ NOT installed by this module (manual install required):
 
 YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
 
-Google Wallpapers and Pixel Customization are kept by the module. Google Play services (`com.google.android.gms`) is now a removal candidate; on Pixel, Quick Share depends on it and will be removed too. Bada can be bundled separately as its replacement.
+Google Wallpapers and Pixel Customization are kept by the module.
 
 ## Auto-Install
 
