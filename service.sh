@@ -63,31 +63,10 @@ done
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Replacement APK install pass finished"
 
-# --- Kill the Google bar, mic and Lens -------------------------------------
-# They are drawn by the stock launcher (com.android.launcher3) itself, not by
-# the Google app, so uninstalling Google never removes them. The fix is to make
-# a launcher that does not render them the default home, then retire the stock
-# one. Only done when the replacement is actually present, so the device is
-# never left without a home screen.
-LAUNCHER_APK=$(ls "$MODDIR"/pkgs/*awnchair* 2>/dev/null | head -n 1)
-if [ -n "$LAUNCHER_APK" ]; then
-  BADGING=$("$AAPT" dump badging "$LAUNCHER_APK" 2>/dev/null)
-  LP=$(printf '%s\n' "$BADGING" | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
-  ACT=$(printf '%s\n' "$BADGING" | sed -n "s/^launchable-activity: name='\([^']*\)'.*/\1/p" | head -n 1)
-
-  if [ -n "$LP" ] && [ -n "$ACT" ] && pm path "$LP" >/dev/null 2>&1; then
-    if cmd package set-home-activity --user 0 "$LP/$ACT" >/dev/null 2>&1 ||
-       cmd package set-home-activity "$LP/$ACT" >/dev/null 2>&1; then
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Default home -> $LP/$ACT"
-      if pm disable-user --user 0 com.android.launcher3 >/dev/null 2>&1; then
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Retired stock launcher com.android.launcher3 (Google bar, mic and Lens gone)"
-      else
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Could not retire com.android.launcher3"
-      fi
-    else
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Could not set default home to $LP/$ACT"
-    fi
-  else
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Replacement launcher not installed yet; will retry next boot"
-  fi
-fi
+# NOTE (v1.0.3): the launcher swap that used to live here is gone for good.
+# It set Lawnchair as default home and then ran
+#   pm disable-user --user 0 com.android.launcher3
+# Deleting Lawnchair afterwards left the device with NO home activity at all.
+# A launcher must never be disabled by this module: the stock launcher stays
+# default and untouched. The Google bar, mic and Lens are cosmetic and are not
+# worth bricking someone's home screen over.
