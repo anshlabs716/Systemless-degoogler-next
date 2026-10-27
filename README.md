@@ -32,9 +32,8 @@ Pixel features and essential Android components.
 
 **Setup Wizard is included as a removal candidate.** Removing it can interfere
 with first-time setup or setup/recovery flows. This module is intended for a
-device that has already completed setup.
-
-**Google Play services (GMS) is included as a removal candidate.** This removes Quick Share on Pixel; bundle Bada separately if you want it as a replacement.
+device that has already completed setup (but in the recovery zip which is coming soon all the setup services will be there so dont worry)
+i bundled Bada separately if you want it as a replacement to quick share.
 
 **Reversible systemless changes:** this module masks system app directories through Magisk; it does not uninstall packages or erase their app data. Remove or disable the module and reboot to restore the masked system apps. Magisk Safe Mode disables modules, so the Google apps can reappear and bundled APK installation will stop until the module is enabled again. If you manually delete system files or modify the ROM outside this module, you may need to reflash the ROM to restore them. Keep a backup and a working recovery route.
 
@@ -53,7 +52,7 @@ This fork is intended for people who really want that custom rom but its google 
 
 ## Recovery ZIP
 
-A dedicated recovery-flashable ZIP is coming soon (dont worry the recovery zip coming soon will NOT contain the setup services)
+A dedicated recovery-flashable ZIP is coming soon (don't worry the recovery zip coming soon will NOT contain the setup services)
 
 ## Installer screenshots
 
