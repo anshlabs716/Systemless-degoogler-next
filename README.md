@@ -24,16 +24,22 @@ Pixel features and essential Android components.
 ### What it does
 
 - Masks only the reviewed packages listed in `bloat_packagelist.txt`; it does not sweep the Google package namespace.
+  
 - Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
+
 - Removes selected Google apps and services, including Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, and the other listed packages.
+
 - Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
+
 - Does not clear app data, uninstall packages through Package Manager, or delete updated/user-installed APKs. Updated apps under `/data/app` and APEX components are skipped.
+
 - Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
 
 **Setup Wizard is included as a removal candidate.** Removing it can interfere
 with first-time setup or setup/recovery flows. This module is intended for a
 device that has already completed setup (but in the recovery zip which is coming soon all the setup services will be there so dont worry)
-i bundled Bada separately if you want it as a replacement to quick share.
+
+i bundled Bada as well if you want it as a replacement to quick share (if you don't want it just uninstall it)
 
 **Reversible systemless changes:** this module masks system app directories through Magisk; it does not uninstall packages or erase their app data. Remove or disable the module and reboot to restore the masked system apps. Magisk Safe Mode disables modules, so the Google apps can reappear and bundled APK installation will stop until the module is enabled again. If you manually delete system files or modify the ROM outside this module, you may need to reflash the ROM to restore them. Keep a backup and a working recovery route.
 
