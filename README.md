@@ -14,6 +14,7 @@ Pixel features and essential Android components.
 ## Table of Contents
 
 - [What it does](#what-it-does)
+- [Getting rid of the Google bar](#getting-rid-of-the-google-bar)
 - [Install](#install)
 - [FOSS Replacements](#foss-replacements)
 - [Not Replaced (Deleted)](#not-replaced-deleted)
@@ -30,7 +31,7 @@ Pixel features and essential Android components.
 
 - Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
 
-- Keeps the stock launcher installed, enabled and default. This module never disables or replaces a home app — deleting a launcher will always leave you with a working home screen. The Google search bar, mic and Lens icons are drawn by the stock launcher itself, so they stay; that is the trade for a home screen that can't be bricked.
+- Keeps the stock launcher installed, enabled and default. This module never disables or replaces a home app — deleting a launcher will always leave you with a working home screen. The Google search bar, mic and Lens icons are drawn by the stock launcher itself, so they stay — turn the search bar off by hand, see [Getting rid of the Google bar](#getting-rid-of-the-google-bar).
 
 - Removes the listed preinstalled Google apps and services—including GMS, Play Store, Gmail, Search, Maps, Photos, Contacts, Calendar, Phone, Messages, and Gboard—to make way for microG. Apps you installed or updated yourself are left alone.
 
@@ -47,6 +48,23 @@ Bada is bundled as an alternative to Quick Share. If you do not want it, uninsta
 The module prepares for a separate microG installation; it does not install
 microG itself. Review the package list before installing, since DerpFest builds
 can differ.
+
+### Getting rid of the Google bar
+
+The search bar on the home screen is drawn by the stock launcher, not by a
+Google app, so uninstalling Google never removes it. Turn it off in the
+launcher's own settings — no root, no module, no replacement launcher needed:
+
+1. **Press and hold an empty spot on the home screen.**
+2. Tap **Home settings** (it appears in the menu that pops up).
+3. In Home settings, tap **Home screen**.
+4. Turn **Show search bar** off.
+
+That's it — the bar is gone. The mic and Lens icons in the app drawer go with it.
+This is a stock launcher setting, so it survives reboots and stays off.
+
+If you ever want it back, do the same four steps and turn **Show search bar**
+back on.
 
 ### Install
 
