@@ -18,6 +18,7 @@ com.google.android.apps.recorder
 com.google.android.apps.safetyhub
 com.google.android.apps.photos
 com.google.android.apps.tachyon
+com.google.android.gms
 com.google.android.apps.docs
 com.google.android.apps.work.oobconfig
 com.google.android.apps.work.clouddpc
@@ -73,7 +74,6 @@ com.android.hotwordenrollment.xgoogle
 com.verizon.mips.services
 
 # Explicitly protected (never removed by this module):
-# com.google.android.gms
 # com.google.android.gsf
 # com.google.android.onetimeinitializer
 # com.google.android.packageinstaller
