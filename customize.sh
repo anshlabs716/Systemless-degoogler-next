@@ -210,14 +210,23 @@ process_package() {
 }
 
 ui_print
-ui_print "| Install the default optional-app list?"
-ui_print "| [● Volume Up: Yes]"
-ui_print "| [● Volume Down: Choose apps one by one]"
-ui_print "| Waiting for a volume key..."
-if choose 15; then
+SKIP_OPTIONAL=false
+if [ "$BOOTMODE" = true ]; then
+  ui_print "| This manager install cannot receive interactive volume-key input."
+  ui_print "| Optional apps will be left unchanged; the force list is still applied."
+  ui_print "| Install from recovery if you want to choose apps with volume keys."
+  SKIP_OPTIONAL=true
   CUSTOMIZE=false
 else
-  CUSTOMIZE=true
+  ui_print "| Install the default optional-app list?"
+  ui_print "| [● Volume Up: Yes]"
+  ui_print "| [● Volume Down: Choose apps one by one]"
+  ui_print "| Waiting for a volume key..."
+  if choose 15; then
+    CUSTOMIZE=false
+  else
+    CUSTOMIZE=true
+  fi
 fi
 
 # 0. Futo Keyboard. Pre-install the bundled Futo Keyboard APK so that
@@ -256,7 +265,7 @@ if [ -f "$force_list" ]; then
 fi
 
 # 3. Reviewed optional list, prompted only in per-app mode.
-if [ -f "$debloat_list" ]; then
+if [ "$SKIP_OPTIONAL" != true ] && [ -f "$debloat_list" ]; then
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"
