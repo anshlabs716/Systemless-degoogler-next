@@ -38,9 +38,9 @@ choose() {
   [ -x /system/bin/getevent ] || abort "Cannot read volume keys: /system/bin/getevent is unavailable."
   while true; do
     timeout "$delay" /system/bin/getevent -lqc 1 >"$TMPDIR/events" 2>&1 || :
-    if grep -Eq 'KEY_VOLUMEUP[[:space:]]+DOWN' "$TMPDIR/events"; then
+    if grep -Eq 'KEY_VOLUMEUP[[:space:]]+DOWN|EV_KEY[[:space:]]+00000073[[:space:]]+00000001' "$TMPDIR/events"; then
       return 0
-    elif grep -Eq 'KEY_VOLUMEDOWN[[:space:]]+DOWN' "$TMPDIR/events"; then
+    elif grep -Eq 'KEY_VOLUMEDOWN[[:space:]]+DOWN|EV_KEY[[:space:]]+00000072[[:space:]]+00000001' "$TMPDIR/events"; then
       return 1
     fi
     ui_print "- Volume key not detected. Try again."
@@ -213,19 +213,10 @@ ui_print
 ui_print "| Install the default optional-app list?"
 ui_print "| [● Volume Up: Yes]"
 ui_print "| [● Volume Down: Choose apps one by one]"
-SKIP_OPTIONAL=false
-if [ "$BOOTMODE" = true ]; then
-  ui_print "| Magisk app installs cannot reliably read volume keys."
-  ui_print "| Keeping optional apps unchanged; only the force list will be applied."
-  ui_print "| Install from recovery to choose optional packages with volume keys."
-  SKIP_OPTIONAL=true
+ui_print "| Waiting for a volume key..."
+if choose 15; then
   CUSTOMIZE=false
 else
-  ui_print "| Waiting for a volume key..."
-fi
-if [ "$BOOTMODE" != true ] && choose 15; then
-  CUSTOMIZE=false
-elif [ "$BOOTMODE" != true ]; then
   CUSTOMIZE=true
 fi
 
@@ -265,7 +256,7 @@ if [ -f "$force_list" ]; then
 fi
 
 # 3. Reviewed optional list, prompted only in per-app mode.
-if [ "$SKIP_OPTIONAL" != true ] && [ -f "$debloat_list" ]; then
+if [ -f "$debloat_list" ]; then
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"

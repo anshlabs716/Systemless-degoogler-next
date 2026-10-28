@@ -30,7 +30,7 @@ Changes made by the module are systemless. Disable or remove it in Magisk or Ker
 ## Install
 
 1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
-2. Magisk app installs cannot reliably capture volume keys, so they apply only the force list and leave optional packages unchanged. To choose optional apps with volume keys, install the Magisk ZIP from custom recovery: Volume Up selects the full list; Volume Down reviews packages individually.
+2. At the installer prompt, Volume Up selects the full optional list; Volume Down lets you review candidates individually. The installer listens for both labeled and raw Linux volume-key events.
 3. Reboot. Bundled apps are installed after Android finishes booting.
 4. Install microG separately if you want it.
 
