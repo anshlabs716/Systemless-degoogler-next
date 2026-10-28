@@ -62,19 +62,342 @@ com.google.android.partnersetup
 com.google.android.wfcactivation
 com.google.android.apps.turbo
 com.google.android.accessibility.switchaccess
-com.android.systemui.accessibility.accessibilitymenu
-com.android.bookmarkprovider
-com.android.providers.partnerbookmarks
-com.android.sdm.plugins.diagmon
 com.google.android.turboadapter
 com.google.android.gms.location.history
 com.google.android.hotwordenrollment.okgoogle
 com.google.android.hotwordenrollment.xgoogle
 com.android.hotwordenrollment.okgoogle
 com.android.hotwordenrollment.xgoogle
-com.verizon.mips.services
+
+# --- OEM Bloat (brands with OEM-unlockable bootloaders) ---
+# Bixby and essential system apps are protected (see bottom of this file).
+# These packages are only removed if present on the device.
+
+# Samsung
+com.samsung.InputEventApp
+com.samsung.aasaservice
+com.samsung.accessory
+com.samsung.accessory.beansmgr
+com.samsung.accessory.safiletransfer
+com.samsung.adaptivebrightnessgo
+com.samsung.android.activation
+com.samsung.android.adaptivebrightnessgo
+com.samsung.android.aircommandmanager
+com.samsung.android.airtel.stubapp
+com.samsung.android.allshare.service.mediashare
+com.samsung.android.app.accesscontrol
+com.samsung.android.app.advsounddetector
+com.samsung.android.app.appupdater
+com.samsung.android.app.assistantmenu
+com.samsung.android.app.camera.sticker.facear.preload
+com.samsung.android.app.camera.sticker.facear3d.preload
+com.samsung.android.app.camera.sticker.facearavatar.preload
+com.samsung.android.app.camera.sticker.facearframe.preload
+com.samsung.android.app.camera.sticker.stamp.preload
+com.samsung.android.app.clipboardedge
+com.samsung.android.app.cocktailbarservice
+com.samsung.android.app.color
+com.samsung.android.app.dtv.dmb
+com.samsung.android.app.earphonetypec
+
+# Xiaomi/Mi
+com.mi.AutoTest
+com.mi.android.globalminusscreen
+com.mi.android.globalpersonalassistant
+com.mi.appfinder
+com.mi.emapal
+com.mi.global.bbs
+com.mi.global.pocobbs
+com.mi.global.pocostore
+com.mi.global.shop
+com.mi.globalTrendNews
+com.mi.globalbrowser
+com.mi.globalminusscreen
+com.mi.health
+com.mi.healthglobal
+com.mi.liveassistant
+com.mi.webkit.core
+com.miui.accessibility
+com.miui.analytics
+com.miui.android.fashiongallery
+com.miui.antispam
+com.miui.audioeffect
+com.miui.backup
+com.miui.bugreport
+com.miui.calculator
+com.miui.carlink
+
+# OnePlus
+com.oneplus.accessory
+com.oneplus.aod
+com.oneplus.brickmode
+com.oneplus.bttestmode
+com.oneplus.camera.service
+com.oneplus.card
+com.oneplus.chargingpilar
+com.oneplus.commonoverlay.com.oneplus
+com.oneplus.dm
+com.oneplus.faceunlock
+com.oneplus.factorymode
+com.oneplus.factorymode.specialtest
+com.oneplus.gamespace
+com.oneplus.iconpack.oneplush2
+com.oneplus.iconpack.onepluso2
+com.oneplus.ifaaservice
+com.oneplus.membership
+com.oneplus.minidumpoptimization
+com.oneplus.opbugreportlite
+com.oneplus.opshelf
+com.oneplus.opsports
+com.oneplus.opwlb
+com.oneplus.providers.media
+com.oneplus.setupwizard
+com.oneplus.simcontacts
+
+# Nothing/CMF
+com.nothing.OfflineOTAUpgradeApp
+com.nothing.agreement
+com.nothing.applocker
+com.nothing.enginnerservice
+com.nothing.experience
+com.nothing.experimental
+com.nothing.logkit
+com.nothing.smartcenter
+com.nothing.weather
+
+# Motorola
+com.motorola.VirtualUiccPayment
+com.motorola.actions.overlay
+com.motorola.aiservices
+com.motorola.android.fmradio
+com.motorola.android.jvtcmd
+com.motorola.android.nativedropboxagent
+com.motorola.android.providers.chromehomepage
+com.motorola.android.settings.diag_mdlog
+com.motorola.android.settings.modemdebug
+com.motorola.appdirectedsmsproxy
+com.motorola.appforecast
+com.motorola.att.phone.extensions
+com.motorola.attvowifi
+com.motorola.bach.modemstats
+com.motorola.brapps
+com.motorola.bug2go
+com.motorola.callredirectionservice
+com.motorola.ccc.devicemanagement
+com.motorola.ccc.mainplm
+com.motorola.ccc.notification
+com.motorola.comcast.settings.extensions
+com.motorola.comcastext
+com.motorola.config.wifi
+com.motorola.contacts.preloadcontacts
+com.motorola.dciservice
+
+# Sony
+com.sonyericsson.advancedwidget.photo
+com.sonyericsson.android.drm.drmlicenseservice
+com.sonyericsson.credentialmanagerservice
+com.sonyericsson.fmradio
+com.sonyericsson.idd.agent
+com.sonyericsson.organizer
+com.sonyericsson.photoeditor
+com.sonyericsson.startupflagservice
+com.sonyericsson.textinput.chinese
+com.sonyericsson.wappush
+com.sonyericsson.warrantytime
+com.sonyericsson.xhs
+com.sonymobile.advancedlogging
+com.sonymobile.advancedwidget.topcontacts
+com.sonymobile.android.addoncamera.soundphoto
+com.sonymobile.androidapp.cameraaddon.areffect
+com.sonymobile.anondata
+com.sonymobile.assist
+com.sonymobile.assist.persistent
+com.sonymobile.cameracommon.wearablebridge
+com.sonymobile.coverapp2
+com.sonymobile.demoappchecker
+com.sonymobile.deviceconfigtool
+com.sonymobile.devicesecurity.service
+com.sonymobile.dualshockmanager
+
+# Oppo
+com.oppo.atlas
+com.oppo.bttestmode
+com.oppo.criticallog
+com.oppo.customize
+com.oppo.fingerprints.fingerprintsensortest
+com.oppo.freefallingmonitor
+com.oppo.healthservice
+com.oppo.instant.local.service
+com.oppo.lfeh
+com.oppo.localservice
+com.oppo.locationpicker
+com.oppo.logkit
+com.oppo.logkitsdservice
+com.oppo.logkitservice
+com.oppo.market
+com.oppo.mimosiso
+com.oppo.multimedia.dolby
+com.oppo.music
+com.oppo.nw
+com.oppo.operationManual
+com.oppo.oppopowermonitor
+com.oppo.ovoicemanager
+com.oppo.partnerbrowsercustomizations
+com.oppo.qualityprotect
+com.oppo.quicksearchbox
+
+# Vivo
+com.vivo.SmartKey
+com.vivo.abe
+com.vivo.alphacamera
+com.vivo.appstore
+com.vivo.assistant
+com.vivo.assistantfunction
+com.vivo.audiofx
+com.vivo.browser
+com.vivo.bsptest
+com.vivo.compass
+com.vivo.contentcatcher
+com.vivo.cota
+com.vivo.crontab
+com.vivo.daemonService
+com.vivo.demovideo
+com.vivo.desktopstickers
+com.vivo.devicereg
+com.vivo.doubleinstance
+com.vivo.doubletimezoneclock
+com.vivo.dream.clock
+com.vivo.dream.music
+com.vivo.dream.weather
+com.vivo.easyshare
+com.vivo.engineercamera
+com.vivo.epm
+
+# Realme
+com.realme.as.music
+com.realme.findphone.client2
+com.realme.link
+com.realme.logtool
+com.realme.securitycheck
+com.realme.wellbeing
+
+# iQOO
+com.iqoo.aftersale.engineermode
+com.iqoo.engineermode
+com.iqoo.user.engineermode
+com.iqoo.website
+
+# ASUS
+com.asus.UpdateLauncher
+com.asus.alwayson
+com.asus.asusbacktap
+com.asus.asussettingsbackuphelper
+com.asus.atd.smmitest
+com.asus.audiowizard
+com.asus.calculator
+com.asus.configupdater
+com.asus.easylauncher
+com.asus.ephotoburst
+com.asus.gallery
+com.asus.ia.asusapp
+com.asus.imagesearch
+com.asus.ims.benchmarkblocker
+com.asus.ims.brightnessservice
+com.asus.ims.configmanager
+com.asus.ims.devicepolicymanager
+com.asus.ims.evtlog
+com.asus.ims.extdispctrl
+com.asus.ims.forcedark
+com.asus.ims.freeform
+com.asus.ims.observer
+com.asus.ims.packageinstallerproxy
+com.asus.ims.phykeyctrl
+com.asus.ims.pointerproxy
+
+# Lenovo
+com.lenovo.leos.appstore
+com.lenovo.leos.cloud.sync
+com.lenovo.levoice.caption
+com.lenovo.levoice.trigger
+com.lenovo.levoice_agent
+com.lenovo.levoice_notes
+com.lenovo.lsf.user
+com.lenovo.weathercenter
+
+# Tecno
+com.transsion.aftersalecalibrationtool
+com.transsion.agingfunction
+com.transsion.aisettings
+com.transsion.aivoiceassistant
+com.transsion.aiwallpaper
+com.transsion.aod
+com.transsion.audioshare
+com.transsion.audiosmartconnect
+com.transsion.auto
+com.transsion.autotest.factory
+com.transsion.avatar
+com.transsion.beezedit
+com.transsion.calculator
+com.transsion.carlcare
+com.transsion.childmode
+com.transsion.childmode.resoverlay
+com.transsion.chromecustomization
+com.transsion.connectx.mirror.source
+com.transsion.datatransfer
+com.transsion.deadcycletest
+com.transsion.dtsaudio
+com.transsion.dualapp
+com.transsion.filemanagerx
+com.transsion.hamal
+com.transsion.health
+
+# Infinix
+com.infinix.xshare
+
+# Fairphone
+com.fairphone.activator
+
+# Carrier bloat
+com.vzw.hybrid
+com.verizon.apps
+com.verizon.ond.display
+com.att.passkeep
+com.att.mobile.android
+com.tmobile.pr.myradio
+com.sprint.preconfig
+com.sprint.dm
+com.vzw.apd.enable
+com.tmoweks
+com.tmobile.simlock
 
 # Explicitly protected (never removed by this module):
+# --- Bixby on Samsung (always preserved) ---
+# com.samsung.android.app.settings.bixby
+# com.samsung.android.bixby.agent
+# com.samsung.android.bixby.agent.dummy
+# com.samsung.android.bixby.es.globalaction
+# com.samsung.android.bixby.plmsync
+# com.samsung.android.bixby.service
+# com.samsung.android.bixby.voiceinput
+# com.samsung.android.bixby.wakeup
+# com.samsung.android.bixbyhelper
+# com.samsung.android.bixbytouch
+# com.samsung.android.bixbyvision.framework
+# com.samsung.systemui.bixby
+# com.samsung.systemui.bixby2
+# --- Essential OEM system apps ---
+# com.samsung.android.networkstack (network stack; never remove)
+# com.samsung.android.providers.context (context service; never remove)
+# com.samsung.android.knox.* (Knox; never remove)
+# com.samsung.android.app.omcagent (OMC agent; never remove)
+# com.miui.home (Xiaomi launcher; never remove)
+# com.miui.securitycenter (Mi Security; never remove)
+# com.miui.packageinstaller (Mi package installer; never remove)
+# com.oneplus.launcher (OnePlus launcher; never remove)
+# com.asus.launcher (ASUS launcher; never remove)
+# com.oppo.oppogallery (oppo gallery; never remove)
+# com.vivo.launcher (vivo launcher; never remove)
+
 # com.google.android.gsf
 # com.google.android.onetimeinitializer
 # com.google.android.packageinstaller

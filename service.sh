@@ -70,3 +70,8 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] Replacement APK install pass finished"
 # A launcher must never be disabled by this module: the stock launcher stays
 # default and untouched. The Google bar, mic and Lens are cosmetic and are not
 # worth bricking someone's home screen over.
+#
+# NOTE (v1.0.3): Futo Keyboard (org.futo.inputmethod.latin) is bundled as
+# 29_futo.apk and pre-installed by customize.sh before Gboard removal. This
+# ensures the device is never left keyboard-less. This service.sh pass may
+# also attempt to install it if customize.sh was skipped or failed.

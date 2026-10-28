@@ -1,221 +1,106 @@
-![Logo](https://github.com/Systemless-DeBloaters/Systemless_DeGoogler/assets/76901932/235a1606-e955-452a-8894-0e3a67f8f5b7)
+![Systemless DeGoogler](https://github.com/Systemless-DeBloaters/Systemless_DeGoogler/assets/76901932/235a1606-e955-452a-8894-0e3a67f8f5b7)
 
-### DeGoogle your phone; keep the Pixel bits you actually like
+# Systemless DeGoogler
 
-Hey, I’m Ansh, and this is my first Magisk module. The newest build, v1.0.2, is a
-systemless degoogler ZIP intended to make way for a separate microG install
-and to install alternative apps when their APKs are bundled. It keeps selected
-Pixel features and essential Android components.
+Hey, I’m Ansh. This systemless module removes selected Google apps and reviewed OEM-app candidates, then installs alternatives I use. It keeps selected Pixel features and core Android parts, and makes room for a separate microG install.
 
-<div align="center">
-  Newest build: <strong>v1.0.2</strong>. The <a href="https://github.com/anshlabs716/Systemless-degoogler-next/releases">published Releases page</a> is unchanged.
-</div>
+**v1.0.3 · 29 bundled APKs · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
-## Table of Contents
+## Contents
 
 - [What it does](#what-it-does)
-- [Getting rid of the Google bar](#getting-rid-of-the-google-bar)
 - [Install](#install)
-- [FOSS Replacements](#foss-replacements)
-- [Not Replaced (Deleted)](#not-replaced-deleted)
-- [Auto-Install](#auto-install)
-- [KernelSU / APatch](#kernelsu--apatch)
+- [FOSS replacements](#foss-replacements)
+- [What’s being removed](#whats-being-removed)
+- [Auto-installed apps](#auto-installed-apps)
+- [Canta and Shizuku](#canta-and-shizuku)
+- [KernelSU (untested)](#kernelsu-untested)
 - [Recovery ZIP](#recovery-zip)
-- [Installer screenshots](#installer-screenshots)
 
-### What it does
+## What it does
 
-- Masks only the reviewed packages listed in `bloat_packagelist.txt`; it does not sweep the Google package namespace.
-  
-- Targets reviewed Google related bloat only. It does not remove device specific bloat packages.
+The module only processes package IDs in its reviewed lists; it does not scan the phone or remove every app it finds. The optional list includes Google apps and curated OEM/carrier candidates. The [force list](force_packagelist.txt) contains selected Google apps removed without a per-app prompt.
 
-- Keeps Google Wallpapers, Pixel Customization, Google Camera, Pixel Launcher, and essential Android services, settings providers, and overlays.
+Google Camera, Pixel Launcher, Pixel Wallpapers, Pixel Customization, and selected Android services and overlays are protected. Samsung Bixby is explicitly protected. Setup Wizard is an optional candidate, so use this module only after initial device setup.
 
-- Keeps the stock launcher installed, enabled and default. This module never disables or replaces a home app — deleting a launcher will always leave you with a working home screen. The Google search bar, mic and Lens icons are drawn by the stock launcher itself, so they stay — turn the search bar off by hand, see [Getting rid of the Google bar](#getting-rid-of-the-google-bar).
+The module does not install microG. Install it separately if needed: [microG setup](https://bitgapps.io/extra.html). PixelBoard requires GMS or microG; Futo Keyboard is bundled as a keyboard option that does not depend on either.
 
-- Removes the listed preinstalled Google apps and services—including GMS, Play Store, Gmail, Search, Maps, Photos, Contacts, Calendar, Phone, Messages, and Gboard—to make way for microG. Apps you installed or updated yourself are left alone.
+Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data and keep a recovery route available.
 
-- Installs numbered APKs found in `pkgs/` after Android finishes booting. Already installed apps are skipped; results are logged.
+## Install
 
-**Setup Wizard is included as a removal candidate.** Removing it can interfere
-with first-time setup or setup/recovery flows. This module is intended for a
-device that has already completed setup (but in the recovery zip which is coming soon all the setup services will be there so dont worry)
+1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
+2. Volume Up selects the full optional list. Volume Down lets you review candidates individually; this is recommended, especially for OEM apps.
+3. Reboot. Bundled apps are installed after Android finishes booting.
+4. Install microG separately if you want it.
 
-Bada is bundled as an alternative to Quick Share. If you do not want it, uninstall it normally.
+The module leaves the stock launcher enabled. To hide its search bar, long-press the home screen and turn off the bar in launcher settings.
 
-**Undoing the changes:** Disable or remove the module in Magisk and reboot to restore the stock system apps it masked. Magisk Safe Mode turns modules off temporarily, so those Google apps can reappear until the module is enabled again.
+## FOSS replacements
 
-The module prepares for a separate microG installation; it does not install
-microG itself. Review the package list before installing, since DerpFest builds
-can differ.
+These are my suggestions. Most are bundled; microG and AA4MG must be installed separately.
 
-### Getting rid of the Google bar
+| Replaces | App | Link |
+|---|---|---|
+| Play Store | F-Droid Basic, Neo Store, Aurora Store | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/), [Neo Store](https://github.com/NeoApplications/Neo-Store), [Aurora](https://f-droid.org/packages/com.aurora.store/) |
+| Gboard | Futo Keyboard | [GitHub](https://github.com/futo-org/android-keyboard) |
+| Chrome | Brave | [GitHub](https://github.com/brave/brave-browser) |
+| YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
+| Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
+| Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
+| Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
+| Phone, contacts, messages, calendar, clock, files, recorder | Fossify apps | [Fossify](https://github.com/FossifyOrg) |
+| Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
+| Assistant | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
+| Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
+| Email | Thunderbird | [GitHub](https://github.com/thunderbird/thunderbird-android) |
+| Drive | Proton Drive | [Proton](https://proton.me/drive) |
+| Passwords | Proton Pass | [Proton](https://proton.me/pass) |
+| Google VPN | Proton VPN | [Proton](https://protonvpn.com/) |
+| Weather | Breezy Weather | [GitHub](https://github.com/breezy-weather/breezy-weather) |
+| Notes | Simple Notes Sync | [GitHub](https://github.com/SimpleMobileTools/Simple-Notes) |
+| Step tracking | MILES, my step tracker | [GitHub](https://github.com/anshlabs716/miles) |
+| Quick Share | Bada | [GitHub](https://github.com/kyujin-cho/Bada) |
+| Firewall | NetGuard | [GitHub](https://github.com/M66B/NetGuard) |
+| Compass | Compass | [GitHub](https://github.com/Kr0oked/Compass) |
+| Android Auto | AA4MG (manual install) | [GitHub](https://github.com/sn-00-x/aa4mg) |
+| Google Play services | microG (manual install) | [Setup guide](https://bitgapps.io/extra.html) |
 
-The search bar on the home screen is drawn by the stock launcher, not by a
-Google app, so uninstalling Google never removes it. Turn it off in the
-launcher's own settings — no root, no module, no replacement launcher needed:
+Futo Keyboard is bundled so a replacement is available if Gboard is removed. If Futo cannot be pre-installed and no other keyboard is available, the installer keeps Gboard. PixelBoard is another option, but requires GMS or microG.
 
-1. **Press and hold an empty spot on the home screen.**
-2. Tap **Home settings** (it appears in the menu that pops up).
-3. In Home settings, tap **Home screen**.
-4. Turn **Show search bar** off.
+## What’s being removed
 
-That's it — the bar is gone. The mic and Lens icons in the app drawer go with it.
-This is a stock launcher setting, so it survives reboots and stays off.
+The lists cover **332 unique package candidates**: 67 Google/Pixel entries and 265 OEM/carrier entries. The force list repeats 14 Google entries from the optional list, so it adds no new package IDs. A package is affected only if it is present on the phone.
 
-If you ever want it back, do the same four steps and turn **Show search bar**
-back on.
+| List | Apps and services |
+|---|---|
+| Google and Pixel (67 candidates) | Files, Play Games, Assistant, Gmail, Clock, Calculator, Search, TTS, Setup Wizard, Keep, Android Auto, Maps, Weather, Recorder, Safety Hub, Photos, Meet, Play services, Docs, Work setup/DPC, YouTube, Play Store, Chrome, Lens, Movies, Music, TalkBack, Print Service, Backup and Restore, Wallet, Podcasts, Books, Magazines, TV/VR apps, Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, Android System Intelligence, Federated Compute, On-device Personalization, Ad Services, Partner Setup, Wi-Fi Calling, Switch Access, Hotword Enrollment, Location History, and related Google services. |
+| OEM and carrier (265 candidates) | Curated candidates for Samsung, Xiaomi/Redmi/POCO, OnePlus, Nothing/CMF, Fairphone, Motorola, Sony, Oppo, Vivo, Realme/iQOO, ASUS, Lenovo, Transsion brands, and carriers. Bixby and selected essential components are protected. |
+| Force list (14 Google entries) | Gmail, Google Search, Maps, Photos, Pixel Weather, Files by Google, Phone, Contacts, Calendar, Clock, Calculator, Messages, Digital Wellbeing, and Google Print Service. Gboard is masked only after another keyboard is available. |
 
-### Install
+The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and [force_packagelist.txt](force_packagelist.txt). Google Play services (GMS) is optional; select it for removal when preparing for microG.
 
-1. Install the ZIP from Magisk (KernelSU and APatch support coming soon).
-2. Press Volume Up for the listed default removals, or Volume Down to choose
-   packages one by one.
-3. Reboot. Install/configure microG separately if needed.
+OEM packages vary by model, region, Android version, and ROM. This is a curated list, not a guarantee of complete coverage or a claim that every candidate is safe for every device. Review OEM candidates individually and keep Bixby if you use it.
 
-## KernelSU / APatch
+## Auto-installed apps
 
-**Coming soon.** The module already uses the portable bits — it builds a
-`REMOVE` list that both Magisk and KernelSU consume to create whiteouts, and it
-ships the usual sourced `customize.sh` plus a `service.sh` late-start script, so
-the format itself ports over cleanly.
+The ZIP contains **29 APKs**, numbered consecutively `01`–`29`. Futo Keyboard is `29_futo.apk`; it is included to provide a keyboard option if Gboard is removed. Already-installed packages are skipped. The install log is `/data/adb/modules/systemless-degoogler/log.txt`.
 
-What still needs doing before it is honest to call it supported:
+See [pkgs/README.md](pkgs/README.md) for the complete numbered inventory. microG and AA4MG are not bundled.
 
-- Detect KernelSU / APatch (`$KSU`, `$APATCH`) instead of assuming Magisk.
-- Refuse to install silently when KernelSU has no metamodule. KernelSU mounts
-  `system/` through a pluggable metamodule such as `meta-overlayfs`, and without
-  one the whiteouts are written but nothing ever mounts — the debloat would do
-  nothing with no error at all.
-- Fix the install instructions above: KernelSU modules cannot be flashed from
-  custom recovery, only from the KernelSU manager.
+## Canta and Shizuku
 
-Untested on KernelSU and APatch today. Keep a recovery route handy.
+For non-Google bloat on an OEM build or custom ROM, you can use Canta with Shizuku to review and remove additional installed apps. **Neither tool is bundled or required.**
 
-This fork is intended for people who really want that custom rom but its google only (yeah i know Ive been there) and has not been verified on-device. Keep a recovery route handy and make a backup first or use magisk recovery)
+- [Canta on F-Droid](https://f-droid.org/packages/io.github.samolego.canta/) · [Canta project](https://github.com/samolego/Canta)
+- [Shizuku download](https://shizuku.rikka.app/download/) · [Shizuku project](https://github.com/RikkaApps/Shizuku)
+
+Canta uses Shizuku to manage installed packages. Review each action carefully: OEM apps may provide device features, and removals made with Canta are separate from this module. Disabling this module will not undo Canta's changes.
+
+## KernelSU (untested)
+
+The `systemless-degoogler-v1.0.0-ksu.zip` build is **untested on a device**. Install it through KernelSU Manager, not custom recovery. It requires an enabled compatible system metamodule, such as [meta-overlayfs](https://github.com/tiann/KernelSU/releases).
 
 ## Recovery ZIP
 
-A dedicated recovery-flashable ZIP is coming soon (don't worry the recovery zip coming soon will NOT contain the setup services)
-
-## Installer screenshots
-
-<details>
-  <summary>Original project installer screenshots</summary>
-
-  <img src="Screenshots/Installation/Waiting.jpg" width="25%">
-  <img src="Screenshots/Installation/Default-1.jpg" width="25%">
-  <img src="Screenshots/Installation/Default-2.jpg" width="25%">
-  <img src="Screenshots/Installation/Custom.jpg" width="25%">
-</details>
-
-<details>
-  <summary>Original project device screenshots (historical, not tests of this fork)</summary>
-
-  <p>MIUI 10</p>
-  <img src="Screenshots/MIUI10/1.jpg" width="25%">
-  <img src="Screenshots/MIUI10/2.jpg" width="25%">
-
-  <p>MIUI 11</p>
-  <img src="Screenshots/MIUI11/1.jpg" width="25%">
-  <img src="Screenshots/MIUI11/2.jpg" width="25%">
-
-  <p>MIUI 12.5</p>
-  <img src="Screenshots/MIUI12.5/1.jpg" width="25%">
-  <img src="Screenshots/MIUI12.5/2.jpg" width="25%">
-</details>
-
-
-## FOSS Replacements
-
-These are my recommended alternatives for replacing Google apps and services. Apps are installed on first boot only when their APKs are included in `pkgs/`; microG and AA4MG are manual installs.
-
-| Removed App | My Recommended Replacement | Link |
-|---|---|---|
-| Google Play Store | F-Droid Basic | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/) |
-| Google Play Store | Neo Store | [GitHub](https://github.com/NeoApplications/Neo-Store) |
-| Google Play Store | Aurora Store | [F-Droid](https://f-droid.org/packages/com.aurora.store/) |
-| Google Fi VPN | Proton VPN | [F-Droid](https://f-droid.org/packages/ch.protonvpn.android.reproducible/) |
-| Google Passwords | Proton Pass | [Proton](https://proton.me/pass/download/android) |
-| Google Photos | Ente Photos | [F-Droid](https://f-droid.org/packages/io.ente.photos.fdroid/) |
-| Google Keep | Simple Notes Sync | [F-Droid](https://f-droid.org/packages/dev.dettmer.simplenotes/) |
-| Google Calculator | CalcYou | [F-Droid](https://f-droid.org/packages/net.youapps.calcyou/) |
-| Google Weather | Breezy Weather | [F-Droid](https://f-droid.org/packages/org.breezyweather/) |
-| Chrome | Brave | [GitHub](https://github.com/brave/brave-browser/releases) |
-| YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
-| Google Music | Auxio | [F-Droid](https://f-droid.org/packages/org.oxycblt.auxio/) |
-| Google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
-| Google Drive | Proton Drive | [Proton APK](https://proton.me/drive/download) |
-| Google Docs | Proton Drive | [Proton APK](https://proton.me/drive/download) |
-| Google Assistant | Dicio | [F-Droid](https://f-droid.org/packages/org.stypox.dicio/) |
-| Google TTS | RHVoice | [F-Droid](https://f-droid.org/packages/com.github.olga_yakovleva.rhvoice.android/) |
-| Gmail | Thunderbird | [F-Droid](https://f-droid.org/packages/net.thunderbird.android/) |
-| Google Dialer | Fossify Dialer | [F-Droid](https://f-droid.org/packages/org.fossify.phone/) |
-| Google Contacts | Fossify Contacts | [F-Droid](https://f-droid.org/packages/org.fossify.contacts/) |
-| Google Messages | Fossify Messages | [F-Droid](https://f-droid.org/packages/org.fossify.messages/) |
-| Gboard | PixelBoard | [GitHub](https://github.com/Akshayykadam/PixelBoard/releases) |
-| Google Clock | Fossify Clock | [F-Droid](https://f-droid.org/packages/org.fossify.clock/) |
-| Google Calendar | Fossify Calendar | [F-Droid](https://f-droid.org/packages/org.fossify.calendar/) |
-| Files by Google | Fossify Files | [F-Droid](https://f-droid.org/packages/org.fossify.filemanager/) |
-| Google Recorder | Fossify Voice Recorder | [F-Droid](https://f-droid.org/packages/org.fossify.voicerecorder/) |
-| Google Fit / step tracking | MILES (my step tracker) | [GitHub](https://github.com/anshlabs716/miles/releases) |
-| Android Auto | AA4MG | [GitHub](https://github.com/sn-00-x/aa4mg) |
-| Google Play services (GMS) | microG | [bitgapps.io/extra](https://bitgapps.io/extra.html) |
-| Quick Share | Bada | [GitHub](https://github.com/kyujin-cho/Bada) |
-| — | Compass | [GitHub](https://github.com/Kr0oked/Compass) |
-| — | NetGuard | [F-Droid](https://f-droid.org/packages/eu.faircode.netguard/) |
-
-Bundled in the rebuilt ZIP: F-Droid Basic, Neo Store, Aurora Store, Proton VPN, Proton Pass, Ente Photos, Simple Notes Sync, CalcYou, Breezy Weather, Brave, Koda, Auxio, Vela Maps, Proton Drive, Dicio, RHVoice, Thunderbird, Fossify Dialer, Fossify Contacts, Fossify Messages, PixelBoard, Fossify Clock, Fossify Calendar, Fossify Files, Fossify Voice Recorder, MILES (my step tracker)
-
-NOT installed by this module (manual install required):
-
-- microG — [bitgapps.io/extra](https://bitgapps.io/extra.html)
-- AA4MG — [GitHub](https://github.com/sn-00-x/aa4mg)
-
-## Not Replaced (Deleted)
-
-YouTube TV, Google Wallet, Google Pay, Google Lens, Google Play Games, Digital Wellbeing, Safety Hub, Google One, Chromecast, Android TV, Google VR, Play Newsstand, Google Fishfood, Google Search (GSA), TalkBack, Print Service, Google Restore, Google Backup, Federated Compute, On-Device Personalization, Ad Services, Partner Setup, Wi-Fi Calling Activation, Switch Access, Accessibility Menu, Verizon MIPS, Hotword Enrollment, Location History, Turbo Adapter, Bookmark Provider, Partner Bookmarks, SDM Diagnostics, Work Setup / DPC, Setup Wizard, One-time Initializer, Emoji Wallpapers, Google Sync Adapters
-
-Google Wallpapers and Pixel Customization are kept by the module.
-
-## Auto-Install
-
-On first boot after module install, APKs in `pkgs/` are installed in filename order, with the three app stores first. Already installed packages are skipped. Logs are written to `/data/adb/modules/<module-id>/log.txt`, and the installer can safely run again after reboot.
-
-**Newest build:** v1.0.2. The local ZIP includes the APKs listed below; published release assets are unchanged.
-
-Included APKs in `pkgs/` (numbered for install order):
-
-```text
-01_fdroid.apk
-02_neostore.apk
-03_aurora.apk
-04_protonvpn.apk
-05_protonpass.apk
-06_ente.apk
-07_simplenotes.apk
-08_calcyou.apk
-09_breezy.apk
-10_brave.apk
-11_koda.apk
-12_auxio.apk
-13_vela.apk
-14_protondrive.apk
-15_dicio.apk
-16_rhvoice.apk
-17_thunderbird.apk
-18_fossifydialer.apk
-19_fossifycontacts.apk
-20_fossifymessages.apk
-21_pixelboard.apk
-22_fossifyclock.apk
-23_fossifycalendar.apk
-24_fossifyfiles.apk
-25_fossifyvoicerecorder.apk
-26_miles.apk
-27_bada.apk
-28_netguard.apk
-29_compass.apk
-```
-
- We do NOT bundle or install microG or AA4MG. They are link-only in the README (manual install).
+A recovery-flashable degoogling ZIP is planned for a **separate repository** with separate tooling. The ZIPs here are Magisk and KernelSU module packages. The Magisk package’s `META-INF/` files are module installer files; they are not the separate recovery ZIP.
