@@ -191,7 +191,7 @@ process_package() {
     ui_print
     ui_print "Remove $APP_NAME?"
     ui_print "[● Volume Up: Yes] [● Volume Down: No]"
-    if ! choose 15; then
+    if ! choose 10; then
       ui_print "- Kept $APP_NAME."
       return 0
     fi
@@ -212,7 +212,7 @@ ui_print "| Install the default optional-app list?"
 ui_print "| [● Volume Up: Yes]"
 ui_print "| [● Volume Down: Choose apps one by one]"
 ui_print "| Waiting for a volume key..."
-if choose 15; then
+if choose 10; then
   CUSTOMIZE=false
 else
   CUSTOMIZE=true
