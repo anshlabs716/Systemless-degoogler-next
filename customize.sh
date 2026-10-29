@@ -35,10 +35,10 @@ fi
 choose() {
   [ "$1" ] && delay=$1 || delay=3
   while true; do
-    timeout "$delay" /system/bin/getevent -lqc 1 >"$TMPDIR/events" 2>&1 || :
-    if grep -q 'KEY_VOLUMEUP *DOWN' "$TMPDIR/events"; then
+    timeout "$delay" /system/bin/getevent -lqc 3 >"$TMPDIR/events" 2>&1 || :
+    if grep -Eq 'KEY_VOLUMEUP[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000073[[:space:]]+00000001' "$TMPDIR/events"; then
       return 0
-    elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$TMPDIR/events"; then
+    elif grep -Eq 'KEY_VOLUMEDOWN[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000072[[:space:]]+00000001' "$TMPDIR/events"; then
       return 1
     fi
     ui_print "- Volume key not detected. Try again."
