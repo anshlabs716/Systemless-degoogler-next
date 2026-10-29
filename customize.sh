@@ -34,13 +34,11 @@ fi
 
 choose() {
   [ "$1" ] && delay=$1 || delay=3
-  command -v timeout >/dev/null 2>&1 || abort "Cannot read volume keys: timeout is unavailable."
-  [ -x /system/bin/getevent ] || abort "Cannot read volume keys: /system/bin/getevent is unavailable."
   while true; do
     timeout "$delay" /system/bin/getevent -lqc 1 >"$TMPDIR/events" 2>&1 || :
-    if grep -Eq 'KEY_VOLUMEUP[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000073[[:space:]]+00000001' "$TMPDIR/events"; then
+    if grep -q 'KEY_VOLUMEUP *DOWN' "$TMPDIR/events"; then
       return 0
-    elif grep -Eq 'KEY_VOLUMEDOWN[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000072[[:space:]]+00000001' "$TMPDIR/events"; then
+    elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$TMPDIR/events"; then
       return 1
     fi
     ui_print "- Volume key not detected. Try again."
@@ -210,23 +208,14 @@ process_package() {
 }
 
 ui_print
-SKIP_OPTIONAL=false
-if [ "$BOOTMODE" = true ]; then
-  ui_print "| This manager install cannot receive interactive volume-key input."
-  ui_print "| Optional apps will be left unchanged; the force list is still applied."
-  ui_print "| Install from recovery if you want to choose apps with volume keys."
-  SKIP_OPTIONAL=true
+ui_print "| Install the default optional-app list?"
+ui_print "| [● Volume Up: Yes]"
+ui_print "| [● Volume Down: Choose apps one by one]"
+ui_print "| Waiting for a volume key..."
+if choose 15; then
   CUSTOMIZE=false
 else
-  ui_print "| Install the default optional-app list?"
-  ui_print "| [● Volume Up: Yes]"
-  ui_print "| [● Volume Down: Choose apps one by one]"
-  ui_print "| Waiting for a volume key..."
-  if choose 15; then
-    CUSTOMIZE=false
-  else
-    CUSTOMIZE=true
-  fi
+  CUSTOMIZE=true
 fi
 
 # 0. Futo Keyboard. Pre-install the bundled Futo Keyboard APK so that
@@ -265,7 +254,7 @@ if [ -f "$force_list" ]; then
 fi
 
 # 3. Reviewed optional list, prompted only in per-app mode.
-if [ "$SKIP_OPTIONAL" != true ] && [ -f "$debloat_list" ]; then
+if [ -f "$debloat_list" ]; then
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"
