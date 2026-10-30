@@ -50,19 +50,19 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
 | Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
 | Phone, contacts, messages, calendar, clock, files, recorder | Fossify apps | [Fossify](https://github.com/FossifyOrg) |
-| Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
-| Assistant | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
-| Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
-| Email | Thunderbird | [GitHub](https://github.com/thunderbird/thunderbird-android) |
-| Drive | Proton Drive | [Proton](https://proton.me/drive) |
+| google Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
+| Google Assistant/gemini | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
+| Google Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
+| Gmail | Thunderbird | [GitHub](https://github.com/thunderbird/thunderbird-android) |
+| Google Drive | Proton Drive | [Proton](https://proton.me/drive) |
 | Passwords | Proton Pass | [Proton](https://proton.me/pass) |
 | Google VPN | Proton VPN | [Proton](https://protonvpn.com/) |
-| Weather | Breezy Weather | [GitHub](https://github.com/breezy-weather/breezy-weather) |
-| Notes | Simple Notes Sync | [GitHub](https://github.com/SimpleMobileTools/Simple-Notes) |
+| Google Weather | Breezy Weather | [GitHub](https://github.com/breezy-weather/breezy-weather) |
+| Google keep | Simple Notes Sync | [GitHub](https://github.com/SimpleMobileTools/Simple-Notes) |
 | Step tracking | MILES, my step tracker | [GitHub](https://github.com/anshlabs716/miles) |
 | Quick Share | Bada | [GitHub](https://github.com/kyujin-cho/Bada) |
-| Firewall | NetGuard | [GitHub](https://github.com/M66B/NetGuard) |
-| Compass | Compass | [GitHub](https://github.com/Kr0oked/Compass) |
+| --- | NetGuard | [GitHub](https://github.com/M66B/NetGuard) |
+| --- | Compass | [GitHub](https://github.com/Kr0oked/Compass) |
 | Android Auto | AA4MG (manual install) | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | Google Play services | microG (manual install) | [Setup guide](https://bitgapps.io/extra.html) |
 
