@@ -3,3 +3,4 @@ systemless-degoogler-*.zip
 tools/
 pkgs/*.apk
 system/app/**/*.apk
+system/priv-app/**/*.apk

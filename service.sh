@@ -35,6 +35,17 @@ for APK in "$MODDIR"/pkgs/*.apk; do
     continue ;;
   esac
 
+  # The LineageOS/AOSP suite (30-37) ships as system/priv-app/<Name>/<Name>.apk
+  # and is mounted by the root manager, so it is ALREADY installed at boot.
+  # Running pm install on it again would drop a second copy into /data/app as an
+  # ordinary, non-privileged app, which defeats priv-app placement and can
+  # shadow the privileged one. Never install these in the post-boot pass.
+  case "$FILE" in
+    30_*|31_*|32_*|33_*|34_*|35_*|36_*|37_*)
+      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping privileged suite $FILE (provided as system/priv-app)"
+      continue ;;
+  esac
+
   PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
   if [ -z "$PACKAGE" ]; then
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping unreadable APK $FILE (package ID unavailable)"

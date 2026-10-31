@@ -24,10 +24,26 @@ for tool in aapt aapt64; do
   chmod 755 "tools/$tool"
 done
 chmod 755 service.sh
-output="$mod_id-$version.zip"
-rm -f "$output"
-if [ "$format" = ksu ]; then
-  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs
-else
-  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs
+
+# system/ carries the privileged suite (system/priv-app) and MILES
+# (system/app). It is required for the current layout.
+[ -d system ] || { echo "system/ directory is missing; cannot build" >&2; exit 1; }
+priv_count=$(find system/priv-app -name '*.apk' 2>/dev/null | wc -l)
+if [ "$priv_count" -ne 8 ]; then
+  echo "expected 8 APKs under system/priv-app, found $priv_count" >&2
+  find system/priv-app -name '*.apk' 2>/dev/null >&2
+  exit 1
 fi
+[ -f system/app/MILES/MILES.apk ] || { echo "system/app/MILES/MILES.apk is missing" >&2; exit 1; }
+
+rm -f "$mod_id-$version.zip" "$mod_id-$version-ksu.zip"
+if [ "$format" = ksu ]; then
+  # KernelSU variant ships without the Magisk META-INF updater and carries a
+  # distinct asset name so both can sit on the same release.
+  output="$mod_id-$version-ksu.zip"
+  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+else
+  output="$mod_id-$version.zip"
+  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+fi
+echo "built $output"
