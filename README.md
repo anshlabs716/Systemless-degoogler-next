@@ -46,17 +46,17 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Gboard | Futo Keyboard, PixelBoard | [Futo](https://github.com/futo-org/android-keyboard) |
 | Chrome | Brave | [GitHub](https://github.com/brave/brave-browser) |
 | YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
-| Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
-| Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
-| Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
-| Phone, contacts, messages, calendar, clock, files, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
+| google Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
+| google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
+| google Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
+| google Phone, contacts, messages, calendar, clock, files, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
 | google Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
 | Google Assistant/gemini | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
 | Google Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
 | Gmail | Thunderbird | [GitHub](https://github.com/thunderbird/thunderbird-android) |
 | Google Drive | Proton Drive | [Proton](https://proton.me/drive) |
 | Passwords | Proton Pass | [Proton](https://proton.me/pass) |
-| Google VPN | Proton VPN | [Proton](https://protonvpn.com/) |
+| Google-fi VPN | Proton VPN | [Proton](https://protonvpn.com/) |
 | Google Weather | Breezy Weather | [GitHub](https://github.com/breezy-weather/breezy-weather) |
 | Google keep | Simple Notes Sync | [GitHub](https://github.com/SimpleMobileTools/Simple-Notes) |
 | Step tracking | MILES, my step tracker | [GitHub](https://github.com/anshlabs716/miles) |
