@@ -2,3 +2,4 @@ Systemless-DeGoogler*.zip
 systemless-degoogler-*.zip
 tools/
 pkgs/*.apk
+system/app/**/*.apk

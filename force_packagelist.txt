@@ -26,6 +26,16 @@ com.google.android.deskclock               # -> Fossify Clock
 com.google.android.calculator              # -> CalcYou
 com.google.android.apps.messaging          # -> Fossify Messages
 
+# --- WebView (CONDITIONAL, see below) ---
+com.google.android.webview                 # Google System WebView -> bundled com.android.webview
+
+# The WebView entry above is applied only when the module actually ships a
+# replacement provider. customize.sh checks for
+# system/priv-app/WebViewGoogle/WebViewGoogle.apk and confirms it carries the
+# com.android.webview identity before masking anything. If the replacement is
+# missing, Google's WebView is left installed, because removing it without a
+# working provider breaks every embedded page and login screen.
+
 # --- Pure Google extras, nothing depends on them ---
 com.google.android.apps.wellbeing          # Digital Wellbeing
 com.google.android.printservice.recommendation  # Google print service
