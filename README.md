@@ -4,7 +4,7 @@
 
 Hey, I’m Ansh. This systemless module removes selected Google apps and reviewed OEM-app candidates, then installs alternatives I use. It keeps selected Pixel features and core Android parts, and makes room for a separate microG install.
 
-**v1.0.3 · 22 regular APKs + 8 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
+**v1.0.3 · 23 regular APKs + 8 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
 ## Contents
 
@@ -12,7 +12,7 @@ Hey, I’m Ansh. This systemless module removes selected Google apps and reviewe
 - [Install](#install)
 - [FOSS replacements](#foss-replacements)
 - [What’s being removed](#whats-being-removed)
-- [Auto-installed apps](#auto-installed-apps)
+- [Bundled apps and versions](#bundled-apps-and-versions)
 - [Canta and Shizuku](#canta-and-shizuku)
 - [KernelSU (untested)](#kernelsu-untested)
 - [Recovery ZIP](#recovery-zip)
@@ -43,7 +43,7 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Replaces | App | Link |
 |---|---|---|
 | Play Store | F-Droid Basic, Neo Store, Aurora Store | [F-Droid](https://f-droid.org/packages/org.fdroid.basic/), [Neo Store](https://github.com/NeoApplications/Neo-Store), [Aurora](https://f-droid.org/packages/com.aurora.store/) |
-| Gboard | Futo Keyboard | [GitHub](https://github.com/futo-org/android-keyboard) |
+| Gboard | Futo Keyboard, PixelBoard | [Futo](https://github.com/futo-org/android-keyboard) |
 | Chrome | Brave | [GitHub](https://github.com/brave/brave-browser) |
 | YouTube | Koda | [GitHub](https://github.com/Ivorisnoob/Koda) |
 | Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
@@ -66,7 +66,7 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Android Auto | AA4MG (manual install) | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | Google Play services | microG (manual install) | [Setup guide](https://bitgapps.io/extra.html) |
 
-Futo Keyboard is bundled so a replacement is available if Gboard is removed. If Futo cannot be pre-installed and no other keyboard is available, the installer keeps Gboard. PixelBoard is another option, but requires GMS or microG.
+Futo Keyboard is bundled and pre-installed so a replacement is available if Gboard is removed. PixelBoard is also bundled as an optional keyboard and requires GMS or microG.
 
 ## What’s being removed
 
@@ -82,11 +82,11 @@ The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and 
 
 OEM packages vary by model, region, Android version, and ROM. This is a curated list, not a guarantee of complete coverage or a claim that every candidate is safe for every device. Review OEM candidates individually and keep Bixby if you use it.
 
-## Auto-installed apps
+## Bundled apps and versions
 
-The ZIP contains **22 regular-app APKs**; the seven Fossify apps are replaced by the LineageOS/AOSP privileged suite in `system/priv-app`. Futo Keyboard is `29_futo.apk`; it is included to provide a keyboard option if Gboard is removed. Already-installed packages are skipped. The install log is `/data/adb/modules/systemless-degoogler/log.txt`.
+The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP apps**. PixelBoard is included as `38_pixelboard.apk`; its APK-reported version is `18.5.3.993608717-release-arm64-v8a`. Futo Keyboard (`29_futo.apk`) is pre-installed before Gboard is masked. PixelBoard requires GMS or microG. Already-installed regular apps are skipped. The seven Fossify APKs are excluded because their LineageOS/AOSP replacements are shipped as privileged system apps.
 
-See [pkgs/README.md](pkgs/README.md) for the complete numbered inventory. microG and AA4MG are not bundled.
+See [pkgs/README.md](pkgs/README.md) for the complete regular-app inventory and versions. The privileged suite versions are: WebView 155.0.8059.39, Dialer 23.0, Contacts 1.7.34, Messaging 1.0.001, DeskClock 16, DocumentsUI 14, Calendar 14, and Recorder 16. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
 
 ## Canta and Shizuku
 
