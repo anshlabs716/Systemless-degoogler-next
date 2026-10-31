@@ -36,30 +36,55 @@ fi
 # Interactive volume-key selection
 # ---------------------------------------------------------------------------
 INTERACTIVE=false
+CUSTOMIZE_ABORTED=false
+VOL_DEV=""
+
+find_volume_device() {
+  awk '
+    /add device/ { device=$NF }
+    /KEY \(0001\):/ && device != "" &&
+      ($0 ~ /KEY_VOLUMEUP/ || $0 ~ /(^|[[:space:]])0073([[:space:]]|$)/) {
+      print device
+      exit
+    }
+  ' "$1"
+}
+
+recovery_install() {
+  [ "${BOOTMODE:-false}" != true ] && [ -n "${OUTFD:-}" ]
+}
 
 if command -v timeout >/dev/null 2>&1 && [ -x /system/bin/getevent ]; then
-  INTERACTIVE=true
+  # Only recovery installs expose physical volume-key input to the installer.
+  # Magisk Manager/boot-mode installs use the force-list-only profile.
+  if recovery_install; then
+    sleep 2
+    timeout 2 /system/bin/getevent -p > "$TMPDIR/input-devices" 2>/dev/null
+    VOL_DEV=$(find_volume_device "$TMPDIR/input-devices")
+    [ -n "$VOL_DEV" ] && INTERACTIVE=true
+  fi
 fi
 
 detect_vol_key() {
-  local delay=3
   local f="$TMPDIR/vk"
+  local held="$TMPDIR/vk-held"
+  local delay=8
   local pid
 
-  timeout 0 /system/bin/getevent -lqc 1 2>/dev/null
-  timeout "$delay" /system/bin/getevent -lqc 1 2>&1 > "$f" &
-  pid=$!
-  sleep 0.5
-
-  if grep -q 'KEY_VOLUMEUP *DOWN' "$f" 2>/dev/null; then
-    wait "$pid" 2>/dev/null || :
-    return 0
-  elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$f" 2>/dev/null; then
-    wait "$pid" 2>/dev/null || :
-    return 1
+  # Read any volume-key event already queued when the installer starts.
+  timeout 1 /system/bin/getevent -lqc 1 "$VOL_DEV" > "$held" 2>/dev/null
+  if grep -q 'KEY_VOLUME.*DOWN' "$held" 2>/dev/null; then
+    if grep -q 'KEY_VOLUMEUP' "$held" 2>/dev/null; then
+      return 0
+    elif grep -q 'KEY_VOLUMEDOWN' "$held" 2>/dev/null; then
+      return 1
+    fi
   fi
 
-  # Keep listening for the remainder of the bounded getevent timeout.
+  # Discard stale input, then listen once for a fresh key press.
+  timeout 0 /system/bin/getevent -lqc 1 "$VOL_DEV" >/dev/null 2>&1
+  timeout "$delay" /system/bin/getevent -lqc 1 "$VOL_DEV" > "$f" 2>&1 &
+  pid=$!
   wait "$pid" 2>/dev/null || :
   if grep -q 'KEY_VOLUMEUP *DOWN' "$f" 2>/dev/null; then
     return 0
@@ -69,20 +94,14 @@ detect_vol_key() {
   return 2
 }
 
-# Read volume keys without depending on stdin being a terminal. Each getevent
-# listener is bounded; after a miss, stop prompting and use the safe profile.
+# Read one bounded volume-key window without depending on terminal stdin.
 choose() {
-  [ "$1" ] && attempts=$1 || attempts=1
-  attempt=0
-  while [ "$attempt" -lt "$attempts" ]; do
-    attempt=$((attempt + 1))
-    detect_vol_key
-    result=$?
-    [ "$result" -lt 2 ] && return "$result"
-    [ "$attempt" -lt "$attempts" ] && ui_print "- No volume key seen; try again."
-  done
-  ui_print "- No volume key after $attempts attempts; continuing automatically."
+  detect_vol_key
+  result=$?
+  [ "$result" -lt 2 ] && return "$result"
+  ui_print "- No volume key detected; continuing automatically."
   INTERACTIVE=false
+  CUSTOMIZE_ABORTED=true
   return 2
 }
 
@@ -138,7 +157,7 @@ ensure_keyboard() {
 # The open-source WebView bundled by this module. Google's WebView is only
 # masked when this file is actually present, so an incomplete or missing
 # bundle can never leave the device without a WebView provider.
-REPLACEMENT_WEBVIEW="$MODPATH/system/priv-app/WebViewGoogle/WebViewGoogle.apk"
+REPLACEMENT_WEBVIEW="$MODPATH/system/priv-app/WebView/WebView.apk"
 
 webview_replacement_ready() {
   [ -f "$REPLACEMENT_WEBVIEW" ] || return 1
@@ -161,6 +180,10 @@ process_package() {
   PACKAGE_NAME=${PACKAGE_NAME%%#*}
   PACKAGE_NAME=$(printf '%s' "$PACKAGE_NAME" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
   case "$PACKAGE_NAME" in '') return 0 ;; esac
+
+  if [ "$FORCED" != true ] && [ "$CUSTOMIZE_ABORTED" = true ]; then
+    return 0
+  fi
 
   # Protect Bixby on Samsung and other essential OEM services. Bixby is
   # preserved per user policy and must never be removed.
@@ -268,7 +291,7 @@ process_package() {
     ui_print
     ui_print "Remove $APP_NAME?"
     ui_print "[● Volume Up: Yes] [● Volume Down: No]"
-    choose 2
+    choose
     if [ $? -ne 0 ]; then
       ui_print "- Kept $APP_NAME."
       return 0
@@ -294,8 +317,8 @@ if [ "$INTERACTIVE" = true ]; then
   ui_print "| Install the default optional-app list?"
   ui_print "| [● Volume Up: Yes]"
   ui_print "| [● Volume Down: Choose apps one by one]"
-  ui_print "| Waiting for a volume key (up to 3s per attempt)..."
-  choose 3
+  ui_print "| Waiting once for a volume key (up to 9s)..."
+  choose
   case $? in
     0) APPLY_OPTIONAL=true;  CUSTOMIZE=false ;;
     1) APPLY_OPTIONAL=true;  CUSTOMIZE=true ;;
@@ -313,14 +336,14 @@ fi
 #    ensure_keyboard() below can detect and enable it. This runs during
 #    customize.sh (not boot service) to guarantee a replacement IME exists
 #    before Gboard is removed.
-for FUTO_APK in "$MODPATH"/pkgs/*futo*.apk; do
-  [ -f "$FUTO_APK" ] || continue
+FUTO_APK="$MODPATH/system/app/Futo/Futo.apk"
+if [ -f "$FUTO_APK" ]; then
   if pm install -r "$FUTO_APK" >/dev/null 2>&1; then
     ui_print "- Futo Keyboard pre-installed from bundled APK."
   else
     ui_print "- Could not pre-install Futo Keyboard; Gboard will be kept unless another keyboard is available."
   fi
-done
+fi
 
 # 1. Gboard. Promote a non-Google keyboard first so the device is never left
 #    without a way to type, then remove it.

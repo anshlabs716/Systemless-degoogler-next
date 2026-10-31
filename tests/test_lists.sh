@@ -62,7 +62,7 @@ if [ -f "$AUDIT" ]; then
   # Every bundled package ID must be unique across the bundle.
   allids=$(tail -n +2 "$AUDIT" | cut -f2 | grep -v '^UNREADABLE$')
   dupid=$(printf '%s\n' "$allids" | sort | uniq -d)
-  # 25_miles.apk and system/app/MILES/MILES.apk are intentionally the same app.
+  # Older audit files can still list MILES in both its old APK staging paths.
   dupid=$(printf '%s\n' "$dupid" | grep -v '^com.aistudio.miles.track$' || true)
   if [ -z "$dupid" ]; then ok "no unintended duplicate package IDs in the bundle"
   else bad "duplicate bundled package ID(s): $(printf '%s ' $dupid)"; fi

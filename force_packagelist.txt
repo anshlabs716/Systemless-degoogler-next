@@ -31,7 +31,7 @@ com.google.android.webview                 # Google System WebView -> bundled co
 
 # The WebView entry above is applied only when the module actually ships a
 # replacement provider. customize.sh checks for
-# system/priv-app/WebViewGoogle/WebViewGoogle.apk and confirms it carries the
+# system/priv-app/WebView/WebView.apk and confirms it carries the
 # com.android.webview identity before masking anything. If the replacement is
 # missing, Google's WebView is left installed, because removing it without a
 # working provider breaks every embedded page and login screen.

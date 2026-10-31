@@ -23,15 +23,13 @@
         <permission name="com.android.voicemail.permission.READ_VOICEMAIL"/>
         <permission name="com.android.voicemail.permission.WRITE_VOICEMAIL"/>
     </privapp-permissions>
-    <privapp-permissions package="com.android.documentsui">
-        <permission name="android.permission.CHANGE_OVERLAY_PACKAGES"/>
-        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
-        <permission name="android.permission.LOG_COMPAT_CHANGE"/>
-        <permission name="android.permission.MODIFY_QUIET_MODE"/>
-        <permission name="android.permission.READ_COMPAT_CHANGE_CONFIG"/>
-        <permission name="android.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND"/>
+    <privapp-permissions package="com.android.messaging">
+    </privapp-permissions>
+    <privapp-permissions package="com.android.webview">
     </privapp-permissions>
     <privapp-permissions package="org.lineageos.etar">
         <permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    </privapp-permissions>
+    <privapp-permissions package="org.lineageos.recorder">
     </privapp-permissions>
 </permissions>

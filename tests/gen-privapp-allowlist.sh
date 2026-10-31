@@ -101,13 +101,12 @@ for line in open(sys.argv[1]):
 
 # Allowlist keys are package names; entries are permission names.
 pkg_to_dir = {
-    'WebViewGoogle': 'com.android.webview',
+    'WebView': 'com.android.webview',
     'Dialer': 'com.android.dialer',
     'Contacts': 'com.android.contacts',
     'Messaging': 'com.android.messaging',
     'DeskClock': 'com.android.deskclock',
-    'DocumentsUI': 'com.android.documentsui',
-    'LineageOSCalendar': 'org.lineageos.etar',
+    'Etar': 'org.lineageos.etar',
     'Recorder': 'org.lineageos.recorder',
 }
 lines = ['<?xml version="1.0" encoding="utf-8"?>',

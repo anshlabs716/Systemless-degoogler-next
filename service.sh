@@ -1,7 +1,8 @@
 #!/system/bin/sh
 
 # Install bundled replacement APKs after Android's package manager is ready.
-# Files are processed lexically, so the two-digit prefixes define install order.
+# System APKs are scanned by Android at boot; this pass verifies they are
+# available and installs only if the package manager did not register one.
 MODDIR=${0%/*}
 MODID=$(sed -n 's/^id=//p' "$MODDIR/module.prop" | head -n 1)
 [ -n "$MODID" ] || MODID=systemless-degoogler
@@ -25,7 +26,7 @@ fi
 AAPT="$MODDIR/tools/aapt64"
 [ -x "$AAPT" ] || AAPT="$MODDIR/tools/aapt"
 
-for APK in "$MODDIR"/pkgs/*.apk; do
+for APK in "$MODDIR"/system/app/*/*.apk; do
   [ -f "$APK" ] || continue
   FILE=${APK##*/}
 
@@ -33,20 +34,6 @@ for APK in "$MODDIR"/pkgs/*.apk; do
   case "$FILE" in *microg*|*MicroG*|*aa4mg*|*AA4MG*)
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping manual-only APK $FILE"
     continue ;;
-  esac
-
-  # The LineageOS/AOSP suite (30-37) ships as system/priv-app/<Name>/<Name>.apk
-  # and is mounted by the root manager, so it is ALREADY installed at boot.
-  # Running pm install on it again would drop a second copy into /data/app as an
-  # ordinary, non-privileged app, which defeats priv-app placement and can
-  # shadow the privileged one. Never install these in the post-boot pass.
-  case "$FILE" in
-    30_*|31_*|32_*|33_*|34_*|35_*|36_*|37_*)
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping privileged suite $FILE (provided as system/priv-app)"
-      continue ;;
-    *fossify*|*Fossify*)
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping Fossify replacement $FILE (provided by the LineageOS/AOSP suite)"
-      continue ;;
   esac
 
   PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
@@ -86,6 +73,6 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] Replacement APK install pass finished"
 # worth bricking someone's home screen over.
 #
 # NOTE (v1.0.3): Futo Keyboard (org.futo.inputmethod.latin) is bundled as
-# 29_futo.apk and pre-installed by customize.sh before Gboard removal. This
+# system/app/Futo/Futo.apk and pre-installed by customize.sh before Gboard removal. This
 # ensures the device is never left keyboard-less. This service.sh pass may
 # also attempt to install it if customize.sh was skipped or failed.

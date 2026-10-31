@@ -4,7 +4,7 @@
 
 Hey, I’m Ansh. This systemless module removes selected Google apps and reviewed OEM-app candidates, then installs alternatives I use. It keeps selected Pixel features and core Android parts, and makes room for a separate microG install.
 
-**v1.0.3 · 23 regular APKs + 8 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
+**v1.0.3 · 24 regular APKs + 7 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
 ## Contents
 
@@ -30,8 +30,8 @@ Changes made by the module are systemless. Disable or remove it in Magisk or Ker
 ## Install
 
 1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
-2. Installing from Magisk Manager cannot receive interactive volume-key input, so it leaves the optional list unchanged and applies only the force list. To choose optional apps with volume keys, install the ZIP from custom recovery: Volume Up selects the full list; Volume Down reviews candidates individually.
-3. Reboot. Bundled apps are installed after Android finishes booting.
+2. Magisk Manager and KernelSU Manager installs apply only the force list and do not prompt for volume keys. To choose optional apps, install from custom recovery: Volume Up selects the full list; Volume Down reviews candidates individually.
+3. Reboot. Bundled system apps become available as Android finishes booting.
 4. Install microG separately if you want it.
 
 The module leaves the stock launcher enabled. To hide its search bar, long-press the home screen and turn off the bar in launcher settings.
@@ -49,14 +49,15 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | google Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
 | google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
 | google Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
-| google Phone, contacts, messages, calendar, clock, files, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
+| google Phone, contacts, messages, calendar, clock, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
+| Files by Google / document picker and Google Drive file access | Fossify Files (bundled) | [GitHub](https://github.com/FossifyOrg/File-Manager) |
 | google Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
 | Google Assistant/gemini | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
 | Google Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
 | Gmail | Thunderbird | [GitHub](https://github.com/thunderbird/thunderbird-android) |
 | Google Drive | Proton Drive | [Proton](https://proton.me/drive) |
 | Passwords | Proton Pass | [Proton](https://proton.me/pass) |
-| Google-fi VPN | Proton VPN | [Proton](https://protonvpn.com/) |
+| Google VPN | Proton VPN | [Proton](https://protonvpn.com/) |
 | Google Weather | Breezy Weather | [GitHub](https://github.com/breezy-weather/breezy-weather) |
 | Google keep | Simple Notes Sync | [GitHub](https://github.com/SimpleMobileTools/Simple-Notes) |
 | Step tracking | MILES, my step tracker | [GitHub](https://github.com/anshlabs716/miles) |
@@ -84,9 +85,19 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Bundled apps and versions
 
-The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP apps**. PixelBoard is included as `38_pixelboard.apk`; its APK-reported version is `18.5.3.993608717-release-arm64-v8a`. Futo Keyboard (`29_futo.apk`) is pre-installed before Gboard is masked. PixelBoard requires GMS or microG. Already-installed regular apps are skipped. The seven Fossify APKs are excluded because their LineageOS/AOSP replacements are shipped as privileged system apps.
+The ZIP contains **24 regular-app APKs** and **7 privileged LineageOS/AOSP apps**. Fossify Files is a regular system app. The privileged apps are:
 
-See [pkgs/README.md](pkgs/README.md) for the complete regular-app inventory and versions. The privileged suite versions are: WebView 155.0.8059.39, Dialer 23.0, Contacts 1.7.34, Messaging 1.0.001, DeskClock 16, DocumentsUI 14, Calendar 14, and Recorder 16. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
+| Privileged app | Version |
+|---|---:|
+| Contacts | 1.7.34 |
+| DeskClock | 16 |
+| Dialer | 23.0 |
+| Messaging | 1.0.001 |
+| WebView | 155.0.8059.39 |
+| Etar Calendar | 14 |
+| Recorder | 16 |
+
+Futo Keyboard is pre-installed before Gboard is masked. PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
 
 ## Canta and Shizuku
 

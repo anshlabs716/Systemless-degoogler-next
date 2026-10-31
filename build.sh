@@ -25,31 +25,33 @@ for tool in aapt aapt64; do
 done
 chmod 755 service.sh
 
-# system/ carries the privileged suite (system/priv-app) and MILES
-# (system/app). It is required for the current layout.
+# system/ carries all regular and privileged APKs in their system app slots.
 [ -d system ] || { echo "system/ directory is missing; cannot build" >&2; exit 1; }
-priv_count=$(find system/priv-app -name '*.apk' 2>/dev/null | wc -l)
-if [ "$priv_count" -ne 8 ]; then
-  echo "expected 8 APKs under system/priv-app, found $priv_count" >&2
+regular_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
+if [ "$regular_count" -ne 24 ]; then
+  echo "expected 24 APKs under system/app, found $regular_count" >&2
+  find system/app -type f -name '*.apk' 2>/dev/null >&2
+  exit 1
+fi
+priv_count=$(find system/priv-app -type f -name '*.apk' 2>/dev/null | wc -l)
+if [ "$priv_count" -ne 7 ]; then
+  echo "expected 7 APKs under system/priv-app, found $priv_count" >&2
   find system/priv-app -name '*.apk' 2>/dev/null >&2
   exit 1
 fi
-[ -f system/app/MILES/MILES.apk ] || { echo "system/app/MILES/MILES.apk is missing" >&2; exit 1; }
+[ -z "$(find pkgs -type f -name '*.apk' -print -quit 2>/dev/null)" ] || {
+  echo "APK files must be staged only under system/app or system/priv-app" >&2
+  exit 1
+}
 
 rm -f "$mod_id-$version.zip" "$mod_id-$version-ksu.zip"
 if [ "$format" = ksu ]; then
   # KernelSU variant ships without the Magisk META-INF updater and carries a
   # distinct asset name so both can sit on the same release.
   output="$mod_id-$version-ksu.zip"
-  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system \
-    -x 'pkgs/*fossify*.apk' 'pkgs/*Fossify*.apk' \
-    'pkgs/30_*.apk' 'pkgs/31_*.apk' 'pkgs/32_*.apk' 'pkgs/33_*.apk' \
-    'pkgs/34_*.apk' 'pkgs/35_*.apk' 'pkgs/36_*.apk' 'pkgs/37_*.apk'
+  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools system
 else
   output="$mod_id-$version.zip"
-  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system \
-    -x 'pkgs/*fossify*.apk' 'pkgs/*Fossify*.apk' \
-    'pkgs/30_*.apk' 'pkgs/31_*.apk' 'pkgs/32_*.apk' 'pkgs/33_*.apk' \
-    'pkgs/34_*.apk' 'pkgs/35_*.apk' 'pkgs/36_*.apk' 'pkgs/37_*.apk'
+  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools system
 fi
 echo "built $output"
