@@ -19,12 +19,12 @@ com.google.android.apps.weather            # Pixel Weather
 com.google.android.apps.nbu.files          # Files by Google
 
 # --- Replaced by bundled FOSS apps ---
-com.google.android.dialer                  # -> Fossify Phone
-com.google.android.contacts                # -> Fossify Contacts
-com.google.android.calendar                # -> Fossify Calendar
-com.google.android.deskclock               # -> Fossify Clock
+com.google.android.dialer                  # -> LineageOS Dialer
+com.google.android.contacts                # -> LineageOS Contacts
+com.google.android.calendar                # -> LineageOS Calendar
+com.google.android.deskclock               # -> LineageOS DeskClock
 com.google.android.calculator              # -> CalcYou
-com.google.android.apps.messaging          # -> Fossify Messages
+com.google.android.apps.messaging          # -> LineageOS Messaging
 
 # --- WebView (CONDITIONAL, see below) ---
 com.google.android.webview                 # Google System WebView -> bundled com.android.webview

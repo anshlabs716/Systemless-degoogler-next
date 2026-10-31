@@ -35,61 +35,54 @@ fi
 # ---------------------------------------------------------------------------
 # Interactive volume-key selection
 # ---------------------------------------------------------------------------
-# Volume keys can only be read when this shell has a real input path. That is
-# true inside a custom recovery, which routes the keys to /dev/input and gives
-# the installer a terminal. It is frequently false for installs started from a
-# root manager app, where the installer shell is spawned over a pipe with no
-# terminal and often no read access to the input devices.
-#
-# We therefore detect CAPABILITY instead of naming a root manager:
-#   * stdin must be a terminal           -> [ -t 0 ]
-#   * timeout must exist, otherwise a blocked getevent never returns
-#   * getevent must exist and be executable
-#   * /dev/input must be readable
-#   * getevent must actually be able to enumerate an input device
-# If any of these fail there is no interactive input here, and the installer
-# switches to the documented automatic profile instead of blocking forever.
-
 INTERACTIVE=false
 
-input_capability_ok() {
-  command -v timeout >/dev/null 2>&1 || return 1
-  [ -x /system/bin/getevent ] || return 1
-  [ -d /dev/input ] || return 1
-  [ -r /dev/input ] || return 1
-  # `getevent -p` enumerates devices without waiting for a key press. Empty
-  # output means the shell cannot open the input devices at all.
-  [ -n "$(timeout 5 /system/bin/getevent -p 2>/dev/null | head -n 1)" ] || return 1
-  return 0
-}
-
-if [ -t 0 ] && input_capability_ok; then
+if command -v timeout >/dev/null 2>&1 && [ -x /system/bin/getevent ]; then
   INTERACTIVE=true
 fi
 
-# Reads a single volume key. Returns 0 for Volume Up, 1 for Volume Down and
-# 2 when no key arrived. The wait is bounded: at most $2 attempts of $1
-# seconds each, so the installer can never block indefinitely on key input.
+detect_vol_key() {
+  local delay=3
+  local f="$TMPDIR/vk"
+  local pid
+
+  timeout 0 /system/bin/getevent -lqc 1 2>/dev/null
+  timeout "$delay" /system/bin/getevent -lqc 1 2>&1 > "$f" &
+  pid=$!
+  sleep 0.5
+
+  if grep -q 'KEY_VOLUMEUP *DOWN' "$f" 2>/dev/null; then
+    wait "$pid" 2>/dev/null || :
+    return 0
+  elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$f" 2>/dev/null; then
+    wait "$pid" 2>/dev/null || :
+    return 1
+  fi
+
+  # Keep listening for the remainder of the bounded getevent timeout.
+  wait "$pid" 2>/dev/null || :
+  if grep -q 'KEY_VOLUMEUP *DOWN' "$f" 2>/dev/null; then
+    return 0
+  elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$f" 2>/dev/null; then
+    return 1
+  fi
+  return 2
+}
+
+# Read volume keys without depending on stdin being a terminal. Each getevent
+# listener is bounded; after a miss, stop prompting and use the safe profile.
 choose() {
-  [ "$1" ] && delay=$1 || delay=10
-  [ "$2" ] && attempts=$2 || attempts=3
+  [ "$1" ] && attempts=$1 || attempts=1
   attempt=0
   while [ "$attempt" -lt "$attempts" ]; do
     attempt=$((attempt + 1))
-    rm -f "$TMPDIR/events"
-    timeout "$delay" /system/bin/getevent -lqc 3 >"$TMPDIR/events" 2>&1 || :
-    if [ ! -s "$TMPDIR/events" ]; then
-      ui_print "- No key events seen (attempt $attempt/$attempts). Try again."
-      continue
-    fi
-    if grep -Eq 'KEY_VOLUMEUP[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000073[[:space:]]+00000001' "$TMPDIR/events"; then
-      return 0
-    elif grep -Eq 'KEY_VOLUMEDOWN[[:space:]]+(DOWN|00000001)|EV_KEY[[:space:]]+00000072[[:space:]]+00000001' "$TMPDIR/events"; then
-      return 1
-    fi
-    ui_print "- Volume key not detected (attempt $attempt/$attempts). Try again."
+    detect_vol_key
+    result=$?
+    [ "$result" -lt 2 ] && return "$result"
+    [ "$attempt" -lt "$attempts" ] && ui_print "- No volume key seen; try again."
   done
   ui_print "- No volume key after $attempts attempts; continuing automatically."
+  INTERACTIVE=false
   return 2
 }
 
@@ -275,7 +268,7 @@ process_package() {
     ui_print
     ui_print "Remove $APP_NAME?"
     ui_print "[● Volume Up: Yes] [● Volume Down: No]"
-    choose 10 2
+    choose 2
     if [ $? -ne 0 ]; then
       ui_print "- Kept $APP_NAME."
       return 0
@@ -301,8 +294,8 @@ if [ "$INTERACTIVE" = true ]; then
   ui_print "| Install the default optional-app list?"
   ui_print "| [● Volume Up: Yes]"
   ui_print "| [● Volume Down: Choose apps one by one]"
-  ui_print "| Waiting for a volume key (10s per attempt)..."
-  choose 10 3
+  ui_print "| Waiting for a volume key (up to 3s per attempt)..."
+  choose 3
   case $? in
     0) APPLY_OPTIONAL=true;  CUSTOMIZE=false ;;
     1) APPLY_OPTIONAL=true;  CUSTOMIZE=true ;;

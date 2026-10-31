@@ -41,9 +41,15 @@ if [ "$format" = ksu ]; then
   # KernelSU variant ships without the Magisk META-INF updater and carries a
   # distinct asset name so both can sit on the same release.
   output="$mod_id-$version-ksu.zip"
-  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system \
+    -x 'pkgs/*fossify*.apk' 'pkgs/*Fossify*.apk' \
+    'pkgs/30_*.apk' 'pkgs/31_*.apk' 'pkgs/32_*.apk' 'pkgs/33_*.apk' \
+    'pkgs/34_*.apk' 'pkgs/35_*.apk' 'pkgs/36_*.apk' 'pkgs/37_*.apk'
 else
   output="$mod_id-$version.zip"
-  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system \
+    -x 'pkgs/*fossify*.apk' 'pkgs/*Fossify*.apk' \
+    'pkgs/30_*.apk' 'pkgs/31_*.apk' 'pkgs/32_*.apk' 'pkgs/33_*.apk' \
+    'pkgs/34_*.apk' 'pkgs/35_*.apk' 'pkgs/36_*.apk' 'pkgs/37_*.apk'
 fi
 echo "built $output"

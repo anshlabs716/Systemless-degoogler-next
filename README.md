@@ -4,7 +4,7 @@
 
 Hey, I’m Ansh. This systemless module removes selected Google apps and reviewed OEM-app candidates, then installs alternatives I use. It keeps selected Pixel features and core Android parts, and makes room for a separate microG install.
 
-**v1.0.3 · 29 bundled APKs · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
+**v1.0.3 · 22 regular APKs + 8 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
 ## Contents
 
@@ -49,7 +49,7 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
 | Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
 | Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
-| Phone, contacts, messages, calendar, clock, files, recorder | Fossify apps | [Fossify](https://github.com/FossifyOrg) |
+| Phone, contacts, messages, calendar, clock, files, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
 | google Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
 | Google Assistant/gemini | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
 | Google Text-to-speech | RHVoice | [GitHub](https://github.com/RHVoice/RHVoice-Android) |
@@ -76,7 +76,7 @@ The lists cover **332 unique package candidates**: 67 Google/Pixel entries and 2
 |---|---|
 | Google and Pixel (67 candidates) | Files, Play Games, Assistant, Gmail, Clock, Calculator, Search, TTS, Setup Wizard, Keep, Android Auto, Maps, Weather, Recorder, Safety Hub, Photos, Meet, Play services, Docs, Work setup/DPC, YouTube, Play Store, Chrome, Lens, Movies, Music, TalkBack, Print Service, Backup and Restore, Wallet, Podcasts, Books, Magazines, TV/VR apps, Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, Android System Intelligence, Federated Compute, On-device Personalization, Ad Services, Partner Setup, Wi-Fi Calling, Switch Access, Hotword Enrollment, Location History, and related Google services. |
 | OEM and carrier (265 candidates) | Curated candidates for Samsung, Xiaomi/Redmi/POCO, OnePlus, Nothing/CMF, Fairphone, Motorola, Sony, Oppo, Vivo, Realme/iQOO, ASUS, Lenovo, Transsion brands, and carriers. Bixby and selected essential components are protected. |
-| Force list (14 Google entries) | Gmail, Google Search, Maps, Photos, Pixel Weather, Files by Google, Phone, Contacts, Calendar, Clock, Calculator, Messages, Digital Wellbeing, and Google Print Service. Gboard is masked only after another keyboard is available. |
+| Force list (15 Google entries) | Gmail, Google Search, Maps, Photos, Pixel Weather, Files by Google, Phone, Contacts, Calendar, Clock, Calculator, Messages, Digital Wellbeing, Google Print Service, and Google WebView (only when the bundled replacement is verified). Gboard is masked only after another keyboard is available. |
 
 The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and [force_packagelist.txt](force_packagelist.txt). Google Play services (GMS) is optional; select it for removal when preparing for microG.
 
@@ -84,7 +84,7 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Auto-installed apps
 
-The ZIP contains **29 APKs**, numbered consecutively `01`–`29`. Futo Keyboard is `29_futo.apk`; it is included to provide a keyboard option if Gboard is removed. Already-installed packages are skipped. The install log is `/data/adb/modules/systemless-degoogler/log.txt`.
+The ZIP contains **22 regular-app APKs**; the seven Fossify apps are replaced by the LineageOS/AOSP privileged suite in `system/priv-app`. Futo Keyboard is `29_futo.apk`; it is included to provide a keyboard option if Gboard is removed. Already-installed packages are skipped. The install log is `/data/adb/modules/systemless-degoogler/log.txt`.
 
 See [pkgs/README.md](pkgs/README.md) for the complete numbered inventory. microG and AA4MG are not bundled.
 

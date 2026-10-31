@@ -1,6 +1,6 @@
 # Bundled APKs
 
-This folder contains **29 APKs**, numbered consecutively for install order. They are installed after Android finishes booting; already-installed packages are skipped. The installer also attempts to pre-install Futo Keyboard before masking Gboard and keeps Gboard if no replacement keyboard is available.
+The ZIP includes **22 regular-app APKs**. They are installed after Android finishes booting; already-installed packages are skipped. The seven Fossify APKs are excluded because their LineageOS/AOSP replacements are shipped as privileged system apps. The installer also attempts to pre-install Futo Keyboard before masking Gboard and keeps Gboard if no replacement keyboard is available.
 
 | # | APK |
 |---:|---|
@@ -21,13 +21,6 @@ This folder contains **29 APKs**, numbered consecutively for install order. They
 | 15 | `15_dicio.apk` |
 | 16 | `16_rhvoice.apk` |
 | 17 | `17_thunderbird.apk` |
-| 18 | `18_fossifydialer.apk` |
-| 19 | `19_fossifycontacts.apk` |
-| 20 | `20_fossifymessages.apk` |
-| 21 | `21_fossifyclock.apk` |
-| 22 | `22_fossifycalendar.apk` |
-| 23 | `23_fossifyfiles.apk` |
-| 24 | `24_fossifyvoicerecorder.apk` |
 | 25 | `25_miles.apk` |
 | 26 | `26_bada.apk` |
 | 27 | `27_netguard.apk` |

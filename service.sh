@@ -44,6 +44,9 @@ for APK in "$MODDIR"/pkgs/*.apk; do
     30_*|31_*|32_*|33_*|34_*|35_*|36_*|37_*)
       echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping privileged suite $FILE (provided as system/priv-app)"
       continue ;;
+    *fossify*|*Fossify*)
+      echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping Fossify replacement $FILE (provided by the LineageOS/AOSP suite)"
+      continue ;;
   esac
 
   PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
