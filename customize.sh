@@ -36,20 +36,26 @@ fi
 # Interactive volume-key selection
 # ---------------------------------------------------------------------------
 #
-# Ported from the proven-working v1.0.2 implementation. The previous rewrite
-# silently broke this in two ways:
+# Why the earlier attempts failed (both measured on a live device):
 #
-#   1. It passed a specific device path to getevent (from `getevent -p`
-#      device enumeration). If that enumeration failed or named the wrong
-#      device, getevent read nothing and no key was ever seen. v1.0.2 passes
-#      NO device argument, so getevent listens on ALL input devices.
-#   2. It gated the whole prompt on capability probes succeeding. When a probe
-#      failed, the prompt never appeared at all. v1.0.2 prompts
-#      unconditionally.
+#   v1.0.2 style -- `getevent -lqc 1` with NO device argument:
+#     `-c 1` exits after the FIRST event from ANY device. The touchscreen
+#     emits ~333 events/sec, so this returned in 0.05s with a BTN_TOUCH line
+#     instead of waiting 10s for a volume key. The prompt looped on touch
+#     noise and a real volume press was starved out. It only appeared to work
+#     in a recovery, where the screen is idle and there is no touch flood.
 #
-# getevent reads /dev/input directly (not stdin), so there is no TTY or
-# BOOTMODE gate here. Each wait is bounded by `timeout`; on a timeout it prints
-# "Try again" and keeps looping until a volume key arrives.
+#   v1.0.3 first rewrite -- passed a device path AND gated the whole prompt
+#     on capability probes. A failed probe meant the prompt never appeared
+#     at all.
+#
+# The fix: listen to ALL devices (no device argument, so no enumeration to
+# get wrong) but FILTER the stream for volume keys with `grep -m1`. Touch
+# noise can no longer end the wait early, and `grep -m1` returns the moment a
+# volume key lands, so a correct press is answered immediately. The wait is
+# still bounded by `timeout`; on expiry it prints "Try again" and loops until
+# a volume key arrives. The prompt is shown unconditionally -- there is no
+# capability gate.
 CUSTOMIZE_ABORTED=false
 
 # Seconds to wait for a key on each attempt.
@@ -58,10 +64,12 @@ VOL_WAIT=10
 choose() {
   [ "$1" ] && delay=$1 || delay=$VOL_WAIT
   while true; do
-    timeout "$delay" /system/bin/getevent -lqc 1 >"$TMPDIR/events" 2>&1
-    if grep -q 'KEY_VOLUMEUP *DOWN' "$TMPDIR/events"; then
+    timeout "$delay" /system/bin/getevent -l 2>/dev/null \
+      | grep -m1 -E 'KEY_VOLUMEUP[[:space:]]+DOWN|KEY_VOLUMEDOWN[[:space:]]+DOWN' \
+      >"$TMPDIR/events" 2>&1
+    if grep -q 'KEY_VOLUMEUP' "$TMPDIR/events"; then
       return 0
-    elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$TMPDIR/events"; then
+    elif grep -q 'KEY_VOLUMEDOWN' "$TMPDIR/events"; then
       return 1
     fi
     ui_print "- Volume key not detected. Try again."
