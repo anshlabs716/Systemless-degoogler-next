@@ -115,3 +115,33 @@ The `systemless-degoogler-v1.0.0-ksu.zip` build is **untested on a device**. Ins
 ## Recovery ZIP
 
 A recovery-flashable degoogling ZIP is planned for a **separate repository** with separate tooling. The ZIPs here are Magisk and KernelSU module packages. The Magisk package’s `META-INF/` files are module installer files; they are not the separate recovery ZIP.
+
+---
+
+## 📁 Project Files
+
+```text
+Systemless-degoogler-next/
+├── .github/
+├── .gitignore
+├── bloat_packagelist.txt
+├── build.sh
+├── customize.sh
+├── force_packagelist.txt
+├── LICENSE
+├── META-INF/
+│   ├── com/
+│   │   ├── google/
+├── module.prop
+├── pkgs/
+│   ├── README.md
+├── README.md
+├── Screenshots/
+├── service.sh
+├── system/
+├── tests/
+│   ├── gen-privapp-allowlist.sh
+│   ├── test_lists.sh
+│   ├── test_volume.sh
+│   ├── verify-apk.sh
+```
