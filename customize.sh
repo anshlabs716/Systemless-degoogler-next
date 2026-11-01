@@ -33,48 +33,24 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Interactive volume-key selection
+# Unattended install: no prompts, no volume keys
 # ---------------------------------------------------------------------------
 #
-# Why the earlier attempts failed (both measured on a live device):
+# There is deliberately NO volume-key prompt and no getevent call anywhere in
+# this installer. Earlier versions asked one question ("apply the default
+# optional list?") and used the volume keys to answer it, but that never
+# changed WHAT gets removed -- both answers applied the same list; the keys
+# only decided whether to then ask about each app individually. The prompt was
+# therefore pure friction, and it was also fragile: getevent reads /dev/input
+# directly, so it behaved differently in a recovery (screen idle) versus the
+# Magisk/KernelSU manager (screen live, ~333 touchscreen events/sec starving
+# the wait), and any failure left the install hanging on "Waiting for a volume
+# key...".
 #
-#   v1.0.2 style -- `getevent -lqc 1` with NO device argument:
-#     `-c 1` exits after the FIRST event from ANY device. The touchscreen
-#     emits ~333 events/sec, so this returned in 0.05s with a BTN_TOUCH line
-#     instead of waiting 10s for a volume key. The prompt looped on touch
-#     noise and a real volume press was starved out. It only appeared to work
-#     in a recovery, where the screen is idle and there is no touch flood.
-#
-#   v1.0.3 first rewrite -- passed a device path AND gated the whole prompt
-#     on capability probes. A failed probe meant the prompt never appeared
-#     at all.
-#
-# The fix: listen to ALL devices (no device argument, so no enumeration to
-# get wrong) but FILTER the stream for volume keys with `grep -m1`. Touch
-# noise can no longer end the wait early, and `grep -m1` returns the moment a
-# volume key lands, so a correct press is answered immediately. The wait is
-# still bounded by `timeout`; on expiry it prints "Try again" and loops until
-# a volume key arrives. The prompt is shown unconditionally -- there is no
-# capability gate.
-CUSTOMIZE_ABORTED=false
-
-# Seconds to wait for a key on each attempt.
-VOL_WAIT=10
-
-choose() {
-  [ "$1" ] && delay=$1 || delay=$VOL_WAIT
-  while true; do
-    timeout "$delay" /system/bin/getevent -l 2>/dev/null \
-      | grep -m1 -E 'KEY_VOLUMEUP[[:space:]]+DOWN|KEY_VOLUMEDOWN[[:space:]]+DOWN' \
-      >"$TMPDIR/events" 2>&1
-    if grep -q 'KEY_VOLUMEUP' "$TMPDIR/events"; then
-      return 0
-    elif grep -q 'KEY_VOLUMEDOWN' "$TMPDIR/events"; then
-      return 1
-    fi
-    ui_print "- Volume key not detected. Try again."
-  done
-}
+# The install is now fully automatic and idempotent:
+#   * force list      -> always removed, never asked
+#   * optional list   -> always applied, never asked
+#   * bundled pkgs/   -> always installed by service.sh at boot
 
 # Only process the reviewed static list. This list covers Google apps, OEM
 # bloat from brands with OEM-unlockable bootloaders (Samsung, Xiaomi,
@@ -151,10 +127,6 @@ process_package() {
   PACKAGE_NAME=${PACKAGE_NAME%%#*}
   PACKAGE_NAME=$(printf '%s' "$PACKAGE_NAME" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
   case "$PACKAGE_NAME" in '') return 0 ;; esac
-
-  if [ "$FORCED" != true ] && [ "$CUSTOMIZE_ABORTED" = true ]; then
-    return 0
-  fi
 
   # Protect Bixby on Samsung and other essential OEM services. Bixby is
   # preserved per user policy and must never be removed.
@@ -254,19 +226,10 @@ process_package() {
     [ -n "$LABEL" ] && APP_NAME=$LABEL
   fi
 
-  # Per-app review only runs when this environment can actually read volume
-  # keys, and only for optional (non-forced) packages. The safe default is to
-  # KEEP the package: we only mask it after an explicit Volume Up. A timeout,
-  # an unreadable key event or an unrecognised key all fall through to "keep".
-  if [ "$FORCED" != true ] && [ "$CUSTOMIZE" = true ]; then
-    ui_print
-    ui_print "Remove $APP_NAME?"
-    ui_print "[● Volume Up: Yes] [● Volume Down: No]"
-    if ! choose "$VOL_WAIT"; then
-      ui_print "- Kept $APP_NAME."
-      return 0
-    fi
-  fi
+  # Unattended install: every optional package is removed without asking.
+  # There is no volume-key prompt here -- see the header note. Only optional
+  # (non-forced) packages reach this point at all; force-removed packages
+  # return earlier via their own path.
 
   case "$APP_PATH_FOLDER" in
     /system/*) ;;
@@ -279,22 +242,7 @@ process_package() {
 }
 
 ui_print
-# The interactive selection menu. Prompted unconditionally, exactly as in the
-# proven-working v1.0.2: choose() loops until a volume key arrives, so there
-# is no silent non-interactive fallback that skips the prompt entirely.
-ui_print "| Install the default optional-app list?"
-ui_print "| [● Volume Up: Yes]"
-ui_print "| [● Volume Down: Choose apps one by one]"
-ui_print "| Waiting for a volume key..."
-if choose "$VOL_WAIT"; then
-  # Volume Up: apply the default optional list, no per-app prompts.
-  APPLY_OPTIONAL=true
-  CUSTOMIZE=false
-else
-  # Volume Down: apply the optional list, asking about each app.
-  APPLY_OPTIONAL=true
-  CUSTOMIZE=true
-fi
+ui_print "| Unattended install: applying the full removal list, no prompts."
 
 # 0. Futo Keyboard. Pre-install the bundled Futo Keyboard APK so that
 #    ensure_keyboard() below can detect and enable it. This runs during
@@ -331,18 +279,12 @@ if [ -f "$force_list" ]; then
   done < "$force_list"
 fi
 
-# 3. Reviewed optional list. Only walked when the installer actually offered
-#    the selection menu and the user chose to proceed. In the automatic
-#    (non-interactive) profile this list is deliberately left untouched: the
-#    user never consented to it, and silently stripping dozens of optional
-#    apps from an unattended install is not safe. The force list below still
-#    runs, so the documented automatic profile is exactly the force list.
-if [ "$APPLY_OPTIONAL" = true ] && [ -f "$debloat_list" ]; then
+# 3. Optional list. Always applied: the install is unattended and never asks
+#    whether to proceed. Force-removed packages were already handled above.
+if [ -f "$debloat_list" ]; then
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"
-elif [ "$APPLY_OPTIONAL" != true ]; then
-  ui_print "- Automatic profile: optional list skipped (force list still applied)."
 fi
 
 # 4. Duplicate Proton Pass: keep the regular build, disable the F-Droid build.
