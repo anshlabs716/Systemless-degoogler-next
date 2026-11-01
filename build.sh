@@ -25,33 +25,40 @@ for tool in aapt aapt64; do
 done
 chmod 755 service.sh
 
-# system/ carries all regular and privileged APKs in their system app slots.
+# Layout:
+#   system/app/       MILES only (the module's own system app)
+#   system/priv-app/  the privileged LineageOS/AOSP suite (must be priv-app)
+#   pkgs/             FOSS replacements, installed as REGULAR apps via pm
 [ -d system ] || { echo "system/ directory is missing; cannot build" >&2; exit 1; }
-regular_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
-if [ "$regular_count" -ne 24 ]; then
-  echo "expected 24 APKs under system/app, found $regular_count" >&2
+
+system_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
+if [ "$system_count" -ne 1 ]; then
+  echo "expected exactly 1 APK under system/app (MILES), found $system_count" >&2
   find system/app -type f -name '*.apk' 2>/dev/null >&2
   exit 1
 fi
+
 priv_count=$(find system/priv-app -type f -name '*.apk' 2>/dev/null | wc -l)
 if [ "$priv_count" -ne 7 ]; then
   echo "expected 7 APKs under system/priv-app, found $priv_count" >&2
   find system/priv-app -name '*.apk' 2>/dev/null >&2
   exit 1
 fi
-[ -z "$(find pkgs -type f -name '*.apk' -print -quit 2>/dev/null)" ] || {
-  echo "APK files must be staged only under system/app or system/priv-app" >&2
+
+foss_count=$(find pkgs -type f -name '*.apk' 2>/dev/null | wc -l)
+if [ "$foss_count" -lt 1 ]; then
+  echo "expected FOSS replacement APKs under pkgs/, found $foss_count" >&2
   exit 1
-}
+fi
 
 rm -f "$mod_id-$version.zip" "$mod_id-$version-ksu.zip"
 if [ "$format" = ksu ]; then
   # KernelSU variant ships without the Magisk META-INF updater and carries a
   # distinct asset name so both can sit on the same release.
   output="$mod_id-$version-ksu.zip"
-  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools system
+  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
 else
   output="$mod_id-$version.zip"
-  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools system
+  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
 fi
 echo "built $output"
