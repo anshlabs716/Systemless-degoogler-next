@@ -123,55 +123,46 @@ A recovery-flashable degoogling ZIP is planned for a **separate repository** wit
 ```text
 Systemless-degoogler-next/
 ├── .github/
+│   └── workflows/
+│       └── release.yml
 ├── .gitignore
 ├── bloat_packagelist.txt
 ├── build.sh
 ├── customize.sh
 ├── force_packagelist.txt
-├── LICENSE
-├── META-INF/
-│   ├── com/
-│   │   ├── google/
-├── module.prop
-├── pkgs/
-│   ├── README.md
-├── README.md
-├── Screenshots/
-├── service.sh
-├── system/
-├── tests/
-│   ├── gen-privapp-allowlist.sh
-│   ├── test_lists.sh
-│   ├── test_volume.sh
-│   ├── verify-apk.sh
-```
-
----
-
-## 📁 Project Files
-
-```text
-Systemless-degoogler-next/
-├── .github/
-├── .gitignore
 ├── LICENSE
 ├── META-INF/
 │   └── com/
 │       └── google/
-├── README.md
-├── Screenshots/
-├── bloat_packagelist.txt
-├── build.sh
-├── customize.sh
-├── force_packagelist.txt
 ├── module.prop
 ├── pkgs/
 │   └── README.md
+├── README.md
+├── Screenshots/
+│   ├── Installation/
+│   │   ├── Custom.jpg
+│   │   ├── Default-1.jpg
+│   │   ├── Default-2.jpg
+│   │   └── Waiting.jpg
+│   ├── MIUI10/
+│   │   ├── 1.jpg
+│   │   └── 2.jpg
+│   ├── MIUI11/
+│   │   ├── 1.jpg
+│   │   └── 2.jpg
+│   └── MIUI12.5/
+│       ├── 1.jpg
+│       └── 2.jpg
 ├── service.sh
 ├── system/
+│   └── etc/
+│       └── permissions/
 └── tests/
     ├── gen-privapp-allowlist.sh
     ├── test_lists.sh
     ├── test_volume.sh
     └── verify-apk.sh
 ```
+
+---
+
