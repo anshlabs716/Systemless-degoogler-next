@@ -36,114 +36,36 @@ fi
 # Interactive volume-key selection
 # ---------------------------------------------------------------------------
 #
-# Capability, not environment: volume keys are offered whenever this install
-# can actually read them, whether that is custom recovery or the Magisk/KernelSU
-# manager. getevent reads /dev/input directly, NOT stdin, so there is no
-# terminal/TTY test here and no BOOTMODE/OUTFD gate -- either the input device
-# is readable or it is not. When it is not, no prompt is shown at all and the
-# automatic profile runs, so an install can never block waiting for input that
-# cannot arrive.
+# Ported from the proven-working v1.0.2 implementation. The previous rewrite
+# silently broke this in two ways:
 #
-# Every wait is bounded by `timeout`, and the retry loop is bounded by an
-# attempt count, so this logic terminates no matter what.
-INTERACTIVE=false
+#   1. It passed a specific device path to getevent (from `getevent -p`
+#      device enumeration). If that enumeration failed or named the wrong
+#      device, getevent read nothing and no key was ever seen. v1.0.2 passes
+#      NO device argument, so getevent listens on ALL input devices.
+#   2. It gated the whole prompt on capability probes succeeding. When a probe
+#      failed, the prompt never appeared at all. v1.0.2 prompts
+#      unconditionally.
+#
+# getevent reads /dev/input directly (not stdin), so there is no TTY or
+# BOOTMODE gate here. Each wait is bounded by `timeout`; on a timeout it prints
+# "Try again" and keeps looping until a volume key arrives.
 CUSTOMIZE_ABORTED=false
-VOL_DEV=""
 
-# One volume-key window in seconds, and how many times to re-ask before
-# giving up. 10s to answer, then "Try again" and re-prompt.
+# Seconds to wait for a key on each attempt.
 VOL_WAIT=10
-VOL_ATTEMPTS=6
 
-find_volume_device() {
-  # getevent -p prints, per device:
-  #   add device 4: /dev/input/event4
-  #     name:     gpio-keys
-  #     KEY (0001): 0072 0073
-  # 0072 = volume down, 0073 = volume up. Match either so a device that only
-  # exposes one of them is still detected.
-  awk '
-    /add device/ { device=$NF }
-    /KEY \(0001\):/ && device != "" &&
-      ($0 ~ /(^|[[:space:]])0073([[:space:]]|$)/ ||
-       $0 ~ /(^|[[:space:]])0072([[:space:]]|$)/) {
-      print device
-      exit
-    }
-  ' "$1"
-}
-
-# Returns 0 when a volume device can be enumerated. This is the only gate on
-# interactivity.
-input_capability_ok() {
-  command -v timeout >/dev/null 2>&1 || return 1
-  [ -x /system/bin/getevent ] || return 1
-  [ -r /dev/input ] || return 1
-  return 0
-}
-
-if input_capability_ok; then
-  # Give the input stack a moment to settle, then locate a volume device.
-  sleep 2
-  timeout 3 /system/bin/getevent -p > "$TMPDIR/input-devices" 2>/dev/null
-  VOL_DEV=$(find_volume_device "$TMPDIR/input-devices")
-  [ -n "$VOL_DEV" ] && INTERACTIVE=true
-fi
-
-# Classify one captured getevent line as volume up (0), volume down (1), or
-# not a volume key (2). getevent -l emits one of two shapes:
-#   labelled : /dev/input/event4: EV_KEY  KEY_VOLUMEUP   DOWN
-#   hex      : /dev/input/event4: EV_KEY  00000073        00000001
-# Both are handled; keycodes 0073 (up) and 0072 (down) are the Linux input
-# codes for the volume keys, and value 00000001 / DOWN means press.
-classify_event() {
-  local line
-  line=$(cat "$1" 2>/dev/null)
-  case "$line" in
-    *KEY_VOLUMEDOWN*)                       return 1 ;;
-    *KEY_VOLUMEUP*)                         return 0 ;;
-  esac
-  case "$line" in
-    *00000073*00000001*|*"0073 00000001"*)  return 0 ;;
-    *00000072*00000001*|*"0072 00000001"*)  return 1 ;;
-    *"EV_KEY 00000073"*)                    return 0 ;;
-    *"EV_KEY 00000072"*)                    return 1 ;;
-  esac
-  return 2
-}
-
-# Read exactly one bounded volume-key window. Returns 0 = up, 1 = down,
-# 2 = nothing usable. Never blocks longer than $VOL_WAIT seconds, because
-# `timeout` sends SIGTERM to getevent when the window closes.
-detect_vol_key() {
-  local f="$TMPDIR/vk"
-
-  rm -f "$f"
-  timeout "$VOL_WAIT" /system/bin/getevent -lqc 1 "$VOL_DEV" > "$f" 2>/dev/null
-
-  classify_event "$f"
-}
-
-# Ask once per attempt, up to $2 attempts of $VOL_WAIT seconds each. On each
-# timeout it prints "Try again" and re-asks. Returns 0 = up, 1 = down, and 2
-# when the attempts are exhausted, so the caller can fall back safely.
 choose() {
-  local attempts=${2:-$VOL_ATTEMPTS}
-  local delay=${1:-$VOL_WAIT}
-  local attempt=1
-  local result
-
-  VOL_WAIT=$delay
-  while [ "$attempt" -le "$attempts" ]; do
-    result=2
-    detect_vol_key
-    result=$?
-    [ "$result" -lt 2 ] && return "$result"
-    ui_print "- No key events seen (attempt $attempt/$attempts). Try again."
-    attempt=$((attempt + 1))
+  [ "$1" ] && delay=$1 || delay=$VOL_WAIT
+  while true; do
+    timeout "$delay" /system/bin/getevent -lqc 1 >"$TMPDIR/events" 2>&1
+    if grep -q 'KEY_VOLUMEUP *DOWN' "$TMPDIR/events"; then
+      return 0
+    elif grep -q 'KEY_VOLUMEDOWN *DOWN' "$TMPDIR/events"; then
+      return 1
+    fi
+    ui_print "- Volume key not detected. Try again."
   done
-  ui_print "- Volume key not detected after $attempts attempts; continuing automatically."
-  return 2
 }
 
 # Only process the reviewed static list. This list covers Google apps, OEM
@@ -328,16 +250,11 @@ process_package() {
   # keys, and only for optional (non-forced) packages. The safe default is to
   # KEEP the package: we only mask it after an explicit Volume Up. A timeout,
   # an unreadable key event or an unrecognised key all fall through to "keep".
-  if [ "$FORCED" != true ] && [ "$CUSTOMIZE" = true ] && [ "$INTERACTIVE" = true ]; then
+  if [ "$FORCED" != true ] && [ "$CUSTOMIZE" = true ]; then
     ui_print
     ui_print "Remove $APP_NAME?"
     ui_print "[● Volume Up: Yes] [● Volume Down: No]"
-    ui_print "- Waiting up to ${VOL_WAIT}s..."
-    # One bounded window per app; a timeout keeps the app (safe default).
-    # choose() returns 2 on timeout and never blocks past the window.
-    choose "$VOL_WAIT" 1 >/dev/null 2>&1
-    KEY_RESULT=$?
-    if [ "$KEY_RESULT" -ne 0 ]; then
+    if ! choose "$VOL_WAIT"; then
       ui_print "- Kept $APP_NAME."
       return 0
     fi
@@ -354,27 +271,21 @@ process_package() {
 }
 
 ui_print
-# The interactive selection menu. When this shell cannot read volume keys we
-# do not prompt at all: the installer continues immediately with the automatic
-# profile (force list applied, optional list left unchanged) instead of
-# waiting for input that can never arrive.
-if [ "$INTERACTIVE" = true ]; then
-  ui_print "| Install the default optional-app list?"
-  ui_print "| [● Volume Up: Yes]"
-  ui_print "| [● Volume Down: Choose apps one by one]"
-  ui_print "| Waiting for a volume key (up to ${VOL_WAIT}s, re-asking ${VOL_ATTEMPTS}x)..."
-  choose
-  case $? in
-    0) APPLY_OPTIONAL=true;  CUSTOMIZE=false ;;
-    1) APPLY_OPTIONAL=true;  CUSTOMIZE=true ;;
-    *) APPLY_OPTIONAL=false; CUSTOMIZE=false ;;
-  esac
-else
-  ui_print "| No interactive terminal for volume keys in this environment."
-  ui_print "| Automatic profile: force list applied, optional list left unchanged."
-  ui_print "| Install from custom recovery to choose optional apps with volume keys."
-  APPLY_OPTIONAL=false
+# The interactive selection menu. Prompted unconditionally, exactly as in the
+# proven-working v1.0.2: choose() loops until a volume key arrives, so there
+# is no silent non-interactive fallback that skips the prompt entirely.
+ui_print "| Install the default optional-app list?"
+ui_print "| [● Volume Up: Yes]"
+ui_print "| [● Volume Down: Choose apps one by one]"
+ui_print "| Waiting for a volume key..."
+if choose "$VOL_WAIT"; then
+  # Volume Up: apply the default optional list, no per-app prompts.
+  APPLY_OPTIONAL=true
   CUSTOMIZE=false
+else
+  # Volume Down: apply the optional list, asking about each app.
+  APPLY_OPTIONAL=true
+  CUSTOMIZE=true
 fi
 
 # 0. Futo Keyboard. Pre-install the bundled Futo Keyboard APK so that
