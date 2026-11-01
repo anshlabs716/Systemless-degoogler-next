@@ -145,3 +145,33 @@ Systemless-degoogler-next/
 │   ├── test_volume.sh
 │   ├── verify-apk.sh
 ```
+
+---
+
+## 📁 Project Files
+
+```text
+Systemless-degoogler-next/
+├── .github/
+├── .gitignore
+├── LICENSE
+├── META-INF/
+│   └── com/
+│       └── google/
+├── README.md
+├── Screenshots/
+├── bloat_packagelist.txt
+├── build.sh
+├── customize.sh
+├── force_packagelist.txt
+├── module.prop
+├── pkgs/
+│   └── README.md
+├── service.sh
+├── system/
+└── tests/
+    ├── gen-privapp-allowlist.sh
+    ├── test_lists.sh
+    ├── test_volume.sh
+    └── verify-apk.sh
+```
