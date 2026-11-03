@@ -91,6 +91,46 @@ for APK in "$MODDIR"/pkgs/*.apk; do
   fi
 done
 
+# Grant every runtime permission the bundled privileged apps request.
+#
+# A app built INTO the ROM has its dangerous permissions granted at first boot
+# by the role/permission managers, so it never asks. An app dropped in by a
+# module does not, which is why the Lineage suite used to fire a wall of
+# permission dialogs on first use. Granting them here makes Contacts, Dialer,
+# Messaging, Clock, Etar, Recorder and WebView behave like the stock apps they
+# replace.
+#
+# pm grant only accepts permissions that are both requested by the app and
+# declared `dangerous`; anything else returns an error, which is harmless and
+# counted rather than logged, so the log stays small.
+PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
+com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview"
+
+GRANTED=0
+GRANT_ALREADY=0
+GRANT_FAILED=0
+for P in $PRIV_PKGS; do
+  pm path "$P" >/dev/null 2>&1 || continue
+
+  # dumpsys lists each permission state as "android.permission.X: granted=Y".
+  # Only those are grantable candidates; declared/requested-only entries lack
+  # the marker and are ignored.
+  PERMS=$(dumpsys package "$P" 2>/dev/null \
+    | grep -oE 'android\.permission\.[A-Za-z0-9_]+: granted=' \
+    | sed 's/: granted=$//' | sort -u)
+
+  for M in $PERMS; do
+    if pm grant "$P" "$M" >/dev/null 2>&1; then
+      GRANTED=$((GRANTED + 1))
+    else
+      # Already granted, or not a runtime permission (install-time /
+      # signature). Both are the desired end state, so count together.
+      GRANT_ALREADY=$((GRANT_ALREADY + 1))
+    fi
+  done
+done
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Runtime permissions granted: $GRANTED new, $GRANT_ALREADY already granted/not runtime, $GRANT_FAILED errors"
+
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Pass finished: $INSTALLED installed, $PRESENT already present, $SKIPPED skipped, $FAILED failed"
 
 # NOTE (v1.0.3): the launcher swap that used to live here is gone for good.

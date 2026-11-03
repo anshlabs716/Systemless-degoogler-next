@@ -97,6 +97,59 @@ for pat in 'bixby' 'essential Samsung service' 'essential Xiaomi service'; do
   grep -qiF "$pat" "$CS" && ok "kept: $pat" || bad "missing: $pat"
 done
 
+echo "=== 11. masks are ACTUALLY created (the bug that let all Google apps survive) ==="
+# Every release up to now collected paths into $REMOVE, printed "Systemlessly
+# masked", then wrote them to .lastremove -- a file nothing reads. No mask was
+# ever made, so no system app was ever removed. Magisk/KernelSU only hide an
+# app when a file named `.replace` exists in the module folder.
+if code | grep -q '\.replace'; then
+  ok "creates .replace (magic mount mask)"
+else
+  bad "no .replace created -> removal is a no-op again"
+fi
+if code | grep -q 'mkdir -p "\$DEST"'; then
+  ok "creates the destination folder first"
+else
+  bad "does not create the mask folder"
+fi
+if code | grep -q 'find "\$DEST" -maxdepth 1 -name .\*\.apk'; then
+  ok "guards folders holding our own APKs"
+else
+  bad "no guard -> could mask our own bundled apps"
+fi
+
+echo "=== 12. updated (/data/app) Google apps are removed, not skipped ==="
+# Play Store updates move Google apps into /data/app where a systemless mask
+# cannot reach them. Gating this on FORCED is why optional Google apps
+# survived. The bundled replacements are asserted off these lists by
+# tests/test_lists.sh, so removing every listed package is safe.
+if code | grep -A12 '/data/app/\*)' | grep -q 'pm uninstall --user 0'; then
+  ok "uninstalls listed /data/app packages"
+else
+  bad "no pm uninstall in the /data/app branch"
+fi
+if code | grep -A12 '/data/app/\*)' | grep -q 'Skipped updated/user-installed'; then
+  bad "still skips optional updated packages"
+else
+  ok "no skip branch left for optional packages"
+fi
+
+echo "=== 13. runtime permissions auto-granted at boot ==="
+SRV="$ROOT/service.sh"
+grep -q 'pm grant' "$SRV" && ok "service.sh runs pm grant" || bad "service.sh never grants permissions"
+grep -q 'PRIV_PKGS=' "$SRV" && ok "targets the bundled priv-apps" || bad "no PRIV_PKGS list"
+MISSING=""
+for p in com.android.contacts com.android.deskclock com.android.dialer \
+         com.android.messaging org.lineageos.etar org.lineageos.recorder \
+         com.android.webview; do
+  grep -q "$p" "$SRV" || MISSING="$MISSING $p"
+done
+if [ -n "$MISSING" ]; then
+  bad "missing from grant list:$MISSING"
+else
+  ok "grant list covers all 7 bundled priv-apps"
+fi
+
 echo
 [ "$fail" = 0 ] && echo "ALL UNATTENDED-INSTALL TESTS PASSED" || echo "THERE WERE FAILURES"
 exit "$fail"

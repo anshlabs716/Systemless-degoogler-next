@@ -205,17 +205,18 @@ process_package() {
       ui_print "- Skipped APEX package $PACKAGE_NAME."
       return 0 ;;
     /data/app/*)
-      # An update moved this APK out of the system image, so a systemless mask
-      # can never reach it. Force-removed packages fall back to disabling the
-      # app for user 0; optional ones stay untouched.
-      if [ "$FORCED" = true ]; then
-        if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
-          ui_print "- Disabled updated build of $PACKAGE_NAME (user 0)."
-        else
-          ui_print "- Failed to disable $PACKAGE_NAME."
-        fi
+      # A Play Store update moved this APK out of the system image, so a
+      # systemless mask can never reach it -- the mask only covers /system.
+      # This is where most Google apps end up on a phone that has been used
+      # for a while, and leaving them here is exactly why "ALL the Google
+      # stuff" used to survive the install. Every listed package is therefore
+      # uninstalled for user 0, not just the force list. Bundled replacements
+      # are never on these lists (tests/test_lists.sh asserts that), so this
+      # cannot remove an app this module ships.
+      if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
+        ui_print "- Removed updated build of $PACKAGE_NAME (user 0)."
       else
-        ui_print "- Skipped updated/user-installed app $PACKAGE_NAME; no data was changed."
+        ui_print "- Failed to remove updated build of $PACKAGE_NAME."
       fi
       return 0 ;;
   esac
@@ -300,6 +301,40 @@ if pm path proton.android.pass >/dev/null 2>&1 && pm path "$DUP_PASS" >/dev/null
 else
   ui_print "- No duplicate Proton Pass build detected; nothing changed."
 fi
+
+# 5. Actually apply the masks.
+#
+# process_package() above collected each system app's folder into $REMOVE and
+# printed "Systemlessly masked", but for every release until now those paths
+# were only written to .lastremove -- a file NOTHING reads. No mask was ever
+# created, so no system app was ever removed: every Google app survived the
+# install, Google WebView included. This block is what makes removal real.
+#
+# Magisk and KernelSU honour a file named `.replace` inside a module folder:
+# magic mount then mounts an EMPTY directory over the real one, hiding the app
+# systemlessly. Removing the module restores it, which is what "systemless"
+# is supposed to mean.
+MASKED=0
+KEPT_SELF=0
+for APP in $REMOVE; do
+  REL=${APP#/system/}
+  DEST="$MODPATH/system/$REL"
+
+  # Never mask a folder this module ships its own APK into. Our bundled
+  # replacements (Dialer, Contacts, DeskClock, Messaging, WebView, ...) often
+  # live at the SAME path as the stock app they replace; masking there would
+  # delete our own APK along with the stock one. Mounting ours over the stock
+  # app already achieves the replacement, so skipping is correct.
+  if [ -n "$(find "$DEST" -maxdepth 1 -name '*.apk' 2>/dev/null)" ]; then
+    KEPT_SELF=$((KEPT_SELF + 1))
+    continue
+  fi
+
+  mkdir -p "$DEST" 2>/dev/null || continue
+  : > "$DEST/.replace"
+  MASKED=$((MASKED + 1))
+done
+ui_print "- Systemless masks applied: $MASKED (skipped folders holding our own APKs: $KEPT_SELF)."
 
 printf '%s\n' "$REMOVE" > "$MODPATH/.lastremove"
 ui_print "- Done. Reboot to apply the module."

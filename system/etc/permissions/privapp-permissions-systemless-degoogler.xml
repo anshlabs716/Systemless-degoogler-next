@@ -12,6 +12,7 @@
     </privapp-permissions>
     <privapp-permissions package="com.android.dialer">
         <permission name="android.permission.ALLOW_ANY_CODEC_FOR_PLAYBACK"/>
+        <permission name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"/>
         <permission name="android.permission.CAPTURE_AUDIO_OUTPUT"/>
         <permission name="android.permission.CONNECTIVITY_USE_RESTRICTED_NETWORKS"/>
         <permission name="android.permission.CONTROL_INCALL_EXPERIENCE"/>
@@ -23,13 +24,7 @@
         <permission name="com.android.voicemail.permission.READ_VOICEMAIL"/>
         <permission name="com.android.voicemail.permission.WRITE_VOICEMAIL"/>
     </privapp-permissions>
-    <privapp-permissions package="com.android.messaging">
-    </privapp-permissions>
-    <privapp-permissions package="com.android.webview">
-    </privapp-permissions>
     <privapp-permissions package="org.lineageos.etar">
         <permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    </privapp-permissions>
-    <privapp-permissions package="org.lineageos.recorder">
     </privapp-permissions>
 </permissions>

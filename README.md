@@ -27,11 +27,13 @@ The module does not install microG. Install it separately if needed: [microG set
 
 Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data and keep a recovery route available.
 
+Removal is applied two ways, because one is not enough on its own: apps still in the system image are hidden with a `.replace` mask (restored when the module is removed), while apps a Play Store update moved into `/data/app` are uninstalled for user 0, since a systemless mask cannot reach them there. Google WebView is replaced by the bundled open-source WebView.
+
 ## Install
 
 1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
 2. The install is fully unattended: it applies the full removal list (force plus optional) and installs the bundled apps without asking any questions. There are no volume-key prompts.
-3. Reboot. Bundled system apps become available as Android finishes booting.
+3. Reboot. Bundled system apps become available as Android finishes booting. The boot service then grants the bundled privileged apps their runtime permissions, so Contacts, Dialer, Messaging, Clock, Etar, Recorder and WebView behave like the stock apps they replace instead of prompting for permission on first use.
 4. Install microG separately if you want it.
 
 The module leaves the stock launcher enabled. To hide its search bar, long-press the home screen and turn off the bar in launcher settings.
@@ -93,7 +95,7 @@ The ZIP contains **24 regular-app APKs** and **7 privileged LineageOS/AOSP apps*
 | DeskClock | 16 |
 | Dialer | 23.0 |
 | Messaging | 1.0.001 |
-| WebView | 155.0.8059.39 |
+| WebView | 153.0.8010.37 |
 | Etar Calendar | 14 |
 | Recorder | 16 |
 

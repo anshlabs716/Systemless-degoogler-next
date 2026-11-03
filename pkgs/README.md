@@ -42,6 +42,6 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | DeskClock | `com.android.deskclock` | `system/priv-app/DeskClock/DeskClock.apk` | 16 |
 | Dialer | `com.android.dialer` | `system/priv-app/Dialer/Dialer.apk` | 23.0 |
 | Messaging | `com.android.messaging` | `system/priv-app/Messaging/Messaging.apk` | 1.0.001 |
-| WebView | `com.android.webview` | `system/priv-app/WebView/WebView.apk` | 155.0.8059.39 |
+| WebView | `com.android.webview` | `system/priv-app/WebView/WebView.apk` | 153.0.8010.37 |
 | Etar Calendar | `org.lineageos.etar` | `system/priv-app/Etar/Etar.apk` | 14 |
 | Recorder | `org.lineageos.recorder` | `system/priv-app/Recorder/Recorder.apk` | 16 |
