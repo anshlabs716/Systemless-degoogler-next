@@ -194,30 +194,35 @@ process_package() {
       return 0 ;;
   esac
 
-  APP_PATH=$(pm path "$PACKAGE_NAME" 2>/dev/null | sed -n '1s/^package://p')
-  [ -n "$APP_PATH" ] || return 0
-  APP_PATH_FOLDER=${APP_PATH%/*}
-
-  # APEX modules and core Android settings/overlay infrastructure are outside
-  # this app-masker's scope. Never delete user app data or updated APKs.
-  case "$APP_PATH_FOLDER" in
-    /apex/*)
-      ui_print "- Skipped APEX package $PACKAGE_NAME."
-      return 0 ;;
-    /data/app/*)
-      # A Play Store update moved this APK out of the system image, so a
-      # systemless mask can never reach it -- the mask only covers /system.
-      # This is where most Google apps end up on a phone that has been used
-      # for a while, and leaving them here is exactly why "ALL the Google
-      # stuff" used to survive the install. Every listed package is therefore
-      # uninstalled for user 0, not just the force list. Bundled replacements
-      # are never on these lists (tests/test_lists.sh asserts that), so this
-      # cannot remove an app this module ships.
+  # Read EVERY path, not just the first. An updated system app reports both
+  # its original system path and the Play Store update in /data/app; keeping
+  # only line 1 meant that when the system path came first, the update was
+  # never touched -- the mask hid the system copy while the updated Google
+  # app kept running, another way "ALL the Google stuff" survived. Any
+  # /data/app hit now uninstalls the package for user 0, which drops the
+  # update and disables the system copy in one step. Bundled replacements
+  # are never on these lists (tests/test_lists.sh asserts that), so this
+  # cannot remove an app this module ships.
+  APP_PATHS=$(pm path "$PACKAGE_NAME" 2>/dev/null | sed 's/^package://')
+  [ -n "$APP_PATHS" ] || return 0
+  case "$APP_PATHS" in
+    *"/data/app/"*)
       if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
         ui_print "- Removed updated build of $PACKAGE_NAME (user 0)."
       else
         ui_print "- Failed to remove updated build of $PACKAGE_NAME."
       fi
+      return 0 ;;
+  esac
+
+  APP_PATH=$(printf '%s\n' "$APP_PATHS" | sed -n '1p')
+  APP_PATH_FOLDER=${APP_PATH%/*}
+
+  # APEX modules and core Android settings/overlay infrastructure are outside
+  # this app-masker's scope.
+  case "$APP_PATH_FOLDER" in
+    /apex/*)
+      ui_print "- Skipped APEX package $PACKAGE_NAME."
       return 0 ;;
   esac
 

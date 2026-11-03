@@ -120,15 +120,27 @@ fi
 
 echo "=== 12. updated (/data/app) Google apps are removed, not skipped ==="
 # Play Store updates move Google apps into /data/app where a systemless mask
-# cannot reach them. Gating this on FORCED is why optional Google apps
-# survived. The bundled replacements are asserted off these lists by
-# tests/test_lists.sh, so removing every listed package is safe.
-if code | grep -A12 '/data/app/\*)' | grep -q 'pm uninstall --user 0'; then
+# cannot reach them. An updated system app reports BOTH its system path and
+# the update, so every pm path line must be inspected: reading only the first
+# let the update survive whenever the system path came first. The bundled
+# replacements are asserted off these lists by tests/test_lists.sh, so
+# removing every listed package is safe.
+if code | grep -q '\*"/data/app/"\*'; then
+  ok "matches /data/app across ALL pm path lines"
+else
+  bad "does not scan every pm path line"
+fi
+if code | grep -q "sed -n '1s/\^package://p'"; then
+  bad "still reads only the first pm path line"
+else
+  ok "no first-line-only pm path read"
+fi
+if code | grep -A8 '"/data/app/"' | grep -q 'pm uninstall --user 0'; then
   ok "uninstalls listed /data/app packages"
 else
-  bad "no pm uninstall in the /data/app branch"
+  bad "no pm uninstall for /data/app packages"
 fi
-if code | grep -A12 '/data/app/\*)' | grep -q 'Skipped updated/user-installed'; then
+if code | grep -q 'Skipped updated/user-installed'; then
   bad "still skips optional updated packages"
 else
   ok "no skip branch left for optional packages"
