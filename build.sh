@@ -26,14 +26,14 @@ done
 chmod 755 service.sh
 
 # Layout:
-#   system/app/       MILES only (the module's own system app)
+#   system/app/       empty (MILES is a regular app in pkgs/, not a system app)
 #   system/priv-app/  the privileged LineageOS/AOSP suite (must be priv-app)
 #   pkgs/             FOSS replacements, installed as REGULAR apps via pm
 [ -d system ] || { echo "system/ directory is missing; cannot build" >&2; exit 1; }
 
 system_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
-if [ "$system_count" -ne 1 ]; then
-  echo "expected exactly 1 APK under system/app (MILES), found $system_count" >&2
+if [ "$system_count" -ne 0 ]; then
+  echo "expected no APKs under system/app (MILES moved to pkgs/), found $system_count" >&2
   find system/app -type f -name '*.apk' 2>/dev/null >&2
   exit 1
 fi

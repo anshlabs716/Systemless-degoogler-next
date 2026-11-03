@@ -46,9 +46,9 @@ SKIPPED=0
 FAILED=0
 
 # The FOSS replacement apps ship under pkgs/ and are installed as REGULAR
-# apps (via pm install), not as system apps. Only MILES lives in system/app
-# and the privileged LineageOS suite in system/priv-app; both are mounted by
-# the root manager and must never be pm-installed here.
+# apps (via pm install), not as system apps. Only the privileged LineageOS
+# suite lives in system/priv-app; it is mounted by the root manager and
+# must never be pm-installed here.
 for APK in "$MODDIR"/pkgs/*.apk; do
   [ -f "$APK" ] || continue
   FILE=${APK##*/}

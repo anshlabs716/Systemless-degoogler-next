@@ -21,7 +21,7 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Fossify Files | `org.fossify.filemanager` | `system/app/FossifyFiles/FossifyFiles.apk` | 1.6.3 |
 | Ente Photos | `io.ente.photos.fdroid` | `system/app/EntePhotos/EntePhotos.apk` | 1.3.66 |
 | Futo Keyboard | `org.futo.inputmethod.latin` | `system/app/Futo/Futo.apk` | 0.1.30 |
-| MILES | `com.aistudio.miles.track` | `system/app/Miles/Miles.apk` | 1.1.3 |
+| MILES | `com.aistudio.miles.track` | `pkgs/31_miles.apk` | 1.1.3 |
 | Thunderbird | `net.thunderbird.android` | `system/app/Thunderbird/Thunderbird.apk` | 24.0 |
 | CalcYou | `net.youapps.calcyou` | `system/app/CalcYou/CalcYou.apk` | 5.3 |
 | Breezy Weather | `org.breezyweather` | `system/app/BreezyWeather/BreezyWeather.apk` | 6.2.2_freenet |

@@ -69,6 +69,27 @@ com.google.android.hotwordenrollment.xgoogle
 com.android.hotwordenrollment.okgoogle
 com.android.hotwordenrollment.xgoogle
 
+# --- Added from on-device audit of v1.0.3 survivors ---
+com.google.android.apps.aiwallpapers        # Pixel AI wallpapers
+com.google.android.carriersetup             # carrier setup wizard
+com.google.android.grilservice              # Google RIL helper service
+com.google.omadm.trigger                    # OMA DM trigger
+com.google.android.pixel.setupwizard        # Pixel setup wizard
+com.google.android.pixel.setupwizard.overlay2024_gms
+com.google.android.pixel.setupwizard.overlay.expressive_gms
+com.android.adservices.api                  # Ad Privacy settings (APEX)
+com.android.federatedcompute.services       # federated compute (APEX)
+com.android.ondevicepersonalization.services  # on-device personalization (APEX)
+com.android.omadm.service                   # OMA DM service ("ADM plugin")
+com.android.omadm.service.overlay.product.gs101
+com.android.omadm.service.overlay.vendor.raven
+com.android.bookmarkprovider                # bookmark provider
+com.android.providers.partnerbookmarks      # carrier partner bookmarks
+com.android.backupconfirm                   # backup confirmation
+com.android.sharedstoragebackup             # storage backup
+com.verizon.services                        # Verizon services
+com.verizon.mips.services                   # My Verizon services
+
 # --- OEM Bloat (brands with OEM-unlockable bootloaders) ---
 # Bixby and essential system apps are protected (see bottom of this file).
 # These packages are only removed if present on the device.

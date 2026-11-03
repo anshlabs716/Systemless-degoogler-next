@@ -112,6 +112,12 @@ webview_replacement_ready() {
   # is the weaker signal, so report it and let the operator decide.
   [ -n "$AAPT" ] || return 0
   GOT=$("$MODPATH/aapt" dump badging "$REPLACEMENT_WEBVIEW" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
+  # An empty result means aapt could not read the (very large) bundled APK,
+  # NOT that it carries a different identity. Treat that the same as having
+  # no aapt at all and fall back to file presence: failing closed here is
+  # what silently kept Google's WebView installed even though the Cromite
+  # replacement was right next to it.
+  [ -z "$GOT" ] && return 0
   [ "$GOT" = "com.android.webview" ]
 }
 
@@ -148,7 +154,7 @@ process_package() {
   # Only remove listed packages: Google apps, OEM bloat, and carrier apps.
   # Non-Google/OEM/carrier packages are skipped even if someone adds them.
   case "$PACKAGE_NAME" in
-    com.google.*|com.android.chrome|com.android.vending|com.android.hotwordenrollment.*) ;;
+    com.google.*|com.android.chrome|com.android.vending|com.android.hotwordenrollment.*|com.android.adservices.api|com.android.federatedcompute.services|com.android.ondevicepersonalization.services|com.android.omadm.*|com.android.bookmarkprovider|com.android.providers.partnerbookmarks|com.android.backupconfirm|com.android.sharedstoragebackup) ;;
     com.samsung.*|com.sec.*|com.mi.*|com.miui.*|com.xiaomi.*|com.poco.*|com.oneplus.*|com.oos.*) ;;
     com.motorola.*|com.sonymobile.*|com.sonyericsson.*|com.oppo.*|com.vivo.*|com.realme.*) ;;
     com.iqoo.*|com.asus.*|com.lenovo.*|com.zte.*|com.nubia.*|com.meizu.*|com.wiko.*) ;;
@@ -222,7 +228,18 @@ process_package() {
   # this app-masker's scope.
   case "$APP_PATH_FOLDER" in
     /apex/*)
-      ui_print "- Skipped APEX package $PACKAGE_NAME."
+      # Mainline modules live inside an APEX and cannot be masked
+      # systemlessly, so they used to be skipped -- which is why Ad Privacy
+      # (com.android.adservices.api), federated compute and on-device
+      # personalization survived every install. They can still be removed
+      # for user 0: uninstall first, disable as the fallback for packages
+      # the package manager refuses to uninstall.
+      if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1 ||
+         pm disable-user --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
+        ui_print "- Removed/disabled APEX package $PACKAGE_NAME (user 0)."
+      else
+        ui_print "- Failed to remove/disable APEX package $PACKAGE_NAME."
+      fi
       return 0 ;;
   esac
 
