@@ -1,8 +1,9 @@
 #!/system/bin/sh
 
-# Install bundled replacement APKs after Android's package manager is ready.
-# System APKs are scanned by Android at boot; this pass verifies they are
-# available and installs only if the package manager did not register one.
+# Minimal boot-time service: ONLY grant runtime permissions to the 8
+# bundled privileged apps. All APK installs happen in customize.sh (once
+# at module install), never at boot. This avoids any pm/dumpsys hangs
+# that could deadlock the boot process.
 MODDIR=${0%/*}
 MODID=$(sed -n 's/^id=//p' "$MODDIR/module.prop" | head -n 1)
 [ -n "$MODID" ] || MODID=systemless-degoogler
@@ -10,9 +11,7 @@ LOG="/data/adb/modules/$MODID/log.txt"
 
 mkdir -p "${LOG%/*}"
 
-# Rotate the log so it can never grow without bound. Only the most recent
-# chunk is carried forward; older history is dropped. 64 KiB is plenty to
-# debug the last several boots.
+# Rotate log (64 KiB max, keep last 16 KiB)
 LOG_MAX=65536
 LOG_KEEP=16384
 if [ -f "$LOG" ]; then
@@ -24,118 +23,43 @@ if [ -f "$LOG" ]; then
 fi
 
 exec >>"$LOG" 2>&1
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Replacement APK install pass started"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Boot permission grant pass started"
 
-# Wait up to five minutes for Android to finish booting.
+# Wait for boot to settle (package manager fully ready)
 waited=0
 while [ "$(getprop sys.boot_completed)" != 1 ] && [ "$waited" -lt 300 ]; do
   sleep 2
   waited=$((waited + 2))
 done
-if [ "$(getprop sys.boot_completed)" != 1 ]; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Timed out waiting for boot; will retry next boot"
-  exit 0
-fi
+[ "$(getprop sys.boot_completed)" = 1 ] || { echo "[$(date)] Boot wait timeout"; exit 0; }
+sleep 5  # extra settle time
 
-AAPT="$MODDIR/tools/aapt64"
-[ -x "$AAPT" ] || AAPT="$MODDIR/tools/aapt"
-
-INSTALLED=0
-PRESENT=0
-SKIPPED=0
-FAILED=0
-
-# The FOSS replacement apps ship under pkgs/ and are installed as REGULAR
-# apps (via pm install), not as system apps. Only the privileged LineageOS
-# suite lives in system/priv-app; it is mounted by the root manager and
-# must never be pm-installed here.
-for APK in "$MODDIR"/pkgs/*.apk; do
-  [ -f "$APK" ] || continue
-  FILE=${APK##*/}
-
-  # These are intentionally manual-only and must never be bundled/installed.
-  case "$FILE" in *microg*|*MicroG*|*aa4mg*|*AA4MG*)
-    SKIPPED=$((SKIPPED + 1))
-    continue ;;
-  esac
-
-  PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
-  if [ -z "$PACKAGE" ]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping unreadable APK $FILE (package ID unavailable)"
-    SKIPPED=$((SKIPPED + 1))
-    continue
-  fi
-
-  case "$PACKAGE" in
-    com.google.android.gms|com.google.android.gsf|com.google.android.projection.gearhead)
-      SKIPPED=$((SKIPPED + 1))
-      continue ;;
-  esac
-
-  # Present (system or already installed) is the normal steady state and is
-  # counted rather than logged line by line, so the log does not grow by
-  # dozens of identical lines every boot.
-  if pm path "$PACKAGE" 2>/dev/null | grep -q '^package:'; then
-    PRESENT=$((PRESENT + 1))
-    continue
-  fi
-
-  RESULT=$(pm install -r "$APK" 2>&1)
-  STATUS=$?
-  if [ "$STATUS" -eq 0 ]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Installed $PACKAGE ($FILE): $RESULT"
-    INSTALLED=$((INSTALLED + 1))
-  else
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Install failed for $PACKAGE ($FILE): $RESULT"
-    FAILED=$((FAILED + 1))
-  fi
-done
-
-# Grant every runtime permission the bundled privileged apps request.
-#
-# A app built INTO the ROM has its dangerous permissions granted at first boot
-# by the role/permission managers, so it never asks. An app dropped in by a
-# module does not, which is why the Lineage suite used to fire a wall of
-# permission dialogs on first use. Granting them here makes Contacts, Dialer,
-# Messaging, Clock, Etar, Recorder and WebView behave like the stock apps they
-# replace.
-#
-# pm grant only accepts permissions that are both requested by the app and
-# declared `dangerous`; anything else returns an error, which is harmless and
-# counted rather than logged, so the log stays small.
+# Grant runtime permissions to the 8 privileged apps — fire-and-forget,
+# each pm grant gets a 3s timeout so nothing can block.
 PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
 com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview \
 org.fossify.filemanager"
 
 GRANTED=0
-GRANT_ALREADY=0
-GRANT_FAILED=0
 for P in $PRIV_PKGS; do
   pm path "$P" >/dev/null 2>&1 || continue
 
-  # dumpsys can be slow at early boot; timeout after 5s per package.
-  PERMS=$(timeout 5 dumpsys package "$P" 2>/dev/null \
-    | grep -oE 'android\.permission\.[A-Za-z0-9_]+: granted=' \
-    | sed 's/: granted=$//' | sort -u)
+  # Use `pm list permissions -d -g` to get only dangerous runtime perms
+  # for this package, then grant each with a hard timeout.
+  PERMS=$(timeout 3 pm list permissions -d -g "$P" 2>/dev/null \
+    | sed -n 's/^permission:\([^ ]*\) .*/\1/p' | sort -u)
   [ -z "$PERMS" ] && continue
 
   for M in $PERMS; do
-    if pm grant "$P" "$M" >/dev/null 2>&1; then
-      GRANTED=$((GRANTED + 1))
-    else
-      GRANT_ALREADY=$((GRANT_ALREADY + 1))
-    fi
+    timeout 2 pm grant "$P" "$M" >/dev/null 2>&1 && GRANTED=$((GRANTED + 1))
   done
 done
-# Fossify Files needs All Files Access (MANAGE_EXTERNAL_STORAGE). That is a
-# special appop, not a runtime permission, so pm grant cannot set it.
-if pm path org.fossify.filemanager >/dev/null 2>&1; then
-  appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1
-fi
 
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Runtime permissions granted: $GRANTED new, $GRANT_ALREADY already granted/not runtime, $GRANT_FAILED errors"
+# Fossify Files: MANAGE_EXTERNAL_STORAGE is an appop, not a runtime perm
+timeout 2 appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1
 
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Pass finished: $INSTALLED installed, $PRESENT already present, $SKIPPED skipped, $FAILED failed"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Runtime permissions granted: $GRANTED new"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Boot permission grant pass finished"
 
 # NOTE (v1.0.3): the launcher swap that used to live here is gone for good.
 # It set Lawnchair as default home and then ran

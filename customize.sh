@@ -280,6 +280,40 @@ if [ -f "$FUTO_APK" ]; then
   fi
 fi
 
+# 0b. Pre-install ALL other bundled replacement APKs (pkgs/*.apk) so they
+#     are available immediately after reboot. This runs once at module install
+#     time, not at every boot, avoiding any pm/dumpsys hangs that could
+#     deadlock the boot process.
+INSTALLED=0
+SKIPPED=0
+FAILED=0
+for APK in "$MODPATH"/pkgs/*.apk; do
+  [ -f "$APK" ] || continue
+  FILE=${APK##*/}
+
+  case "$FILE" in
+    29_futo.apk|*microg*|*MicroG*|*aa4mg*|*AA4MG*)
+      SKIPPED=$((SKIPPED + 1))
+      continue ;;
+  esac
+
+  PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
+  [ -z "$PACKAGE" ] && { SKIPPED=$((SKIPPED + 1)); continue; }
+
+  if pm path "$PACKAGE" 2>/dev/null | grep -q '^package:'; then
+    SKIPPED=$((SKIPPED + 1))
+    continue
+  fi
+
+  if pm install -r "$APK" >/dev/null 2>&1; then
+    INSTALLED=$((INSTALLED + 1))
+  else
+    FAILED=$((FAILED + 1))
+  fi
+done
+[ "$INSTALLED" -gt 0 ] && ui_print "- Pre-installed $INSTALLED bundled replacement APK(s)."
+[ "$FAILED" -gt 0 ] && ui_print "- $FAILED bundled APK(s) failed to install."
+
 # 1. Gboard. Promote a non-Google keyboard first so the device is never left
 #    without a way to type, then remove it.
 GB="com.google.android.inputmethod.latin"

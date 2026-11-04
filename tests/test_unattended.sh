@@ -78,11 +78,16 @@ else
   bad "force list not walked"
 fi
 
-echo "=== 8. bundled pkgs still installed (service.sh) ==="
-if grep -q 'pkgs/\*\.apk' "$ROOT/service.sh"; then
-  ok "service.sh installs pkgs/*.apk"
+echo "=== 8. bundled pkgs installed in customize.sh (not at boot) ==="
+if grep -q 'pkgs/\*\.apk' "$ROOT/customize.sh"; then
+  ok "customize.sh installs pkgs/*.apk at module install"
 else
-  bad "service.sh does not install pkgs/*.apk"
+  bad "customize.sh does not install pkgs/*.apk"
+fi
+if grep -q 'pkgs/\*\.apk' "$ROOT/service.sh"; then
+  bad "service.sh still has install loop (boot hang risk)"
+else
+  ok "service.sh has no install loop (boot-safe)"
 fi
 
 echo "=== 9. no 'read' prompt / abort-on-no-input ==="
