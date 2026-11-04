@@ -31,7 +31,10 @@ chmod 755 service.sh
 #   pkgs/             FOSS replacements, installed as REGULAR apps via pm
 [ -d system ] || { echo "system/ directory is missing; cannot build" >&2; exit 1; }
 
-system_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
+system_count=0
+if [ -d system/app ]; then
+  system_count=$(find system/app -type f -name '*.apk' 2>/dev/null | wc -l)
+fi
 if [ "$system_count" -ne 0 ]; then
   echo "expected no APKs under system/app (MILES moved to pkgs/), found $system_count" >&2
   find system/app -type f -name '*.apk' 2>/dev/null >&2
@@ -39,8 +42,8 @@ if [ "$system_count" -ne 0 ]; then
 fi
 
 priv_count=$(find system/priv-app -type f -name '*.apk' 2>/dev/null | wc -l)
-if [ "$priv_count" -ne 7 ]; then
-  echo "expected 7 APKs under system/priv-app, found $priv_count" >&2
+if [ "$priv_count" -ne 8 ]; then
+  echo "expected 8 APKs under system/priv-app, found $priv_count" >&2
   find system/priv-app -name '*.apk' 2>/dev/null >&2
   exit 1
 fi
@@ -56,9 +59,9 @@ if [ "$format" = ksu ]; then
   # KernelSU variant ships without the Magisk META-INF updater and carries a
   # distinct asset name so both can sit on the same release.
   output="$mod_id-$version-ksu.zip"
-  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+  zip -r "$output" module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh uninstall.sh tools pkgs system
 else
   output="$mod_id-$version.zip"
-  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh tools pkgs system
+  zip -r "$output" META-INF module.prop bloat_packagelist.txt force_packagelist.txt customize.sh service.sh uninstall.sh tools pkgs system
 fi
 echo "built $output"

@@ -104,7 +104,8 @@ done
 # declared `dangerous`; anything else returns an error, which is harmless and
 # counted rather than logged, so the log stays small.
 PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
-com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview"
+com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview \
+org.fossify.filemanager"
 
 GRANTED=0
 GRANT_ALREADY=0
@@ -129,6 +130,12 @@ for P in $PRIV_PKGS; do
     fi
   done
 done
+# Fossify Files needs All Files Access (MANAGE_EXTERNAL_STORAGE). That is a
+# special appop, not a runtime permission, so pm grant cannot set it.
+if pm path org.fossify.filemanager >/dev/null 2>&1; then
+  appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1
+fi
+
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Runtime permissions granted: $GRANTED new, $GRANT_ALREADY already granted/not runtime, $GRANT_FAILED errors"
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Pass finished: $INSTALLED installed, $PRESENT already present, $SKIPPED skipped, $FAILED failed"

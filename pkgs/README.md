@@ -1,6 +1,6 @@
 # Bundled APK inventory
 
-The APKs are installed in their system app slots from `system/app` or
+Regular APKs are installed with `pm install` at boot; the privileged apps live in `system/priv-app` and are mounted by the root manager.
 `system/priv-app`. Manager installs use the force list only; recovery installs
 can use the volume-key selection menu. Futo Keyboard is pre-installed before
 Gboard is masked. PixelBoard requires GMS or microG.
@@ -18,7 +18,6 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Simple Notes Sync | `dev.dettmer.simplenotes` | `system/app/SimpleNotes/SimpleNotes.apk` | 2.20.1 |
 | NetGuard | `dev.ukanth.ufirewall` | `system/app/NetGuard/NetGuard.apk` | 5.0.0-BETA_1 |
 | Dicio | `org.stypox.dicio` | `system/app/Dicio/Dicio.apk` | 4.2 |
-| Fossify Files | `org.fossify.filemanager` | `system/app/FossifyFiles/FossifyFiles.apk` | 1.6.3 |
 | Ente Photos | `io.ente.photos.fdroid` | `system/app/EntePhotos/EntePhotos.apk` | 1.3.66 |
 | Futo Keyboard | `org.futo.inputmethod.latin` | `system/app/Futo/Futo.apk` | 0.1.30 |
 | MILES | `com.aistudio.miles.track` | `pkgs/31_miles.apk` | 1.1.3 |
@@ -45,3 +44,4 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | WebView | `com.android.webview` | `system/priv-app/WebView/WebView.apk` | 153.0.8010.37 |
 | Etar Calendar | `org.lineageos.etar` | `system/priv-app/Etar/Etar.apk` | 14 |
 | Recorder | `org.lineageos.recorder` | `system/priv-app/Recorder/Recorder.apk` | 16 |
+| Fossify Files | `org.fossify.filemanager` | `system/priv-app/FossifyFiles/FossifyFiles.apk` | 1.6.3 |

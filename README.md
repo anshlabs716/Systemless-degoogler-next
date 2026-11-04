@@ -25,7 +25,7 @@ Google Camera, Pixel Launcher, Pixel Wallpapers, Pixel Customization, and select
 
 The module does not install microG. Install it separately if needed: [microG setup](https://bitgapps.io/extra.html). PixelBoard requires GMS or microG; Futo Keyboard is bundled as a keyboard option that does not depend on either.
 
-Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data and keep a recovery route available.
+Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data and keep a recovery route available. When the module is removed, its bundled apps are migrated to regular user apps first: they stay installed and become normally uninstallable from Settings.
 
 Removal is applied two ways, because one is not enough on its own: apps still in the system image are hidden with a `.replace` mask (restored when the module is removed), while apps a Play Store update moved into `/data/app` are uninstalled for user 0, since a systemless mask cannot reach them there. Google WebView is replaced by the bundled open-source WebView.
 
@@ -87,7 +87,7 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Bundled apps and versions
 
-The ZIP contains **24 regular-app APKs** and **7 privileged LineageOS/AOSP apps**. Fossify Files is a regular system app. The privileged apps are:
+The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP apps**. Fossify Files is privileged because it needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
 
 | Privileged app | Version |
 |---|---:|
@@ -98,6 +98,7 @@ The ZIP contains **24 regular-app APKs** and **7 privileged LineageOS/AOSP apps*
 | WebView | 153.0.8010.37 |
 | Etar Calendar | 14 |
 | Recorder | 16 |
+| Fossify Files | 1.6.3 |
 
 Futo Keyboard is pre-installed before Gboard is masked. PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
 

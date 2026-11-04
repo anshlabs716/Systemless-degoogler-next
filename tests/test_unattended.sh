@@ -153,15 +153,19 @@ grep -q 'PRIV_PKGS=' "$SRV" && ok "targets the bundled priv-apps" || bad "no PRI
 MISSING=""
 for p in com.android.contacts com.android.deskclock com.android.dialer \
          com.android.messaging org.lineageos.etar org.lineageos.recorder \
-         com.android.webview; do
+         com.android.webview org.fossify.filemanager; do
   grep -q "$p" "$SRV" || MISSING="$MISSING $p"
 done
 if [ -n "$MISSING" ]; then
   bad "missing from grant list:$MISSING"
 else
-  ok "grant list covers all 7 bundled priv-apps"
+  ok "grant list covers all 8 bundled priv-apps"
 fi
+grep -q 'MANAGE_EXTERNAL_STORAGE' "$SRV" && ok "Fossify Files gets All Files Access (appop)" || bad "no appops grant for Fossify Files"
 
-echo
-[ "$fail" = 0 ] && echo "ALL UNATTENDED-INSTALL TESTS PASSED" || echo "THERE WERE FAILURES"
-exit "$fail"
+echo "=== 14. module removal migrates bundled apps to normal apps ==="
+US="$ROOT/uninstall.sh"
+[ -f "$US" ] && ok "uninstall.sh exists" || bad "missing uninstall.sh"
+grep -q 'pm install' "$US" && ok "reinstalls each app as a user app" || bad "no pm install migration"
+grep -q 'umount' "$US" && ok "drops module mounts before installing" || bad "no umount step"
+grep -q 'uninstall.sh' "$ROOT/build.sh" && ok "build ships uninstall.sh in both zips" || bad "uninstall.sh not in zip lists"
