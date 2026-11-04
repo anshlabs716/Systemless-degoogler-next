@@ -113,19 +113,16 @@ GRANT_FAILED=0
 for P in $PRIV_PKGS; do
   pm path "$P" >/dev/null 2>&1 || continue
 
-  # dumpsys lists each permission state as "android.permission.X: granted=Y".
-  # Only those are grantable candidates; declared/requested-only entries lack
-  # the marker and are ignored.
-  PERMS=$(dumpsys package "$P" 2>/dev/null \
+  # dumpsys can be slow at early boot; timeout after 5s per package.
+  PERMS=$(timeout 5 dumpsys package "$P" 2>/dev/null \
     | grep -oE 'android\.permission\.[A-Za-z0-9_]+: granted=' \
     | sed 's/: granted=$//' | sort -u)
+  [ -z "$PERMS" ] && continue
 
   for M in $PERMS; do
     if pm grant "$P" "$M" >/dev/null 2>&1; then
       GRANTED=$((GRANTED + 1))
     else
-      # Already granted, or not a runtime permission (install-time /
-      # signature). Both are the desired end state, so count together.
       GRANT_ALREADY=$((GRANT_ALREADY + 1))
     fi
   done

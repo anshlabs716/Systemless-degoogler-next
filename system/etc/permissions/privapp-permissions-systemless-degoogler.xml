@@ -27,4 +27,6 @@
     <privapp-permissions package="org.lineageos.etar">
         <permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
     </privapp-permissions>
+    <privapp-permissions package="org.fossify.filemanager">
+    </privapp-permissions>
 </permissions>
