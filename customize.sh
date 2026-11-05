@@ -260,6 +260,24 @@ process_package() {
     *) ui_print "- Skipped unknown path $APP_PATH_FOLDER"; return 0 ;;
   esac
 
+  # NEVER mask a shared container directory. Runtime resource overlays
+  # (RROs) sit directly inside /product/overlay or /vendor/overlay with
+  # no per-app subfolder, so their "folder" resolves to the shared
+  # directory itself. A .replace there would hide EVERY overlay on the
+  # device -- including critical framework/vendor overlays -- and
+  # bootloop the phone. The same applies to a stray APK placed directly
+  # in /system/app or /system/priv-app. Remove such packages per-user
+  # instead of masking their directory.
+  case "$APP_PATH_FOLDER" in
+    */overlay|*/overlays|*/app|*/priv-app|*/framework)
+      if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
+        ui_print "- Removed $APP_NAME (user 0; shared folder not masked)."
+      else
+        ui_print "- Skipped $APP_NAME: shared folder $APP_PATH_FOLDER must not be masked."
+      fi
+      return 0 ;;
+  esac
+
   REMOVE="$REMOVE$APP_PATH_FOLDER "
   ui_print "- Systemlessly masked $APP_NAME."
 }
@@ -372,16 +390,33 @@ fi
 # is supposed to mean.
 MASKED=0
 KEPT_SELF=0
+SKIPPED_SHARED=0
 for APP in $REMOVE; do
   REL=${APP#/system/}
   DEST="$MODPATH/system/$REL"
+
+  # Defense in depth: even if process_package() let a shared container
+  # through, never .replace it here. Containers are recognised by their
+  # basename (overlay, app, priv-app, ...) and by having no subfolder
+  # component (a leaf app dir always looks like priv-app/Foo).
+  case "${REL##*/}" in
+    app|priv-app|overlay|overlays|framework)
+      SKIPPED_SHARED=$((SKIPPED_SHARED + 1))
+      continue ;;
+  esac
+  case "$REL" in
+    */*) ;;
+    *) SKIPPED_SHARED=$((SKIPPED_SHARED + 1)); continue ;;
+  esac
 
   # Never mask a folder this module ships its own APK into. Our bundled
   # replacements (Dialer, Contacts, DeskClock, Messaging, WebView, ...) often
   # live at the SAME path as the stock app they replace; masking there would
   # delete our own APK along with the stock one. Mounting ours over the stock
-  # app already achieves the replacement, so skipping is correct.
-  if [ -n "$(find "$DEST" -maxdepth 1 -name '*.apk' 2>/dev/null)" ]; then
+  # app already achieves the replacement, so skipping is correct. Search at
+  # ANY depth: bundled priv-apps live at priv-app/<Name>/<Name>.apk, which
+  # a maxdepth-1 search would miss and happily .replace the whole tree.
+  if [ -n "$(find "$DEST" -name '*.apk' 2>/dev/null)" ]; then
     KEPT_SELF=$((KEPT_SELF + 1))
     continue
   fi
@@ -390,7 +425,7 @@ for APP in $REMOVE; do
   : > "$DEST/.replace"
   MASKED=$((MASKED + 1))
 done
-ui_print "- Systemless masks applied: $MASKED (skipped folders holding our own APKs: $KEPT_SELF)."
+ui_print "- Systemless masks applied: $MASKED (skipped folders holding our own APKs: $KEPT_SELF, shared dirs: $SKIPPED_SHARED)."
 
 printf '%s\n' "$REMOVE" > "$MODPATH/.lastremove"
 ui_print "- Done. Reboot to apply the module."

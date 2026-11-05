@@ -117,10 +117,15 @@ if code | grep -q 'mkdir -p "\$DEST"'; then
 else
   bad "does not create the mask folder"
 fi
-if code | grep -q 'find "\$DEST" -maxdepth 1 -name .\*\.apk'; then
-  ok "guards folders holding our own APKs"
+if code | grep -q 'find "\$DEST" -name .\*\.apk'; then
+  ok "guards folders holding our own APKs (any depth)"
 else
   bad "no guard -> could mask our own bundled apps"
+fi
+if code | grep -q 'SKIPPED_SHARED'; then
+  ok "never masks shared container dirs (overlay/app/priv-app)"
+else
+  bad "no shared-dir guard -> could mask /vendor/overlay and bootloop"
 fi
 
 echo "=== 12. updated (/data/app) Google apps are removed, not skipped ==="
