@@ -73,11 +73,35 @@ for APK in "$MODDIR"/pkgs/*.apk; do
 done
 
 # Default-app roles: messaging is the ONLY SMS app but Android still nags
-# "change SMS app to send messages" until the SMS role holder is set.
-# Same for the dialer.
-timeout 3 cmd role add-role-holder android.app.role.SMS com.android.messaging --user 0 >/dev/null 2>&1
-timeout 3 cmd role add-role-holder android.app.role.DIALER com.android.dialer --user 0 >/dev/null 2>&1
-timeout 3 cmd role add-role-holder android.app.role.CALL_SCREENING com.android.dialer --user 0 >/dev/null 2>&1
+# "change SMS app to send messages" until the SMS role holder is set. The
+# role service is often not ready right after boot_completed, and the
+# shell's option placement differs across builds, so try several syntaxes
+# and retry until the holder ACTUALLY sticks (verified by query).
+add_role() { # $1 = role, $2 = package
+  timeout 3 cmd role add-role-holder --user 0 "$1" "$2" >/dev/null 2>&1
+  timeout 3 cmd role add-role-holder "$1" "$2" 0 >/dev/null 2>&1
+  timeout 3 cmd role add-role-holder "$1" "$2" --user 0 >/dev/null 2>&1
+}
+role_held() { # $1 = role, $2 = package
+  timeout 3 cmd role get-role-holders "$1" 2>/dev/null | grep -q "$2"
+}
+
+tries=0
+while [ "$tries" -lt 6 ]; do
+  role_held android.app.role.SMS com.android.messaging && break
+  add_role android.app.role.SMS com.android.messaging
+  # Belt and suspenders for ROMs that key the default SMS app off these.
+  timeout 2 appops set com.android.messaging WRITE_SMS allow >/dev/null 2>&1
+  timeout 2 settings put secure sms_default_application com.android.messaging >/dev/null 2>&1
+  sleep 10
+  tries=$((tries + 1))
+done
+role_held android.app.role.SMS com.android.messaging \
+  && echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: com.android.messaging" \
+  || echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: NOT set after retries"
+
+role_held android.app.role.DIALER com.android.dialer || add_role android.app.role.DIALER com.android.dialer
+role_held android.app.role.CALL_SCREENING com.android.dialer || add_role android.app.role.CALL_SCREENING com.android.dialer
 
 # Fossify Files: MANAGE_EXTERNAL_STORAGE is an appop, not a runtime perm
 timeout 2 appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1
