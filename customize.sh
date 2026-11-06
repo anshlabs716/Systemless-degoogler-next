@@ -270,8 +270,9 @@ process_package() {
   # instead of masking their directory.
   case "$APP_PATH_FOLDER" in
     */overlay|*/overlays|*/app|*/priv-app|*/framework)
-      if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
-        ui_print "- Removed $APP_NAME (user 0; shared folder not masked)."
+      if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1 ||
+         pm disable-user --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
+        ui_print "- Removed/disabled $APP_NAME (user 0; shared folder not masked)."
       else
         ui_print "- Skipped $APP_NAME: shared folder $APP_PATH_FOLDER must not be masked."
       fi
@@ -360,6 +361,39 @@ if [ -f "$debloat_list" ]; then
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"
+fi
+
+# 3b. Sweep leftover RRO overlay packages (GMS overlays, overlay configs,
+#     carrier/OEM overlays...). They live in shared overlay directories and
+#     can never be masked, so they are removed per-user instead. Boot-
+#     critical framework/APEX resource overlays are never touched.
+OVERLAYS_GONE=0
+for P in $(pm list packages --user 0 2>/dev/null | sed 's/^package://' | grep -i 'overlay'); do
+  case "$P" in
+    com.android.framework*|com.android.wifi*|com.android.connectivity*|\
+    com.android.tethering*|com.android.networkstack*|com.android.media*|\
+    com.android.permission*|com.android.cellbroadcast*|com.android.bluetooth*|\
+    com.android.uwb*|com.android.server.*|com.android.art*|com.android.ext.*|\
+    com.android.os.*|com.android.systemui*)
+      continue ;;
+  esac
+  if pm uninstall --user 0 "$P" >/dev/null 2>&1 ||
+     pm disable-user --user 0 "$P" >/dev/null 2>&1; then
+    OVERLAYS_GONE=$((OVERLAYS_GONE + 1))
+  fi
+done
+[ "$OVERLAYS_GONE" -gt 0 ] && ui_print "- Removed/disabled $OVERLAYS_GONE overlay package(s) (user 0)."
+
+# 3c. Google WebView leftovers: TrichromeLibrary split packages keep
+#     Google's WebView stack listed and usable even after the main
+#     package is uninstalled for user 0. Remove every trichrome package
+#     too -- only when a verified replacement WebView is bundled.
+if webview_replacement_ready; then
+  for P in $(pm list packages --user 0 2>/dev/null | sed 's/^package://' | grep '^com\.google\.android\.trichromelibrary'); do
+    if pm uninstall --user 0 "$P" >/dev/null 2>&1; then
+      ui_print "- Removed $P (user 0)."
+    fi
+  done
 fi
 
 # 4. Duplicate Proton Pass: keep the regular build, disable the F-Droid build.

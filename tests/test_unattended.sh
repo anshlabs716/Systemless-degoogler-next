@@ -84,10 +84,10 @@ if grep -q 'pkgs/\*\.apk' "$ROOT/customize.sh"; then
 else
   bad "customize.sh does not install pkgs/*.apk"
 fi
-if grep -q 'pkgs/\*\.apk' "$ROOT/service.sh"; then
-  bad "service.sh still has install loop (boot hang risk)"
+if grep -q 'pm install' "$ROOT/service.sh"; then
+  bad "service.sh still has an install loop (boot hang risk)"
 else
-  ok "service.sh has no install loop (boot-safe)"
+  ok "service.sh never pm-installs at boot (grants only)"
 fi
 
 echo "=== 9. no 'read' prompt / abort-on-no-input ==="

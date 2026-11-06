@@ -34,26 +34,50 @@ done
 [ "$(getprop sys.boot_completed)" = 1 ] || { echo "[$(date)] Boot wait timeout"; exit 0; }
 sleep 5  # extra settle time
 
-# Grant runtime permissions to the 8 privileged apps — fire-and-forget,
-# each pm grant gets a 3s timeout so nothing can block.
-PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
-com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview \
-org.fossify.filemanager"
-
+# Grant runtime permissions to bundled apps — fire-and-forget, every call
+# hard-timeboxed so nothing can block.
+#
+# NOTE: enumerate requested permissions with `dumpsys package <pkg>` —
+# `pm list permissions -g <arg>` takes a PERMISSION GROUP name, not a
+# package, and silently returned nothing (grants became a no-op).
+# dumpsys lists each requested dangerous permission as
+# "android.permission.X: granted=false|true"; only those are grantable.
 GRANTED=0
-for P in $PRIV_PKGS; do
-  pm path "$P" >/dev/null 2>&1 || continue
-
-  # Use `pm list permissions -d -g` to get only dangerous runtime perms
-  # for this package, then grant each with a hard timeout.
-  PERMS=$(timeout 3 pm list permissions -d -g "$P" 2>/dev/null \
-    | sed -n 's/^permission:\([^ ]*\) .*/\1/p' | sort -u)
-  [ -z "$PERMS" ] && continue
-
+grant_pkg() {
+  P=$1
+  timeout 2 pm path "$P" >/dev/null 2>&1 || return 0
+  PERMS=$(timeout 5 dumpsys package "$P" 2>/dev/null \
+    | grep -oE 'android\.permission\.[A-Za-z0-9_]+: granted=' \
+    | sed 's/: granted=$//' | sort -u)
+  [ -z "$PERMS" ] && return 0
   for M in $PERMS; do
     timeout 2 pm grant "$P" "$M" >/dev/null 2>&1 && GRANTED=$((GRANTED + 1))
   done
+}
+
+# 8 privileged apps
+PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
+com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview \
+org.fossify.filemanager"
+for P in $PRIV_PKGS; do grant_pkg "$P"; done
+
+# Every bundled regular app from pkgs/ too — no permission dialogs on
+# first launch for any of them.
+AAPT="$MODDIR/aapt"
+[ -x "$AAPT" ] || AAPT=""
+for APK in "$MODDIR"/pkgs/*.apk; do
+  [ -f "$APK" ] || continue
+  [ -n "$AAPT" ] || break
+  P=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
+  [ -n "$P" ] && grant_pkg "$P"
 done
+
+# Default-app roles: messaging is the ONLY SMS app but Android still nags
+# "change SMS app to send messages" until the SMS role holder is set.
+# Same for the dialer.
+timeout 3 cmd role add-role-holder android.app.role.SMS com.android.messaging --user 0 >/dev/null 2>&1
+timeout 3 cmd role add-role-holder android.app.role.DIALER com.android.dialer --user 0 >/dev/null 2>&1
+timeout 3 cmd role add-role-holder android.app.role.CALL_SCREENING com.android.dialer --user 0 >/dev/null 2>&1
 
 # Fossify Files: MANAGE_EXTERNAL_STORAGE is an appop, not a runtime perm
 timeout 2 appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1
