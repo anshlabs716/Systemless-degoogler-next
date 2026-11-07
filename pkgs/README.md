@@ -32,6 +32,7 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Proton VPN | `ch.protonvpn.android.reproducible` | `system/app/ProtonVPN/ProtonVPN.apk` | 5.20.98.0 |
 | Vela Maps | `app.vela` | `system/app/VelaMaps/VelaMaps.apk` | 0.5.2621 |
 | Koda | `com.ivor.ivormusic` | `system/app/Koda/Koda.apk` | 5.2 |
+| Fossify Messages | `org.fossify.messages` | `pkgs/32_fossifymessages.apk` | 1.10.2 |
 
 ## Privileged system apps
 
@@ -40,7 +41,6 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Contacts | `com.android.contacts` | `system/priv-app/Contacts/Contacts.apk` | 1.7.34 |
 | DeskClock | `com.android.deskclock` | `system/priv-app/DeskClock/DeskClock.apk` | 16 |
 | Dialer | `com.android.dialer` | `system/priv-app/Dialer/Dialer.apk` | 23.0 |
-| Messaging | `com.android.messaging` | `system/priv-app/Messaging/Messaging.apk` | 1.0.001 |
 | WebView | `com.android.webview` | `system/priv-app/WebView/WebView.apk` | 153.0.8010.37 |
 | Etar Calendar | `org.lineageos.etar` | `system/priv-app/Etar/Etar.apk` | 14 |
 | Recorder | `org.lineageos.recorder` | `system/priv-app/Recorder/Recorder.apk` | 16 |

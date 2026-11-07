@@ -57,7 +57,7 @@ grant_pkg() {
 
 # 8 privileged apps
 PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
-com.android.messaging org.lineageos.etar org.lineageos.recorder com.android.webview \
+org.lineageos.etar org.lineageos.recorder com.android.webview \
 org.fossify.filemanager"
 for P in $PRIV_PKGS; do grant_pkg "$P"; done
 
@@ -88,16 +88,16 @@ role_held() { # $1 = role, $2 = package
 
 tries=0
 while [ "$tries" -lt 6 ]; do
-  role_held android.app.role.SMS com.android.messaging && break
-  add_role android.app.role.SMS com.android.messaging
+  role_held android.app.role.SMS org.fossify.messages && break
+  add_role android.app.role.SMS org.fossify.messages
   # Belt and suspenders for ROMs that key the default SMS app off these.
-  timeout 2 appops set com.android.messaging WRITE_SMS allow >/dev/null 2>&1
-  timeout 2 settings put secure sms_default_application com.android.messaging >/dev/null 2>&1
+  timeout 2 appops set org.fossify.messages WRITE_SMS allow >/dev/null 2>&1
+  timeout 2 settings put secure sms_default_application org.fossify.messages >/dev/null 2>&1
   sleep 10
   tries=$((tries + 1))
 done
-role_held android.app.role.SMS com.android.messaging \
-  && echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: com.android.messaging" \
+role_held android.app.role.SMS org.fossify.messages \
+  && echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: org.fossify.messages" \
   || echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: NOT set after retries"
 
 role_held android.app.role.DIALER com.android.dialer || add_role android.app.role.DIALER com.android.dialer

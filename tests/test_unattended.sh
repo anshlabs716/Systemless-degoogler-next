@@ -162,16 +162,19 @@ grep -q 'pm grant' "$SRV" && ok "service.sh runs pm grant" || bad "service.sh ne
 grep -q 'PRIV_PKGS=' "$SRV" && ok "targets the bundled priv-apps" || bad "no PRIV_PKGS list"
 MISSING=""
 for p in com.android.contacts com.android.deskclock com.android.dialer \
-         com.android.messaging org.lineageos.etar org.lineageos.recorder \
+         org.lineageos.etar org.lineageos.recorder \
          com.android.webview org.fossify.filemanager; do
   grep -q "$p" "$SRV" || MISSING="$MISSING $p"
 done
 if [ -n "$MISSING" ]; then
   bad "missing from grant list:$MISSING"
 else
-  ok "grant list covers all 8 bundled priv-apps"
+  ok "grant list covers all 7 bundled priv-apps"
 fi
 grep -q 'MANAGE_EXTERNAL_STORAGE' "$SRV" && ok "Fossify Files gets All Files Access (appop)" || bad "no appops grant for Fossify Files"
+grep -q 'org.fossify.messages' "$SRV" && ok "SMS default targets Fossify Messages" || bad "no Fossify Messages in service.sh"
+grep -q 'sms_default_application' "$SRV" && ok "legacy default-SMS setting set at boot" || bad "no legacy sms_default_application"
+grep -q 'WRITE_SMS' "$SRV" && ok "WRITE_SMS appop granted" || bad "no WRITE_SMS appop"
 
 echo "=== 14. module removal migrates bundled apps to normal apps ==="
 US="$ROOT/uninstall.sh"
