@@ -56,9 +56,9 @@ grant_pkg() {
 }
 
 # 8 privileged apps
-PRIV_PKGS="com.android.contacts com.android.deskclock com.android.dialer \
-org.lineageos.etar org.lineageos.recorder com.android.webview \
-org.fossify.filemanager"
+PRIV_PKGS="com.android.deskclock org.lineageos.etar org.lineageos.recorder \
+com.android.webview org.fossify.filemanager org.fossify.phone \
+org.fossify.messages org.fossify.contacts"
 for P in $PRIV_PKGS; do grant_pkg "$P"; done
 
 # Every bundled regular app from pkgs/ too — no permission dialogs on
@@ -100,8 +100,8 @@ role_held android.app.role.SMS org.fossify.messages \
   && echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: org.fossify.messages" \
   || echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: NOT set after retries"
 
-role_held android.app.role.DIALER com.android.dialer || add_role android.app.role.DIALER com.android.dialer
-role_held android.app.role.CALL_SCREENING com.android.dialer || add_role android.app.role.CALL_SCREENING com.android.dialer
+role_held android.app.role.DIALER org.fossify.phone || add_role android.app.role.DIALER org.fossify.phone
+role_held android.app.role.CALL_SCREENING org.fossify.phone || add_role android.app.role.CALL_SCREENING org.fossify.phone
 
 # Fossify Files: MANAGE_EXTERNAL_STORAGE is an appop, not a runtime perm
 timeout 2 appops set org.fossify.filemanager MANAGE_EXTERNAL_STORAGE allow >/dev/null 2>&1

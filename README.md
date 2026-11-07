@@ -33,7 +33,7 @@ Removal is applied two ways, because one is not enough on its own: apps still in
 
 1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
 2. The install is fully unattended: it applies the full removal list (force plus optional) and installs the bundled apps without asking any questions. There are no volume-key prompts.
-3. Reboot. Bundled system apps become available as Android finishes booting. The boot service then grants the bundled privileged apps their runtime permissions, so Contacts, Dialer, Clock, Etar, Recorder and WebView behave like the stock apps they replace instead of prompting for permission on first use. Fossify Messages is installed as a regular app and set as the default SMS app (role, legacy setting and WRITE_SMS appop) by the boot service.
+3. Reboot. Bundled system apps become available as Android finishes booting. The boot service then grants the bundled privileged apps their runtime permissions, so Clock, Etar, Recorder, WebView and the Fossify trio (Phone, Messages, Contacts) behave like the stock apps they replace instead of prompting for permission on first use. Fossify Messages is set as the default SMS app (role, legacy setting and WRITE_SMS appop) and Fossify Phone as the default dialer by the boot service.
 4. Install microG separately if you want it.
 
 The module leaves the stock launcher enabled. To hide its search bar, long-press the home screen and turn off the bar in launcher settings.
@@ -51,7 +51,7 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | google Music | Auxio | [GitHub](https://github.com/OxygenCobalt/Auxio) |
 | google Maps | Vela Maps | [GitHub](https://github.com/PimpinPumpkin/Vela) |
 | google Photos | Ente Photos | [GitHub](https://github.com/ente-io/ente) |
-| google Phone, contacts, messages, calendar, clock, recorder | LineageOS/AOSP apps (bundled) | [LineageOS](https://github.com/LineageOS) |
+| Clock, Etar Calendar, Recorder, WebView and the Fossify trio (Phone, Messages, Contacts) | LineageOS/AOSP + Fossify apps (bundled) | [LineageOS](https://github.com/LineageOS), [Fossify](https://github.com/FossifyOrg) |
 | Files by Google / document picker and Google Drive file access | Fossify Files (bundled) | [GitHub](https://github.com/FossifyOrg/File-Manager) |
 | google Calculator | CalcYou | [GitHub](https://github.com/CalcyYou/CalcYou) |
 | Google Assistant/gemini | Dicio | [GitHub](https://github.com/Stypox/Dicio) |
@@ -87,16 +87,17 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Bundled apps and versions
 
-The ZIP contains **24 regular-app APKs** and **7 privileged LineageOS/AOSP apps**. Fossify Files is privileged because it needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
+The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. Fossify Files is privileged because it needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
 
 | Privileged app | Version |
 |---|---:|
-| Contacts | 1.7.34 |
 | DeskClock | 16 |
-| Dialer | 23.0 |
 | WebView | 153.0.8010.37 |
 | Etar Calendar | 14 |
 | Recorder | 16 |
+| Fossify Phone | 1.11.1 |
+| Fossify Messages | 1.10.2 |
+| Fossify Contacts | 1.6.0 |
 | Fossify Files | 1.6.3 |
 
 Futo Keyboard is pre-installed before Gboard is masked. PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.

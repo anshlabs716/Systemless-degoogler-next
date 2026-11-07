@@ -102,12 +102,12 @@ for line in open(sys.argv[1]):
 # Allowlist keys are package names; entries are permission names.
 pkg_to_dir = {
     'WebView': 'com.android.webview',
-    'Dialer': 'com.android.dialer',
-    'Contacts': 'com.android.contacts',
-    'Messaging': 'com.android.messaging',
     'DeskClock': 'com.android.deskclock',
     'Etar': 'org.lineageos.etar',
     'Recorder': 'org.lineageos.recorder',
+    'FossifyPhone': 'org.fossify.phone',
+    'FossifyMessages': 'org.fossify.messages',
+    'FossifyContacts': 'org.fossify.contacts',
 }
 lines = ['<?xml version="1.0" encoding="utf-8"?>',
          '<!-- Auto-derived by tests/gen-privapp-allowlist.sh from AOSP framework',

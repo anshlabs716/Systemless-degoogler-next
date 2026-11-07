@@ -20,7 +20,7 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Dicio | `org.stypox.dicio` | `system/app/Dicio/Dicio.apk` | 4.2 |
 | Ente Photos | `io.ente.photos.fdroid` | `system/app/EntePhotos/EntePhotos.apk` | 1.3.66 |
 | Futo Keyboard | `org.futo.inputmethod.latin` | `system/app/Futo/Futo.apk` | 0.1.30 |
-| MILES | `com.aistudio.miles.track` | `pkgs/31_miles.apk` | 1.1.3 |
+| MILES | `com.anshlabs.miles` | `pkgs/31_miles.apk` | 1.1.6 |
 | Thunderbird | `net.thunderbird.android` | `system/app/Thunderbird/Thunderbird.apk` | 24.0 |
 | CalcYou | `net.youapps.calcyou` | `system/app/CalcYou/CalcYou.apk` | 5.3 |
 | Breezy Weather | `org.breezyweather` | `system/app/BreezyWeather/BreezyWeather.apk` | 6.2.2_freenet |
@@ -32,16 +32,16 @@ Gboard is masked. PixelBoard requires GMS or microG.
 | Proton VPN | `ch.protonvpn.android.reproducible` | `system/app/ProtonVPN/ProtonVPN.apk` | 5.20.98.0 |
 | Vela Maps | `app.vela` | `system/app/VelaMaps/VelaMaps.apk` | 0.5.2621 |
 | Koda | `com.ivor.ivormusic` | `system/app/Koda/Koda.apk` | 5.2 |
-| Fossify Messages | `org.fossify.messages` | `pkgs/32_fossifymessages.apk` | 1.10.2 |
 
 ## Privileged system apps
 
 | App | Package ID | APK path | Version |
 |---|---|---|---|
-| Contacts | `com.android.contacts` | `system/priv-app/Contacts/Contacts.apk` | 1.7.34 |
 | DeskClock | `com.android.deskclock` | `system/priv-app/DeskClock/DeskClock.apk` | 16 |
-| Dialer | `com.android.dialer` | `system/priv-app/Dialer/Dialer.apk` | 23.0 |
 | WebView | `com.android.webview` | `system/priv-app/WebView/WebView.apk` | 153.0.8010.37 |
 | Etar Calendar | `org.lineageos.etar` | `system/priv-app/Etar/Etar.apk` | 14 |
 | Recorder | `org.lineageos.recorder` | `system/priv-app/Recorder/Recorder.apk` | 16 |
+| Fossify Phone | `org.fossify.phone` | `system/priv-app/FossifyPhone/FossifyPhone.apk` | 1.11.1 |
+| Fossify Messages | `org.fossify.messages` | `system/priv-app/FossifyMessages/FossifyMessages.apk` | 1.10.2 |
+| Fossify Contacts | `org.fossify.contacts` | `system/priv-app/FossifyContacts/FossifyContacts.apk` | 1.6.0 |
 | Fossify Files | `org.fossify.filemanager` | `system/priv-app/FossifyFiles/FossifyFiles.apk` | 1.6.3 |

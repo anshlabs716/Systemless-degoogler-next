@@ -333,6 +333,14 @@ done
 [ "$INSTALLED" -gt 0 ] && ui_print "- Pre-installed $INSTALLED bundled replacement APK(s)."
 [ "$FAILED" -gt 0 ] && ui_print "- $FAILED bundled APK(s) failed to install."
 
+# Superseded MILES: v1.1.6 rebrands the package from com.aistudio.miles.track
+# to com.anshlabs.miles; drop the old copy so both don't sit side by side.
+if pm path com.aistudio.miles.track >/dev/null 2>&1; then
+  if pm uninstall --user 0 com.aistudio.miles.track >/dev/null 2>&1; then
+    ui_print "- Removed superseded MILES build (com.aistudio.miles.track)."
+  fi
+fi
+
 # 1. Gboard. Promote a non-Google keyboard first so the device is never left
 #    without a way to type, then remove it.
 GB="com.google.android.inputmethod.latin"
