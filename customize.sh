@@ -306,6 +306,14 @@ fi
 INSTALLED=0
 SKIPPED=0
 FAILED=0
+# Resolve an ABSOLUTE aapt for this loop. "$AAPT" here is only the bare
+# binary NAME (aapt64/aapt) selected above; invoking it bare relies on
+# PATH, which does not contain the module dir -- so the command was
+# silently not-found, PACKAGE came back empty and EVERY bundled APK was
+# "skipped". Always use the module-local absolute path.
+LOOP_AAPT="$MODPATH/aapt"
+[ -x "$LOOP_AAPT" ] || LOOP_AAPT="$MODPATH/tools/aapt64"
+[ -x "$LOOP_AAPT" ] || LOOP_AAPT="$MODPATH/tools/aapt"
 for APK in "$MODPATH"/pkgs/*.apk; do
   [ -f "$APK" ] || continue
   FILE=${APK##*/}
@@ -316,7 +324,7 @@ for APK in "$MODPATH"/pkgs/*.apk; do
       continue ;;
   esac
 
-  PACKAGE=$("$AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
+  PACKAGE=$("$LOOP_AAPT" dump badging "$APK" 2>/dev/null | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -n 1)
   [ -z "$PACKAGE" ] && { SKIPPED=$((SKIPPED + 1)); continue; }
 
   if pm path "$PACKAGE" 2>/dev/null | grep -q '^package:'; then

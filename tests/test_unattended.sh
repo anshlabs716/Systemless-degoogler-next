@@ -90,7 +90,13 @@ else
   ok "service.sh never pm-installs at boot (grants only)"
 fi
 
-echo "=== 9. no 'read' prompt / abort-on-no-input ==="
+if grep -q 'PACKAGE=\("\$AAPT"\|"\$LOOP_AAPT"\)' "$ROOT/customize.sh"; then :; fi
+if grep -q 'LOOP_AAPT="\$MODPATH/aapt"' "$ROOT/customize.sh" && \
+   ! grep -q 'PACKAGE=\("\$AAPT" ' "$ROOT/customize.sh"; then
+  ok "install loop uses the absolute module-local aapt"
+else
+  bad "install loop may invoke aapt via PATH (bare \$AAPT) -> every APK silently skipped"
+fi
 if code | grep -qE '^[[:space:]]*read[[:space:]]'; then
   bad "shell 'read' prompt present"
 else
