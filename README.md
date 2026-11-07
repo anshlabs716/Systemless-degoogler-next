@@ -4,7 +4,7 @@
 
 Hey, I’m Ansh. This systemless module removes selected Google apps and reviewed OEM-app candidates, then installs alternatives I use. It keeps selected Pixel features and core Android parts, and makes room for a separate microG install.
 
-**v1.0.3 · 24 regular APKs + 7 privileged LineageOS/AOSP apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
+**v1.0.3 · 23 regular APKs + 8 privileged LineageOS/AOSP + Fossify apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
 ## Contents
 
@@ -73,7 +73,7 @@ Futo Keyboard is bundled and pre-installed so a replacement is available if Gboa
 
 ## What’s being removed
 
-The lists cover **332 unique package candidates**: 67 Google/Pixel entries and 265 OEM/carrier entries. The force list repeats 14 Google entries from the optional list, so it adds no new package IDs. A package is affected only if it is present on the phone.
+The lists cover **352 unique package candidates**: 351 on the optional list (Google/Pixel plus curated OEM/carrier entries) and 15 on the force list, 14 of which repeat from the optional list. A package is affected only if it is present on the phone.
 
 | List | Apps and services |
 |---|---|
@@ -87,7 +87,7 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Bundled apps and versions
 
-The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. Fossify Files is privileged because it needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
+The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. The Fossify apps are privileged because they need it: Phone requests CALL_PRIVILEGED to place calls, Messages must be able to serve as the default SMS app, and Files needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
 
 | Privileged app | Version |
 |---|---:|
