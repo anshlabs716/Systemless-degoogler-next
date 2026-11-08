@@ -286,18 +286,9 @@ process_package() {
 ui_print
 ui_print "| Unattended install: applying the full removal list, no prompts."
 
-# 0. Futo Keyboard. Pre-install the bundled Futo Keyboard APK so that
-#    ensure_keyboard() below can detect and enable it. This runs during
-#    customize.sh (not boot service) to guarantee a replacement IME exists
-#    before Gboard is removed.
-FUTO_APK="$MODPATH/pkgs/29_futo.apk"
-if [ -f "$FUTO_APK" ]; then
-  if pm install -r "$FUTO_APK" >/dev/null 2>&1; then
-    ui_print "- Futo Keyboard pre-installed from bundled APK."
-  else
-    ui_print "- Could not pre-install Futo Keyboard; Gboard will be kept unless another keyboard is available."
-  fi
-fi
+# 0. Futo Keyboard note: Futo ships in the pkgs/ loop below, which runs
+#    BEFORE Gboard is touched, so a replacement IME always exists before
+#    Gboard is removed -- no separate pre-install step is needed.
 
 # 0b. Pre-install ALL other bundled replacement APKs (pkgs/*.apk) so they
 #     are available immediately after reboot. This runs once at module install
@@ -319,7 +310,7 @@ for APK in "$MODPATH"/pkgs/*.apk; do
   FILE=${APK##*/}
 
   case "$FILE" in
-    29_futo.apk|*microg*|*MicroG*|*aa4mg*|*AA4MG*)
+    *microg*|*MicroG*|*aa4mg*|*AA4MG*)
       SKIPPED=$((SKIPPED + 1))
       continue ;;
   esac

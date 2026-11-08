@@ -69,7 +69,7 @@ These are my suggestions. Most are bundled; microG and AA4MG must be installed s
 | Android Auto | AA4MG (manual install) | [GitHub](https://github.com/sn-00-x/aa4mg) |
 | Google Play services | microG (manual install) | [Setup guide](https://bitgapps.io/extra.html) |
 
-Futo Keyboard is bundled and pre-installed so a replacement is available if Gboard is removed. PixelBoard is also bundled as an optional keyboard and requires GMS or microG.
+Futo Keyboard is bundled and installed with the other regular apps in one pass, before Gboard is masked, so a replacement keyboard is always available. PixelBoard is also bundled as an optional keyboard and requires GMS or microG.
 
 ## What’s being removed
 
@@ -100,7 +100,7 @@ The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fos
 | Fossify Contacts | 1.6.0 |
 | Fossify Files | 1.6.3 |
 
-Futo Keyboard is pre-installed before Gboard is masked. PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
+All 23 regular APKs install in a single pass during module install, before Gboard is masked (Futo Keyboard included). PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
 
 ## Canta and Shizuku
 

@@ -5,7 +5,8 @@ module install (`customize.sh`), once, before any Google app is removed.
 The privileged apps live in `system/priv-app` and are mounted by the root
 manager at boot; their runtime permissions are granted by the boot service.
 The install is fully unattended: there are no volume-key prompts.
-Futo Keyboard is pre-installed before Gboard is masked. PixelBoard requires
+All 23 regular APKs install in a single pass during module install,
+before Gboard is masked (Futo Keyboard included). PixelBoard requires
 GMS or microG. An APK whose package is already installed is skipped.
 
 ## Regular apps (installed from `pkgs/`)
