@@ -90,12 +90,15 @@ tries=0
 while [ "$tries" -lt 6 ]; do
   role_held android.app.role.SMS org.fossify.messages && break
   add_role android.app.role.SMS org.fossify.messages
-  # Belt and suspenders for ROMs that key the default SMS app off these.
-  timeout 2 appops set org.fossify.messages WRITE_SMS allow >/dev/null 2>&1
-  timeout 2 settings put secure sms_default_application org.fossify.messages >/dev/null 2>&1
   sleep 10
   tries=$((tries + 1))
 done
+# ALWAYS enforce the legacy setting and the WRITE_SMS appop -- even when
+# the role above was already held. The loop breaks early on a held role,
+# and skipping these left sms_default_application pointing at the removed
+# com.android.messaging on ROMs that still read the legacy key.
+timeout 2 settings put secure sms_default_application org.fossify.messages >/dev/null 2>&1
+timeout 2 appops set org.fossify.messages WRITE_SMS allow >/dev/null 2>&1
 role_held android.app.role.SMS org.fossify.messages \
   && echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: org.fossify.messages" \
   || echo "[$(date '+%Y-%m-%d %H:%M:%S')] SMS role holder: NOT set after retries"
