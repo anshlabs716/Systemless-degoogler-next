@@ -15,7 +15,7 @@ Hey, I’m Ansh. This systemless module removes selected Google apps and reviewe
 - [Bundled apps and versions](#bundled-apps-and-versions)
 - [Canta and Shizuku](#canta-and-shizuku)
 - [KernelSU (untested)](#kernelsu-untested)
-- [Recovery ZIP](#recovery-zip)
+- [Supported installation formats](#supported-installation-formats)
 
 ## What it does
 
@@ -115,9 +115,16 @@ Canta uses Shizuku to manage installed packages. Review each action carefully: O
 
 The `systemless-degoogler-v1.0.0-ksu.zip` build is **untested on a device**. Install it through KernelSU Manager, not custom recovery. It requires an enabled compatible system metamodule, such as [meta-overlayfs](https://github.com/tiann/KernelSU/releases).
 
-## Recovery ZIP
+## Supported installation formats
 
-A recovery-flashable degoogling ZIP is planned for a **separate repository** with separate tooling. The ZIPs here are Magisk and KernelSU module packages. The Magisk package’s `META-INF/` files are module installer files; they are not the separate recovery ZIP.
+This project intentionally supports **manager-installed systemless modules only**:
+
+- **Magisk:** install the Magisk ZIP through the Magisk app.
+- **KernelSU:** install the KernelSU ZIP through KernelSU Manager (device testing is still marked untested above).
+
+**Recovery flashing is not supported and is not planned.** There will be no TWRP/OrangeFox package, recovery-specific build, or separate recovery-ZIP repository for this project.
+
+The `META-INF/com/google/android/` files inside the Magisk package are the standard Magisk module installer entrypoints. They are required for Magisk app installation and do **not** provide a recovery-flashing mode.
 
 ---
 
