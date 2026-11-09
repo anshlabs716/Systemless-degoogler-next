@@ -103,6 +103,13 @@ else
   ok "no shell read prompt"
 fi
 
+echo "=== 9. bundle-integrity guard (truncated-download protection) ==="
+if grep -q 'Bundle integrity OK' "$ROOT/customize.sh" && grep -q 'abort "Re-download the current release ZIP' "$ROOT/customize.sh"; then
+  ok "aborts loudly on an incomplete bundle"
+else
+  bad "no bundle-integrity guard -> a truncated zip flashes silently without essentials"
+fi
+
 echo "=== 10. Bixby + OEM protections intact ==="
 for pat in 'bixby' 'essential Samsung service' 'essential Xiaomi service'; do
   grep -qiF "$pat" "$CS" && ok "kept: $pat" || bad "missing: $pat"

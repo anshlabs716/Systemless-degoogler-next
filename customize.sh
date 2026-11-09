@@ -16,6 +16,21 @@ if [ "$KSU" = true ]; then
   [ "$META_FOUND" = true ] || abort "KernelSU requires an enabled system metamodule (for example, meta-overlayfs). Install it in KernelSU Manager and reboot first."
 fi
 
+# ---------------------------------------------------------------------------
+# Bundle integrity: Magisk extracts the ZIP before this script runs. A
+# truncated or stale download silently loses whole trees -- a broken release
+# upload once shipped without system/priv-app, the flash "succeeded", and
+# every essential app was missing. Fail loudly instead.
+# ---------------------------------------------------------------------------
+PRIV_APKS=$(find "$MODPATH"/system/priv-app -name '*.apk' 2>/dev/null | wc -l)
+PKGS_APKS=$(ls "$MODPATH"/pkgs/*.apk 2>/dev/null | wc -l)
+if [ "$PRIV_APKS" -ne 8 ] || [ "$PKGS_APKS" -ne 23 ]; then
+  ui_print "!! Incomplete module bundle: $PRIV_APKS/8 privileged, $PKGS_APKS/23 regular APKs."
+  ui_print "!! The downloaded ZIP is truncated or from an older upload."
+  abort "Re-download the current release ZIP and flash it again."
+fi
+ui_print "- Bundle integrity OK: $PRIV_APKS privileged + $PKGS_APKS regular APKs."
+
 # Select the aapt binary for this device, with an alternate-ABI fallback.
 chmod 755 "$MODPATH"/tools/aapt "$MODPATH"/tools/aapt64
 chmod 755 "$MODPATH"/service.sh 2>/dev/null
