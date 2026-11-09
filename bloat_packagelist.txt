@@ -465,7 +465,6 @@ com.google.android.iwlan                   # IWLAN
 com.google.android.storagemanager          # Storage manager (Google)
 com.google.android.tag                     # NFC Tag (Google)
 com.google.android.modulemetadata          # Mainline module metadata
-com.google.android.wfcactivation           # Wi-Fi Calling activation
 com.google.euiccpixel                      # eSIM support (Pixel)
 com.google.euiccpixel.permissions          # eSIM support permissions
 com.google.pixel.camera.services           # Persistent background camera services
