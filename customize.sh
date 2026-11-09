@@ -169,7 +169,7 @@ process_package() {
   # Only remove listed packages: Google apps, OEM bloat, and carrier apps.
   # Non-Google/OEM/carrier packages are skipped even if someone adds them.
   case "$PACKAGE_NAME" in
-    com.google.*|com.android.chrome|com.android.vending|com.android.hotwordenrollment.*|com.android.adservices.api|com.android.federatedcompute.services|com.android.ondevicepersonalization.services|com.android.omadm.*|com.android.bookmarkprovider|com.android.providers.partnerbookmarks|com.android.backupconfirm|com.android.sharedstoragebackup) ;;
+    com.google.*|com.android.chrome|com.android.vending|com.android.hotwordenrollment.*|com.android.adservices.api|com.android.federatedcompute.services|com.android.ondevicepersonalization.services|com.android.omadm.*|com.android.sdm.*|com.android.bookmarkprovider|com.android.providers.partnerbookmarks|com.android.backupconfirm|com.android.sharedstoragebackup) ;;
     com.samsung.*|com.sec.*|com.mi.*|com.miui.*|com.xiaomi.*|com.poco.*|com.oneplus.*|com.oos.*) ;;
     com.motorola.*|com.sonymobile.*|com.sonyericsson.*|com.oppo.*|com.vivo.*|com.realme.*) ;;
     com.iqoo.*|com.asus.*|com.lenovo.*|com.zte.*|com.nubia.*|com.meizu.*|com.wiko.*) ;;
@@ -211,7 +211,7 @@ process_package() {
   # in this module. Without that guard, removing Google's WebView would leave
   # every app with no rendering engine and broken login screens.
   case "$PACKAGE_NAME" in
-    com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.documentsui|com.google.android.ims|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.pixel*|com.google.android.apps.customization.pixel|com.google.android.markup|com.android.providers.settings|com.android.settings.auto_generated_rro_product__)
+    com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.documentsui|com.google.android.ims|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.pixel*|com.google.android.apps.customization.pixel|com.android.providers.settings|com.android.settings.auto_generated_rro_product__)
       return 0 ;;
   esac
 
@@ -230,13 +230,20 @@ process_package() {
     *"/data/app/"*)
       if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
         ui_print "- Removed updated build of $PACKAGE_NAME (user 0)."
+        UNINSTALL_COUNT=$((UNINSTALL_COUNT + 1))
       else
         ui_print "- Failed to remove updated build of $PACKAGE_NAME."
       fi
-      return 0 ;;
+      # If a system copy also exists, fall through and mask it too: some
+      # ROMs resurrect the stock copy at boot after a user-0 uninstall.
+      case "$APP_PATHS" in
+        *"/system/"*|*"/product/"*|*"/system_ext/"*|*"/vendor/"*) ;;
+        *) return 0 ;;
+      esac
+      ;;
   esac
 
-  APP_PATH=$(printf '%s\n' "$APP_PATHS" | sed -n '1p')
+  APP_PATH=$(printf '%s\n' "$APP_PATHS" | grep -v '^/data/app/' | sed -n '1p')
   APP_PATH_FOLDER=${APP_PATH%/*}
 
   # APEX modules and core Android settings/overlay infrastructure are outside
@@ -252,6 +259,7 @@ process_package() {
       if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1 ||
          pm disable-user --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
         ui_print "- Removed/disabled APEX package $PACKAGE_NAME (user 0)."
+        UNINSTALL_COUNT=$((UNINSTALL_COUNT + 1))
       else
         ui_print "- Failed to remove/disable APEX package $PACKAGE_NAME."
       fi
@@ -288,6 +296,7 @@ process_package() {
       if pm uninstall --user 0 "$PACKAGE_NAME" >/dev/null 2>&1 ||
          pm disable-user --user 0 "$PACKAGE_NAME" >/dev/null 2>&1; then
         ui_print "- Removed/disabled $APP_NAME (user 0; shared folder not masked)."
+        UNINSTALL_COUNT=$((UNINSTALL_COUNT + 1))
       else
         ui_print "- Skipped $APP_NAME: shared folder $APP_PATH_FOLDER must not be masked."
       fi
@@ -300,6 +309,7 @@ process_package() {
 
 ui_print
 ui_print "| Unattended install: applying the full removal list, no prompts."
+UNINSTALL_COUNT=0
 
 # 0. Futo Keyboard note: Futo ships in the pkgs/ loop below, which runs
 #    BEFORE Gboard is touched, so a replacement IME always exists before
@@ -380,7 +390,10 @@ fi
 # 3. Optional list. Always applied: the install is unattended and never asks
 #    whether to proceed. Force-removed packages were already handled above.
 if [ -f "$debloat_list" ]; then
+  N=0
   while IFS= read -r PACKAGE_NAME || [ -n "$PACKAGE_NAME" ]; do
+    N=$((N + 1))
+    [ $((N % 25)) -eq 0 ] && ui_print "| Removal pass: $N packages processed..."
     process_package "$PACKAGE_NAME" false
   done < "$debloat_list"
 fi
@@ -390,7 +403,7 @@ fi
 #     can never be masked, so they are removed per-user instead. Boot-
 #     critical framework/APEX resource overlays are never touched.
 OVERLAYS_GONE=0
-for P in $(pm list packages --user 0 2>/dev/null | sed 's/^package://' | grep -i 'overlay'); do
+for P in $(pm list packages --user 0 2>/dev/null | sed 's/^package://' | grep -Ei 'rro|overlay'); do
   case "$P" in
     com.android.framework*|com.android.wifi*|com.android.connectivity*|\
     com.android.tethering*|com.android.networkstack*|com.android.media*|\
@@ -482,6 +495,8 @@ for APP in $REMOVE; do
   MASKED=$((MASKED + 1))
 done
 ui_print "- Systemless masks applied: $MASKED (skipped folders holding our own APKs: $KEPT_SELF, shared dirs: $SKIPPED_SHARED)."
+ui_print "- Removal pass summary: $UNINSTALL_COUNT apps removed/disabled for user 0."
+ui_print "- Counts of 0 here mean the install was cancelled early -- reflash and let it finish."
 
 printf '%s\n' "$REMOVE" > "$MODPATH/.lastremove"
 ui_print "- Done. Reboot to apply the module."

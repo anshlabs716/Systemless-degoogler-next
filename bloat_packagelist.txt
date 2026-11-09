@@ -439,3 +439,34 @@ com.tmobile.simlock
 # com.android.providers.settings (core Android settings database; never remove)
 # Product RRO overlays (core UI/resources; never remove)
 # Pixel feature apps requested for removal, including System Intelligence
+
+# DerpFest/raven on-device audit survivors (Nov 2026)
+com.android.sdm.plugins.connmo             # ConnMO (OMA DM plugin)
+com.android.sdm.plugins.dcmo               # DCMO (OMA DM plugin)
+com.android.sdm.plugins.diagmon            # DiagMon (OMA DM plugin)
+com.google.android.googlequicksearchbox.nga_resources  # NGA resources (hotword)
+com.google.android.apps.setupwizard.searchselector     # Setup wizard search selector
+android.autoinstalls.config.google.nexus   # Google auto-install config
+com.google.android.soundpicker             # Google Sounds
+com.google.pixel.livewallpaper             # Pixel live wallpapers
+com.google.android.apps.camera.services    # Google Camera services
+com.google.android.apps.carrier.carrierwifi  # Carrier Wi-Fi
+com.google.android.apps.pixel.nowplaying   # Now Playing
+com.google.android.euicc                   # Google eSIM manager
+com.google.audio.hearing.visualization.accessibility.scribe  # Scribe (live transcribe rel.)
+com.google.android.hardwareinfo            # Hardware info (vendor)
+com.google.android.flipendo                # Flipendo
+com.google.android.accessibility.soundamplifier  # Sound Amplifier
+com.google.android.wallpaper.effects       # Wallpaper effects
+com.google.android.apps.magicportrait      # Magic Portrait wallpapers
+com.google.android.tetheringentitlement    # Tethering entitlement
+com.google.android.connectivitythermalpowermanager  # Connectivity/thermal power manager
+com.google.android.iwlan                   # IWLAN
+com.google.android.storagemanager          # Storage manager (Google)
+com.google.android.tag                     # NFC Tag (Google)
+com.google.android.modulemetadata          # Mainline module metadata
+com.google.android.wfcactivation           # Wi-Fi Calling activation
+com.google.euiccpixel                      # eSIM support (Pixel)
+com.google.euiccpixel.permissions          # eSIM support permissions
+com.google.pixel.camera.services           # Persistent background camera services
+com.google.android.markup                  # Google Markup

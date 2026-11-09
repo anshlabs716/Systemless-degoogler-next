@@ -60,7 +60,7 @@ else
 fi
 
 echo "=== 6. optional list is applied unconditionally ==="
-if code | grep -q 'bloat_packagelist' && code | grep -A3 'debloat_list"' | grep -q 'process_package'; then
+if code | grep -q 'bloat_packagelist' && code | grep -A6 'debloat_list"' | grep -q 'process_package'; then
   ok "optional list walked via process_package"
 else
   bad "optional list not walked"
