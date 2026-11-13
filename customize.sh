@@ -31,6 +31,18 @@ if [ "$PRIV_APKS" -ne 8 ] || [ "$PKGS_APKS" -ne 23 ]; then
 fi
 ui_print "- Bundle integrity OK: $PRIV_APKS privileged + $PKGS_APKS regular APKs."
 
+# Stale masks from a previous install must never survive a reflash. A reflash
+# is how a user escapes a mask that bootloops the device, so start from a
+# clean slate: every mask present after this point is one THIS run's lists
+# decided on (the installer's own mask loop below recreates them), and masks
+# for packages that were since dropped -- like the module metadata provider,
+# whose mask crash-looped system_server -- are gone for good.
+STALE_MASKS=$(find "$MODPATH" -name .replace 2>/dev/null | wc -l)
+if [ "$STALE_MASKS" -gt 0 ]; then
+  find "$MODPATH" -name .replace -exec sh -c 'rm -rf "$(dirname "$1")"' _ {} \;
+  ui_print "- Cleared $STALE_MASKS stale mask(s) left by a previous install."
+fi
+
 # Select the aapt binary for this device, with an alternate-ABI fallback.
 chmod 755 "$MODPATH"/tools/aapt "$MODPATH"/tools/aapt64
 chmod 755 "$MODPATH"/service.sh 2>/dev/null

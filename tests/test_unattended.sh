@@ -202,3 +202,13 @@ if grep -q 'BOOTLOOP GUARD' "$ROOT/customize.sh" && grep -q 'com.google.android.
 else
   bad "no guard for the module metadata provider -> system_server crash bootloop"
 fi
+if grep -q 'stale mask' "$ROOT/customize.sh" && grep -q 'STALE_MASKS' "$ROOT/customize.sh"; then
+  ok "reflash clears stale masks from previous installs"
+else
+  bad "no stale-mask sweep -> a reflash can inherit an old bootlooping mask"
+fi
+if [ -z "$(find "$ROOT" -name .replace -not -path "$ROOT/.git/*" 2>/dev/null)" ]; then
+  ok "no .replace ships in the repo (masks are install-time only)"
+else
+  bad ".replace file present in repo -> would be extracted before the sweep"
+fi
