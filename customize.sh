@@ -210,8 +210,15 @@ process_package() {
   # only ever masked when a verified replacement provider is actually present
   # in this module. Without that guard, removing Google's WebView would leave
   # every app with no rendering engine and broken login screens.
+  #
+  # BOOTLOOP GUARD: com.google.android.modulemetadata (ModuleMetadata) is the
+  # package config_defaultModuleMetadataProvider points at. system_server
+  # parses its APK as soon as it starts and crashes permanently with
+  # "IllegalStateException: Call to getInstalledModules before metadata
+  # loaded" if it is hidden -- masking it bootloops every device. Never
+  # remove it, even if it shows up on a list.
   case "$PACKAGE_NAME" in
-    com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.documentsui|com.google.android.ims|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.pixel*|com.google.android.apps.customization.pixel|com.android.providers.settings|com.android.settings.auto_generated_rro_product__)
+    com.google.android.gsf|com.google.android.onetimeinitializer|com.google.android.packageinstaller|com.google.android.ext.services|com.google.android.ext.shared|com.google.android.GoogleCamera|com.google.android.apps.wallpaper|com.google.android.apps.wallpaper.*|com.google.android.documentsui|com.google.android.ims|com.google.android.settings.intelligence|com.google.android.apps.nexuslauncher|com.google.android.apps.pixel*|com.google.android.apps.customization.pixel|com.android.providers.settings|com.android.settings.auto_generated_rro_product__|com.google.android.modulemetadata|com.android.modulemetadata)
       return 0 ;;
   esac
 

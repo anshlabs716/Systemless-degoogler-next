@@ -195,3 +195,10 @@ US="$ROOT/uninstall.sh"
 grep -q 'pm install' "$US" && ok "reinstalls each app as a user app" || bad "no pm install migration"
 grep -q 'umount' "$US" && ok "drops module mounts before installing" || bad "no umount step"
 grep -q 'uninstall.sh' "$ROOT/build.sh" && ok "build ships uninstall.sh in both zips" || bad "uninstall.sh not in zip lists"
+
+echo "=== 15. boot-critical module metadata provider is never masked ==="
+if grep -q 'BOOTLOOP GUARD' "$ROOT/customize.sh" && grep -q 'com.google.android.modulemetadata' "$ROOT/customize.sh" && grep -q 'com.android.modulemetadata' "$ROOT/customize.sh"; then
+  ok "customize.sh hard-guards both module metadata provider names"
+else
+  bad "no guard for the module metadata provider -> system_server crash bootloop"
+fi

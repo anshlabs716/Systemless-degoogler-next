@@ -449,23 +449,17 @@ com.google.android.apps.setupwizard.searchselector     # Setup wizard search sel
 android.autoinstalls.config.google.nexus   # Google auto-install config
 com.google.android.soundpicker             # Google Sounds
 com.google.pixel.livewallpaper             # Pixel live wallpapers
-com.google.android.apps.camera.services    # Google Camera services
 com.google.android.apps.carrier.carrierwifi  # Carrier Wi-Fi
 com.google.android.apps.pixel.nowplaying   # Now Playing
 com.google.android.euicc                   # Google eSIM manager
 com.google.audio.hearing.visualization.accessibility.scribe  # Scribe (live transcribe rel.)
-com.google.android.hardwareinfo            # Hardware info (vendor)
 com.google.android.flipendo                # Flipendo
 com.google.android.accessibility.soundamplifier  # Sound Amplifier
 com.google.android.wallpaper.effects       # Wallpaper effects
 com.google.android.apps.magicportrait      # Magic Portrait wallpapers
-com.google.android.tetheringentitlement    # Tethering entitlement
-com.google.android.connectivitythermalpowermanager  # Connectivity/thermal power manager
 com.google.android.iwlan                   # IWLAN
 com.google.android.storagemanager          # Storage manager (Google)
 com.google.android.tag                     # NFC Tag (Google)
-com.google.android.modulemetadata          # Mainline module metadata
 com.google.euiccpixel                      # eSIM support (Pixel)
 com.google.euiccpixel.permissions          # eSIM support permissions
-com.google.pixel.camera.services           # Persistent background camera services
 com.google.android.markup                  # Google Markup

@@ -47,6 +47,17 @@ else
   printf '  INFO  package(s) in both lists (deduped at install): %s\n' "$(printf '%s ' $overlap)"
 fi
 
+# Boot-critical packages must never appear on a removal list. Hiding the
+# module metadata provider makes system_server crash at startup with
+# "Call to getInstalledModules before metadata loaded" -- a hard bootloop.
+for p in com.google.android.modulemetadata com.android.modulemetadata; do
+  if pkgs_of "$BLOAT" | grep -qx "$p" || pkgs_of "$FORCE" | grep -qx "$p"; then
+    bad "$p is boot-critical (system_server parses it at startup) and must not be listed"
+  else
+    ok "$p not on any removal list"
+  fi
+done
+
 # Nothing this module bundles may appear on a removal list.
 if [ -f "$AUDIT" ]; then
   bundled=$(tail -n +2 "$AUDIT" | cut -f2 | grep -v '^UNREADABLE$' | sort -u)

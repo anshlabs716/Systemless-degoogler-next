@@ -73,15 +73,15 @@ Futo Keyboard is bundled and installed with the other regular apps in one pass, 
 
 ## What’s being removed
 
-The lists cover **352 unique package candidates**: 351 on the optional list (Google/Pixel plus curated OEM/carrier entries) and 15 on the force list, 14 of which repeat from the optional list. A package is affected only if it is present on the phone.
+The lists cover **374 unique package candidates**: 373 on the optional list (Google/Pixel plus curated OEM/carrier entries) and 15 on the force list, 14 of which repeat from the optional list. A package is affected only if it is present on the phone.
 
 | List | Apps and services |
 |---|---|
-| Google and Pixel (67 candidates) | Files, Play Games, Assistant, Gmail, Clock, Calculator, Search, TTS, Setup Wizard, Keep, Android Auto, Maps, Weather, Recorder, Safety Hub, Photos, Meet, Play services, Docs, Work setup/DPC, YouTube, Play Store, Chrome, Lens, Movies, Music, TalkBack, Print Service, Backup and Restore, Wallet, Podcasts, Books, Magazines, TV/VR apps, Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, Android System Intelligence, Federated Compute, On-device Personalization, Ad Services, Partner Setup, Wi-Fi Calling, Switch Access, Hotword Enrollment, Location History, and related Google services. |
-| OEM and carrier (265 candidates) | Curated candidates for Samsung, Xiaomi/Redmi/POCO, OnePlus, Nothing/CMF, Fairphone, Motorola, Sony, Oppo, Vivo, Realme/iQOO, ASUS, Lenovo, Transsion brands, and carriers. Bixby and selected essential components are protected. |
+| Google and Pixel (106 candidates) | Files, Play Games, Assistant, Gmail, Clock, Calculator, Search, TTS, Setup Wizard, Keep, Android Auto, Maps, Weather, Recorder, Safety Hub, Photos, Meet, Play services, Docs, Work setup/DPC, YouTube, Play Store, Chrome, Lens, Movies, Music, TalkBack, Print Service, Backup and Restore, Wallet, Podcasts, Books, Magazines, TV/VR apps, Contacts, Calendar, Phone, Messages, Gboard, Digital Wellbeing, Emoji Wallpapers, Android System Intelligence, Federated Compute, On-device Personalization, Ad Services, Partner Setup, Wi-Fi Calling, Switch Access, Hotword Enrollment, Location History, and related Google services. |
+| OEM and carrier (267 candidates) | Curated candidates for Samsung, Xiaomi/Redmi/POCO, OnePlus, Nothing/CMF, Fairphone, Motorola, Sony, Oppo, Vivo, Realme/iQOO, ASUS, Lenovo, Transsion brands, and carriers. Bixby and selected essential components are protected. |
 | Force list (15 Google entries) | Gmail, Google Search, Maps, Photos, Pixel Weather, Files by Google, Phone, Contacts, Calendar, Clock, Calculator, Messages, Digital Wellbeing, Google Print Service, and Google WebView (only when the bundled replacement is verified). Gboard is masked only after another keyboard is available. |
 
-The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and [force_packagelist.txt](force_packagelist.txt). Google Play services (GMS) is optional; select it for removal when preparing for microG.
+The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and [force_packagelist.txt](force_packagelist.txt). Google Play services (GMS) is optional; select it for removal when preparing for microG. The module metadata provider (`com.google.android.modulemetadata`) is never removed: system_server parses its APK at startup, and hiding it crashes the phone into a bootloop.
 
 OEM packages vary by model, region, Android version, and ROM. This is a curated list, not a guarantee of complete coverage or a claim that every candidate is safe for every device. Review OEM candidates individually and keep Bixby if you use it.
 
