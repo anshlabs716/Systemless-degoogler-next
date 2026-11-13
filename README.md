@@ -87,7 +87,27 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 ## Bundled apps and versions
 
-The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. The Fossify apps are privileged because they need it: Phone requests CALL_PRIVILEGED to place calls, Messages must be able to serve as the default SMS app, and Files needs All Files Access (MANAGE_EXTERNAL_STORAGE). The privileged apps are:
+The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. The Fossify apps are privileged because they need it: Phone requests CALL_PRIVILEGED to place calls, Messages must be able to serve as the default SMS app, and Files needs All Files Access (MANAGE_EXTERNAL_STORAGE).
+
+Regular apps (installed from `pkgs/` during module install):
+
+| Regular app | Version | Regular app | Version |
+|---|---:|---|---:|
+| F-Droid Basic | 2.0.2 | Proton Drive | 3.2.0 |
+| Neo Store | 1.3.2 | Dicio | 4.2 |
+| Aurora Store | 4.8.4 | RHVoice | 1.18.4 |
+| Proton VPN | 5.20.98.0 | Thunderbird | 24.0 |
+| Proton Pass (F-Droid) | 1.41.4 | Bada | 20261007.01 |
+| Ente Photos | 1.3.66 | NetGuard | 5.0.0-BETA_1 |
+| Simple Notes Sync | 2.20.1 | Compass | 2.2.0 |
+| CalcYou | 5.3 | Futo Keyboard | 0.1.30 |
+| Breezy Weather | 6.2.2_freenet | PixelBoard (optional, needs GMS/microG) | 18.5.3 |
+| Brave | 1.78.97 | MILES | 1.1.6 |
+| Koda | 5.2 | | |
+| Auxio | 4.1.5 | | |
+| Vela Maps | 0.5.2621 | | |
+
+Privileged apps (mounted from `system/priv-app` at boot):
 
 | Privileged app | Version |
 |---|---:|
