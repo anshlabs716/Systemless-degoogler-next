@@ -14,6 +14,7 @@ Hey, I’m Ansh. This systemless module removes selected Google apps and reviewe
 - [Install](#install)
 - [FOSS replacements](#foss-replacements)
 - [What’s being removed](#whats-being-removed)
+- [Remove Google WebView](#remove-google-webview)
 - [Bundled apps and versions](#bundled-apps-and-versions)
 - [Canta and Shizuku](#canta-and-shizuku)
 - [KernelSU (untested)](#kernelsu-untested)
@@ -86,6 +87,17 @@ The lists cover **374 unique package candidates**: 373 on the optional list (Goo
 The exact package IDs are in [bloat_packagelist.txt](bloat_packagelist.txt) and [force_packagelist.txt](force_packagelist.txt). Google Play services (GMS) is optional; select it for removal when preparing for microG. The module metadata provider (`com.google.android.modulemetadata`) is never removed: system_server parses its APK at startup, and hiding it crashes the phone into a bootloop.
 
 OEM packages vary by model, region, Android version, and ROM. This is a curated list, not a guarantee of complete coverage or a claim that every candidate is safe for every device. Review OEM candidates individually and keep Bixby if you use it.
+
+## Remove Google WebView
+
+The module already removes Google WebView during install: it uninstalls the Play Store update of `com.google.android.webview`, masks the system copy, and removes the Trichrome library packages. The bundled Cromite WebView (`com.android.webview`) takes over as the WebView implementation.
+
+If Play Store ever brings Google WebView back:
+
+1. Settings → Apps → **Android System WebView** → **Uninstall updates** → **Disable**.
+2. Or with the phone connected to your computer: `adb shell pm uninstall --user 0 com.google.android.webview`
+3. Confirm it is gone: `adb shell pm path com.google.android.webview` — no output means gone.
+4. Confirm the bundled one is active: Settings → About phone → tap **Build number** 7 times → back to Settings → System → **Developer options** → **WebView implementation** → it must show the bundled `com.android.webview`.
 
 ## Bundled apps and versions
 
