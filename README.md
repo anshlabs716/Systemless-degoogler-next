@@ -6,7 +6,7 @@ Hey, I’m Ansh. This systemless module removes selected Google apps and reviewe
 
 **v1.0.3 · 23 regular APKs + 8 privileged LineageOS/AOSP + Fossify apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
-> ⚠️ **Warning: I am not liable for any damage caused to your device.** Flash this module at your own risk. Back up your data and keep a recovery route available before installing.
+> ⚠️ **Warning: I am not liable for any damage caused to your device.** Flash this module at your own risk. Back up your data before installing.
 
 ## Contents
 
@@ -27,13 +27,13 @@ Google Camera, Pixel Launcher, Pixel Wallpapers, Pixel Customization, and select
 
 The module does not install microG. Install it separately if needed: [microG setup](https://bitgapps.io/extra.html). PixelBoard requires GMS or microG; Futo Keyboard is bundled as a keyboard option that does not depend on either.
 
-Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data and keep a recovery route available. When the module is removed, its bundled apps are migrated to regular user apps first: they stay installed and become normally uninstallable from Settings.
+Changes made by the module are systemless. Disable or remove it in Magisk or KernelSU and reboot to restore masked system apps. Back up your data. When the module is removed, its bundled apps are migrated to regular user apps first: they stay installed and become normally uninstallable from Settings.
 
 Removal is applied two ways, because one is not enough on its own: apps still in the system image are hidden with a `.replace` mask (restored when the module is removed), while apps a Play Store update moved into `/data/app` are uninstalled for user 0, since a systemless mask cannot reach them there. Google WebView is replaced by the bundled open-source WebView.
 
 ## Install
 
-1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Do not flash the KernelSU ZIP from recovery.
+1. Install `systemless-degoogler-v1.0.3.zip` in the Magisk app, or `systemless-degoogler-v1.0.0-ksu.zip` in KernelSU Manager. Manager apps only.
 2. The install is fully unattended: it applies the full removal list (force plus optional) and installs the bundled apps without asking any questions. There are no volume-key prompts.
 3. Reboot. Bundled system apps become available as Android finishes booting. The boot service then grants the bundled privileged apps their runtime permissions, so Clock, Etar, Recorder, WebView and the Fossify trio (Phone, Messages, Contacts) behave like the stock apps they replace instead of prompting for permission on first use. Fossify Messages is set as the default SMS app (role, legacy setting and WRITE_SMS appop) and Fossify Phone as the default dialer by the boot service.
 4. Install microG separately if you want it.
@@ -145,7 +145,7 @@ Canta uses Shizuku to manage installed packages. Review each action carefully: O
 
 ## KernelSU (untested)
 
-The `systemless-degoogler-v1.0.0-ksu.zip` build is **untested on a device**. Install it through KernelSU Manager, not custom recovery. It requires an enabled compatible system metamodule, such as [meta-overlayfs](https://github.com/tiann/KernelSU/releases).
+The `systemless-degoogler-v1.0.0-ksu.zip` build is **untested on a device**. Install it through KernelSU Manager only. It requires an enabled compatible system metamodule, such as [meta-overlayfs](https://github.com/tiann/KernelSU/releases).
 
 ## Supported installation formats
 
@@ -154,13 +154,7 @@ This project intentionally supports **manager-installed systemless modules only*
 - **Magisk:** install the Magisk ZIP through the Magisk app.
 - **KernelSU:** install the KernelSU ZIP through KernelSU Manager (device testing is still marked untested above).
 
-**Recovery flashing is not supported and is not planned.** There will be no TWRP/OrangeFox package, recovery-specific build, or separate recovery-ZIP repository for this project.
-
-The `META-INF/com/google/android/` files inside the Magisk package are the standard Magisk module installer entrypoints. They are required for Magisk app installation and do **not** provide a recovery-flashing mode.
-
-### Why recovery support is out of scope
-
-This is a practical development constraint, not a claim that recovery packages are technically impossible. The available Debian development machine has limited resources (8 GB RAM, a 128 GB NVMe drive, and a low-power Intel N150 processor). Maintaining separate recovery build environments, tooling, dependencies, and build outputs would put too much pressure on its storage and performance. Recovery-specific testing also adds avoidable device risk, including failed installations, data loss, or a device becoming temporarily unbootable. To keep development manageable and testing safer, work is focused on manager-installed systemless modules instead.
+**Recovery install is not added and will not be added:** it is too risky (a failed flash can lose your data or leave the device unbootable), and the hardware available for this project is not good enough to build and test it safely. The `META-INF/com/google/android/` files inside the package are the standard Magisk module installer entrypoints and are required for Magisk app installation.
 
 
 ---
