@@ -6,6 +6,8 @@ Hey, I’m Ansh. This systemless module removes selected Google apps and reviewe
 
 **v1.0.3 · 23 regular APKs + 8 privileged LineageOS/AOSP + Fossify apps · [Get both ZIPs](https://github.com/anshlabs716/Systemless-degoogler-next/releases)**
 
+> ⚠️ **Warning: I am not liable for any damage caused to your device.** Flash this module at your own risk. Back up your data and keep a recovery route available before installing.
+
 ## Contents
 
 - [What it does](#what-it-does)
@@ -89,38 +91,48 @@ OEM packages vary by model, region, Android version, and ROM. This is a curated 
 
 The ZIP contains **23 regular-app APKs** and **8 privileged LineageOS/AOSP + Fossify apps**. The Fossify apps are privileged because they need it: Phone requests CALL_PRIVILEGED to place calls, Messages must be able to serve as the default SMS app, and Files needs All Files Access (MANAGE_EXTERNAL_STORAGE).
 
-Regular apps (installed from `pkgs/` during module install):
-
-| Regular app | Version | Regular app | Version |
-|---|---:|---|---:|
-| F-Droid Basic | 2.0.2 | Proton Drive | 3.2.0 |
-| Neo Store | 1.3.2 | Dicio | 4.2 |
-| Aurora Store | 4.8.4 | RHVoice | 1.18.4 |
-| Proton VPN | 5.20.98.0 | Thunderbird | 24.0 |
-| Proton Pass (F-Droid) | 1.41.4 | Bada | 20261007.01 |
-| Ente Photos | 1.3.66 | NetGuard | 5.0.0-BETA_1 |
-| Simple Notes Sync | 2.20.1 | Compass | 2.2.0 |
-| CalcYou | 5.3 | Futo Keyboard | 0.1.30 |
-| Breezy Weather | 6.2.2_freenet | PixelBoard (optional, needs GMS/microG) | 18.5.3 |
-| Brave | 1.78.97 | MILES | 1.1.6 |
-| Koda | 5.2 | | |
-| Auxio | 4.1.5 | | |
-| Vela Maps | 0.5.2621 | | |
-
 Privileged apps (mounted from `system/priv-app` at boot):
 
-| Privileged app | Version |
-|---|---:|
-| DeskClock | 16 |
-| WebView | 153.0.8010.37 |
-| Etar Calendar | 14 |
-| Recorder | 16 |
-| Fossify Phone | 1.11.1 |
-| Fossify Messages | 1.10.2 |
-| Fossify Contacts | 1.6.0 |
-| Fossify Files | 1.6.3 |
+| Privileged app | Package ID | Version |
+|---|---|---:|
+| DeskClock | `com.android.deskclock` | 16 |
+| WebView (Cromite) | `com.android.webview` | 153.0.8010.37 |
+| Etar Calendar | `org.lineageos.etar` | 14 |
+| Recorder | `org.lineageos.recorder` | 16 |
+| Fossify Phone | `org.fossify.phone` | 1.11.1 |
+| Fossify Messages | `org.fossify.messages` | 1.10.2 |
+| Fossify Contacts | `org.fossify.contacts` | 1.6.0 |
+| Fossify Files | `org.fossify.filemanager` | 1.6.3 |
 
-All 23 regular APKs install in a single pass during module install, before Gboard is masked (Futo Keyboard included). PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the complete APK inventory, package IDs, versions, and install paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
+Regular apps (installed from `pkgs/` during module install):
+
+| Regular app | Package ID | Version |
+|---|---|---:|
+| F-Droid Basic | `org.fdroid.basic` | 2.0.2 |
+| Neo Store | `com.machiav3lli.fdroid` | 1.3.2 |
+| Aurora Store | `com.aurora.store` | 4.8.4 |
+| Proton VPN | `ch.protonvpn.android.reproducible` | 5.20.98.0 |
+| Proton Pass (F-Droid) | `proton.android.pass.fdroid` | 1.41.4 |
+| Ente Photos | `io.ente.photos.fdroid` | 1.3.66 |
+| Simple Notes Sync | `dev.dettmer.simplenotes` | 2.20.1 |
+| CalcYou | `net.youapps.calcyou` | 5.3 |
+| Breezy Weather | `org.breezyweather` | 6.2.2_freenet |
+| Brave | `com.brave.browser` | 1.78.97 |
+| Koda | `com.ivor.ivormusic` | 5.2 |
+| Auxio | `org.oxycblt.auxio` | 4.1.5 |
+| Vela Maps | `app.vela` | 0.5.2621 |
+| Proton Drive | `me.proton.android.drive` | 3.2.0 |
+| Dicio | `org.stypox.dicio` | 4.2 |
+| RHVoice | `com.github.olga_yakovleva.rhvoice.android` | 1.18.4 |
+| Thunderbird | `net.thunderbird.android` | 24.0 |
+| Bada | `dev.bluehouse.bada` | 20261007.01 |
+| NetGuard | `dev.ukanth.ufirewall` | 5.0.0-BETA_1 |
+| Compass | `com.bobek.compass` | 2.2.0 |
+| Futo Keyboard | `org.futo.inputmethod.latin` | 0.1.30 |
+| PixelBoard (optional, needs GMS/microG) | `com.akshaykadam.pixelboard` | 18.5.3 |
+| MILES | `com.anshlabs.miles` | 1.1.6 |
+
+All 23 regular APKs install in a single pass during module install, before Gboard is masked (Futo Keyboard included). PixelBoard is included as an optional keyboard and requires GMS or microG. Already-installed regular apps are skipped. See [pkgs/README.md](pkgs/README.md) for the APK file paths. The install log is `/data/adb/modules/systemless-degoogler/log.txt`. microG and AA4MG are not bundled.
 
 ## Canta and Shizuku
 
