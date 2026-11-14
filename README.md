@@ -95,9 +95,10 @@ The module already removes Google WebView during install: it uninstalls the Play
 If Play Store ever brings Google WebView back:
 
 1. Settings → Apps → **Android System WebView** → **Uninstall updates** → **Disable**.
-2. Or with the phone connected to your computer: `adb shell pm uninstall --user 0 com.google.android.webview`
-3. Confirm it is gone: `adb shell pm path com.google.android.webview` — no output means gone.
-4. Confirm the bundled one is active: Settings → About phone → tap **Build number** 7 times → back to Settings → System → **Developer options** → **WebView implementation** → it must show the bundled `com.android.webview`.
+2. Or with [Canta](#canta-and-shizuku) (Shizuku running): search `com.google.android.webview` and remove it for user 0.
+3. Or with the phone connected to your computer: `adb shell pm uninstall --user 0 com.google.android.webview`
+4. Confirm it is gone: `adb shell pm path com.google.android.webview` — no output means gone.
+5. Confirm the bundled one is active: Settings → About phone → tap **Build number** 7 times → back to Settings → System → **Developer options** → **WebView implementation** → it must show the bundled `com.android.webview`.
 
 ## Bundled apps and versions
 
